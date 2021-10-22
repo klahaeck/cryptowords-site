@@ -11,7 +11,7 @@ export const uploadFile = (data, filename, cb) => {
     Key: filename,
     Body: data,
     // ContentEncoding: 'base64',
-    ContentType: 'image/jpeg',
+    ContentType: 'image/png',
     ACL: 'public-read'
   };
 
