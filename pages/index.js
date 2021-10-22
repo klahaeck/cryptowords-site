@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import NiftyWords from '../contracts/NiftyWords.json';
+import CryptoWords from '../contracts/CryptoWords.json';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Container,
@@ -39,7 +39,7 @@ const Home = () => {
         setAddress(accounts[0])
         const w3 = new Web3(ethereum);
         setWeb3(w3);
-        const c = new w3.eth.Contract(NiftyWords.abi, process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
+        const c = new w3.eth.Contract(CryptoWords.abi, process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
         setContract(c);
       }).catch((err) => console.log(err));
 
