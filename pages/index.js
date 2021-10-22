@@ -17,8 +17,7 @@ import {
   WRONG_NETWORK,
   WORD_NOT_FOUND,
   WORD_EXISTS,
-  PURCHASE_SUCCESS,
-  // NOT_ENOUGH_FUNDS
+  PURCHASE_SUCCESS
 } from '../data/text';
 
 const Home = () => {
@@ -33,9 +32,6 @@ const Home = () => {
   const { handleSubmit, control, formState: { errors }, reset } = useForm();
   const [ isMinting, setIsMinting ] = useState(false);
   const [ modalOpen, setModalOpen ] = useState(false);
-
-  // const MIN_FUNDS = 0.035 // in ETH
-  // const MAX_INIT_NFTS = 4;
 
   useEffect(() => {
     if (window.ethereum) {
@@ -85,7 +81,6 @@ const Home = () => {
   }
 
   const onSubmit = async data => {
-    // const thisWord = data.word;
     setSending(true);
     setCurrentWord(null);
     
@@ -142,9 +137,6 @@ const Home = () => {
           })
           .on('receipt', (receipt) => {
             console.log(receipt);
-
-            // const tempURI = process.env.NODE_ENV === 'production' ? tokenURI : tokenURI.replace('https://niftywords.art', 'http://localhost:3000');
-            // setMyWordURIs([tempURI, ...myWordURIs]);
             reset();
             setCurrentWord(null);
             setIsMinting(false);
