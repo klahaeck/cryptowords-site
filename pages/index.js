@@ -197,8 +197,8 @@ const Home = () => {
   const handleOnAlertClose = (index) => setAlerts(alerts.filter((a, i) => i !== index));
   const handleOnToastClose = (index) => setToasts(toasts.filter((t, i) => i !== index));
 
-  const handleTogglePause = async () => {
-    const thisPausedMethod = paused ? await contract.methods.unpause() : await contract.methods.pause();
+  const handleTogglePause = () => {
+    const thisPausedMethod = paused ? contract.methods.unpause() : contract.methods.pause();
     
     thisPausedMethod.send({from:address})
       .on('receipt', (receipt) => {

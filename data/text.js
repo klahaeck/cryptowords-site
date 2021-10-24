@@ -3,4 +3,4 @@ export const WORD_NOT_FOUND = 'Sorry, we cannot find this word.';
 export const WORD_EXISTS = 'This NFT has already been purchased';
 export const NOT_ENOUGH_FUNDS = 'You do not have enough ETH for this transaction';
 export const WORD_MINTING = 'Your NFT is being minted. It may take a minute.'
-export const PURCHASE_SUCCESS = 'The word has been minted into your wallet. It may take a minute to show up.';
+export const PURCHASE_SUCCESS = 'The word has been minted into your wallet.';
