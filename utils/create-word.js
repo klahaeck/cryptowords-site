@@ -38,7 +38,7 @@ const createWord = async (word) => {
       throw 'no data fron api';
     }
   } catch(error) {
-    console.error(error);
+    // console.error(error);
     return error;
   }
 };

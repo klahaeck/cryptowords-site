@@ -27,7 +27,7 @@ const serveSlug = async (req, res) => {
         const  newDoc = await collection.insertOne(newWord);
         word = await collection.findOne(newDoc.insertedId);
       } else {
-        res.status(404).json('Word not found');
+        return res.status(404).json('Word not found');
       }
     }
 
