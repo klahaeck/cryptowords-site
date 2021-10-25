@@ -1,41 +1,60 @@
 import createImg from './create-img';
 import slugify from 'slugify';
 
-const getFromDictionaryApi = (word) => {
+const mirriamWebsterApi = (word) => {
   const url = `https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${process.env.MIRRIAM_WEBSTER_API_KEY}`;
-  
   return fetch(url)
     .then(res => res.json());
-    // .then(json => console.log(json));
 };
+
+const wordsApi = (word) => {
+  const url = `https://wordsapiv1.p.rapidapi.com/words/${word}/definitions`;
+  return fetch(url, {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+        'x-rapidapi-key': process.env.WORDS_API_KEY
+      }
+    })
+    .then(res => res.json());
+}
 
 const createWord = async (word) => {
   const wordLower = word.toLowerCase();
   const slug = slugify(wordLower);
 
+  const doc = {
+    word: wordLower,
+    slug,
+    name: wordLower,
+    external_url: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/word/${slug}`,
+    createdAt: new Date(),
+    rawData: {}
+  };
+
   try {
-    const wordFromApi = await getFromDictionaryApi(slug);
-    if (wordFromApi[0]?.meta) {
-      const { meta, date, shortdef } = wordFromApi[0];
-      const apiData = { meta, date, shortdef };
-      const description = apiData.shortdef.join(', ');
+    const wordMirriamWebsterApi = await mirriamWebsterApi(slug);
+    const wordWordsApi = await wordsApi(slug);
+    
+    if (wordWordsApi.definitions?.length > 0 || wordMirriamWebsterApi[0]?.meta) {
 
-      const uploadedImage = await createImg(slug, wordLower, description);
+      if (wordWordsApi.definitions?.length > 0) {
+        doc.rawData.wordsApi = wordWordsApi;
+      }
 
-      const doc = {
-        word: wordLower,
-        slug,
-        name: wordLower,
-        description,
-        image: uploadedImage.Location,
-        external_url: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/word/${slug}`,
-        mirriamData: apiData,
-        createdAt: new Date()
-      };
+      if (wordMirriamWebsterApi[0]?.meta) {
+        doc.rawData.mirriamWebster = wordMirriamWebsterApi[0];
+      }
+
+      doc.description = doc.rawData.mirriamWebster?.shortdef?.length > 0 ? doc.rawData.mirriamWebster.shortdef.join(', ')
+                      : doc.rawData.wordWordsApi?.definitions?.length > 0 ? doc.rawData.wordWordsApi.definitions.join(', ')
+                      : '';
+
+      doc.image = await createImg(slug, wordLower, doc.description);
 
       return doc;
     } else {
-      throw 'no data fron api';
+      throw 'no data from api';
     }
   } catch(error) {
     // console.error(error);
