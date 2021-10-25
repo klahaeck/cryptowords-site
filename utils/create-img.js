@@ -80,8 +80,8 @@ const createImg = (_id, word, description) => {
   // fs.writeFileSync(`./public/images/${_id}.png`, buffer);
 
   const uploadPromise = new Promise((resolve, reject) => {
-    const randomString = crypto.randomBytes(4).toString('hex');
-    uploadFile(buffer, `${process.env.NODE_ENV}/${_id}-${randomString}.png`, function(err, data) {
+    // const randomString = crypto.randomBytes(4).toString('hex');
+    uploadFile(buffer, `${process.env.NODE_ENV}/${_id}.png`, function(err, data) {
       if (err) {
         console.error(err);
         reject(err);
