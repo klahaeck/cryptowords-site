@@ -50,7 +50,8 @@ const createWord = async (word) => {
                       : doc.rawData.wordWordsApi?.definitions?.length > 0 ? doc.rawData.wordWordsApi.definitions.join(', ')
                       : '';
 
-      doc.image = await createImg(slug, wordLower, doc.description);
+      const image = await createImg(slug, wordLower, doc.description);
+      doc.image = image.Location;
 
       return doc;
     } else {
