@@ -1,5 +1,6 @@
-import { connectToDatabase } from '../../../utils/mongodb';
-import CreateWord from '../../../utils/create-word';
+import { connectToDatabase } from '../../../lib/mongodb';
+import createWord from '../../../lib/create-word';
+import createImg from '../../../lib/create-img';
 
 const serveSlug = async (req, res) => {
   const { slug, type } = req.query;
@@ -21,18 +22,24 @@ const serveSlug = async (req, res) => {
     let word = await collection.findOne(query);
     
     if (!word) {
-      const newWord = await CreateWord(slug);
+      const newWord = await createWord(slug);
 
       if (typeof newWord === 'object') {
+        const newWordImage = await createImg(newWord.slug, newWord.word, newWord.description);
+        newWord.image = newWordImage.Location;
         const  newDoc = await collection.insertOne(newWord);
         word = await collection.findOne(newDoc.insertedId);
       } else {
         return res.status(404).json('Word not found');
       }
+    } else if (!word.image) {
+      const image = await createImg(word.slug, word.word, word.description);
+      word.image = image.Location;
+      await collection.updateOne({slug: word.slug}, { $set: { image: word.image }}, { returnOriginal: false });
     }
 
     // FOR TESTING WITHOUT DB
-    // const word = await CreateWord(slug);
+    // const word = await createWord(slug);
     // console.log(word);
 
     if (type === 'full') {
