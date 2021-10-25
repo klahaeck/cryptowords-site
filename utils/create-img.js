@@ -1,25 +1,33 @@
 // import fs from 'fs';
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas } from 'canvas';
 import { uploadFile } from './s3-upload';
+import crypto from 'crypto';
 
-function wrapText(context, text, x, y, maxWidth, lineHeight) {
+function wrapText(context, text, x, y, maxWidth, maxHeight, fontSize, fill) {
   const words = text.split(' ');
-  let line = '';
+  let numLines = 1;
+  let currentLine = '';
+
+  const lineHeight = fontSize * 1.1;
 
   for (let n = 0; n < words.length; n++) {
-    let testLine = line === '' ? `${words[n]} ` : `${line} ${words[n]} `;
+    let testLine = currentLine === '' ? `${words[n]} ` : `${currentLine} ${words[n]} `;
     // let testLine = `${line} ${words[n]} `;
-    let metrics = context.measureText(testLine);
-    let testWidth = metrics.width;
+    let testWidth = context.measureText(testLine).width;
     if (testWidth > maxWidth && n > 0) {
-      context.fillText(line, x, y);
-      line = `${words[n]} `;
+      if (fill) context.fillText(currentLine, x, y);
+      currentLine = `${words[n]} `;
       y += lineHeight;
+      numLines++;
     } else {
-      line = testLine;
+      currentLine = testLine;
     }
   }
-  context.fillText(line, x, y);
+  if (fill) context.fillText(currentLine, x, y);
+  
+  const tooBig = (numLines * lineHeight) > maxHeight;
+
+  return tooBig;
 }
 
 const createImg = (_id, word, description) => {
@@ -50,10 +58,16 @@ const createImg = (_id, word, description) => {
   
   context.fillText(text, 600, 120);
 
-  
-  context.font = '70px Helvetica';
+
+  let definitionFontSize = 70;
   context.textAlign = 'left';
-  wrapText(context, description, (canvas.width - maxWidth) / 2, 500, maxWidth, 64);
+
+  do {
+    definitionFontSize--;
+    context.font = `${definitionFontSize}px Helvetica`;
+  } while (wrapText(context, description, (canvas.width - maxWidth) / 2, 500, maxWidth, 640, definitionFontSize, false));
+
+  wrapText(context, description, (canvas.width - maxWidth) / 2, 500, maxWidth, 640, definitionFontSize, true);
 
   // context.fillStyle = '#fff'
   // context.font = 'bold 30pt Menlo'
@@ -66,7 +80,8 @@ const createImg = (_id, word, description) => {
   // fs.writeFileSync(`./public/images/${_id}.png`, buffer);
 
   const uploadPromise = new Promise((resolve, reject) => {
-    uploadFile(buffer, `${process.env.NODE_ENV}/${_id}.png`, function(err, data) {
+    const randomString = crypto.randomBytes(4).toString('hex');
+    uploadFile(buffer, `${process.env.NODE_ENV}/${_id}-${randomString}.png`, function(err, data) {
       if (err) {
         console.error(err);
         reject(err);
