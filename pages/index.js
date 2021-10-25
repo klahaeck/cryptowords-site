@@ -13,7 +13,8 @@ import {
   Button,
   Alert,
   ToastContainer,
-  Toast
+  Toast,
+  CloseButton
 } from 'react-bootstrap';
 import CardWord from '../components/CardWord';
 import {
@@ -32,16 +33,16 @@ const Home = () => {
   const [ metaMaskInstalled, setMetaMaskInstalled ] = useState(true);
   const [ network, setNetwork ] = useState('rinkeby');
   const [ isAdmin, setIsAdmin ] = useState(false);
-  const [ sending, setSending ] = useState(false);
+  const [ searching, setSearching ] = useState(false);
   const [ totalWords, setTotalWords ] = useState(0);
   const [ paused, setPaused ] = useState(false);
-  const [ currentWord, setCurrentWord ] = useState();
+  // const [ currentWord, setCurrentWord ] = useState();
   const [ price, setPrice ] = useState();
   const [ balance, setBalance ] = useState(0);
   const [ toasts, setToasts ] = useState([]);
   const [ alerts, setAlerts ] = useState([]);
-  const [ ownedWords, setOwnedWords ] = useState([]);
-  const [ recentWords, setRecentWords ] = useState([]);
+  // const [ ownedWords, setOwnedWords ] = useState([]);
+  const [ recentSearches, setRecentSearches ] = useState([]);
   const { handleSubmit, control, formState: { errors }, reset } = useForm();
 
   const handleAccountChange = (accounts) => setAddress(accounts[0]);
@@ -119,8 +120,15 @@ const Home = () => {
   // const getTotalWords = async () => await web3.contract.totalSupply().call();
 
   const onSubmit = async data => {
-    setSending(true);
-    setCurrentWord(null);
+    setSearching(true);
+
+    const existingRecentSearch = recentSearches.filter(rs => rs.name === data.word.toLowerCase())[0];
+    if (existingRecentSearch) {
+      setRecentSearches([existingRecentSearch, ...recentSearches.filter(rs => rs.name !== existingRecentSearch.name)]);
+      existingRecentSearch.exists = await contract.methods.wordExists(existingRecentSearch.slug).call();
+    } else {
+      setRecentSearches([{name: data.word}, ...recentSearches]);
+    }
     
     fetch(`/api/word/${data.word}`, {
       method: 'POST',
@@ -143,17 +151,17 @@ const Home = () => {
       .then(res => res.json())
       .then(async data => {
         try {
-          data.exists = await contract.methods.wordExists(data.name).call();          
+          data.exists = await contract.methods.wordExists(data.name).call();
         } catch(error) {
           console.error(error);
         }
         
-        setCurrentWord(data);
-        setSending(false);
+        setRecentSearches([data, ...recentSearches.filter(rs => rs.name !== data.name)]);
+        setSearching(false);
       })
       .catch(error => {
         console.error(error);
-        setSending(false);
+        setSearching(false);
         setAlerts([...alerts, { color: 'danger', msg: error.message}]);
       });
   };
@@ -177,9 +185,14 @@ const Home = () => {
               body: WORD_MINTING
             }]);
           })
-          .on('receipt', (receipt) => {
-            reset();
-            setCurrentWord(null);
+          .on('receipt', async (receipt) => {
+            // reset();
+            try {
+              word.exists = await contract.methods.wordExists(word.slug).call();
+            } catch(error) {
+              console.error(error);
+            }
+
             setToasts([...toasts, {
               bg: 'success',
               header: 'Crypto Words',
@@ -272,13 +285,16 @@ const Home = () => {
 
         {alerts.map((alert, index) => <Alert key={index} variant={alert.color} onClose={() => handleOnAlertClose(index)} dismissible>{alert.msg}</Alert>)}
 
-        <h1 className="text-center">Choose a word to create an NFT</h1>
+        <h1 className="text-center">Crypto Words</h1>
+        <h2 className="text-center">Own the english language, one word at a time.</h2>
+
+        <p className="text-center">There is only one instance of each word. Once a word is purchased, it is no longer available. Use the field below to search for your word.</p>
 
         <Row className="justify-content-center my-5">
           <Col md="8" lg="6">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group>
-                <Form.Label htmlFor="word" className="visually-hidden">Your Word</Form.Label>
+                <Form.Label htmlFor="word" className="visually-hidden">Find Your Word</Form.Label>
                 <InputGroup>
                   <Controller
                     name="word"
@@ -290,7 +306,7 @@ const Home = () => {
                     }}
                     render={({ field }) => <Form.Control {...field} />}
                   />
-                  <Button color="primary" type="submit" disabled={sending}>Find</Button>
+                  <Button color="primary" type="submit" disabled={searching}>Find Your Word</Button>
                 </InputGroup>
                 {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
                 {/* {errors.word?.type === 'pattern' && <small className="form-text text-danger">Must be a single word with no special characters or numbers</small>} */}
@@ -299,13 +315,31 @@ const Home = () => {
           </Col>
         </Row>
 
-        {currentWord && <Row className="justify-content-center mb-5">
+        <Row className="justify-content-center mb-5">
           <Col sm="12" md="8" lg="6">
-            <CardWord word={currentWord} purchaseWord={purchaseWord} price={price} status={true} />
+            {recentSearches.length > 0 && <CardWord word={recentSearches[0]} purchaseWord={purchaseWord} price={price} status={true} />}
           </Col>
-        </Row>}
+        </Row>
+        
+        {recentSearches.length > 1 && <>
+          <Row className="justify-content-center">
+            <Col>
+              <p className="h4 text-center">Your recently searched words</p>
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            {recentSearches.filter((rw, index) => index > 0).map((word, idx) => (
+              <Col key={idx} sm="6" md="4" lg="3" className="mb-3 mb-md-4">
+                <div className="d-flex justify-content-end">
+                  <CloseButton className="outline-none" onClick={() => setRecentSearches([...recentSearches.filter(rs => rs.name !== word.name)])} />
+                </div>
+                <CardWord word={word} purchaseWord={purchaseWord} price={price} status={true} />
+              </Col>
+            ))}
+          </Row>
+        </>}
 
-        {ownedWords.length > 0 && <>
+        {/* {ownedWords.length > 0 && <>
           <Row className="justify-content-center">
             <Col>
               <h2 className="text-center">Your minted words</h2>
@@ -318,9 +352,9 @@ const Home = () => {
               </Col>
             ))}
           </Row>
-        </>}
+        </>} */}
         
-        {recentWords.length > 0 && <>
+        {/* {recentWords.length > 0 && <>
           <Row className="justify-content-center">
             <Col>
               <h2 className="text-center">Recently minted words</h2>
@@ -337,7 +371,7 @@ const Home = () => {
               }
             })}
           </Row>
-        </>}
+        </>} */}
       </Container>
     </>
   );
