@@ -116,8 +116,8 @@ const Home = () => {
     return isCorrect;
   }
 
-  // const getBalance = async () => web3.utils.fromWei(await web3.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether');
-  // const getTotalWords = async () => await web3.contract.totalSupply().call();
+  const getBalance = async () => web3.utils.fromWei(await web3.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether');
+  // const getTotalWords = async () => await web3.contract.methods.totalSupply().call();
 
   const onSubmit = async data => {
     setSearching(true);
@@ -127,7 +127,7 @@ const Home = () => {
       setRecentSearches([existingRecentSearch, ...recentSearches.filter(rs => rs.name !== existingRecentSearch.name)]);
       existingRecentSearch.exists = await contract.methods.wordExists(existingRecentSearch.slug).call();
     } else {
-      setRecentSearches([{name: data.word}, ...recentSearches]);
+      setRecentSearches([{ name: data.word, status: false }, ...recentSearches]);
     }
     
     fetch(`/api/word/${data.word}`, {
@@ -150,6 +150,8 @@ const Home = () => {
       })
       .then(res => res.json())
       .then(async data => {
+        reset({ word:'' });
+        data.status = true;
         try {
           data.exists = await contract.methods.wordExists(data.name).call();
         } catch(error) {
@@ -186,11 +188,13 @@ const Home = () => {
             }]);
           })
           .on('receipt', async (receipt) => {
-            // reset();
-            try {
-              word.exists = await contract.methods.wordExists(word.slug).call();
-            } catch(error) {
-              console.error(error);
+            const recentSearch = recentSearches.filter(rw => rw.name === word.name)[0];
+            if (recentSearch) {
+              try {
+                recentSearch.exists = await contract.methods.wordExists(recentSearch.slug).call();
+              } catch(error) {
+                console.error(error);
+              }
             }
 
             setToasts([...toasts, {
@@ -212,7 +216,6 @@ const Home = () => {
 
   const handleTogglePause = () => {
     const thisPausedMethod = paused ? contract.methods.unpause() : contract.methods.pause();
-    
     thisPausedMethod.send({from:address})
       .on('receipt', (receipt) => {
         setPaused(!paused);
@@ -238,7 +241,7 @@ const Home = () => {
     <>
       {isAdmin && <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Admin</Navbar.Brand>
+          <Navbar.Brand href="/">Admin</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
@@ -286,15 +289,23 @@ const Home = () => {
         {alerts.map((alert, index) => <Alert key={index} variant={alert.color} onClose={() => handleOnAlertClose(index)} dismissible>{alert.msg}</Alert>)}
 
         <h1 className="text-center">Crypto Words</h1>
-        <h2 className="text-center">Own the english language, one word at a time.</h2>
+        <h2 className="text-center mb-5">Own the english language, one word at a time.</h2>
+        
+        <Row className="justify-content-center">
+          <Col md="8" lg="6">
+            <p className="text-center">There is only one instance of each word. Once a word is purchased, it is no longer available.</p>
+            <p className="text-center">Use the field below to search for your word.</p>
+          </Col>
+        </Row>
 
-        <p className="text-center">There is only one instance of each word. Once a word is purchased, it is no longer available. Use the field below to search for your word.</p>
-
-        <Row className="justify-content-center my-5">
+        <Row className="justify-content-center mt-3 mb-5">
           <Col md="8" lg="6">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group>
-                <Form.Label htmlFor="word" className="visually-hidden">Find Your Word</Form.Label>
+                <Form.Label htmlFor="word" className="visually-hidden">
+                  <i className="bi bi-arrow-clockwise"></i>
+                  Find Your Word
+                </Form.Label>
                 <InputGroup>
                   <Controller
                     name="word"
@@ -317,7 +328,7 @@ const Home = () => {
 
         <Row className="justify-content-center mb-5">
           <Col sm="12" md="8" lg="6">
-            {recentSearches.length > 0 && <CardWord word={recentSearches[0]} purchaseWord={purchaseWord} price={price} status={true} />}
+            {recentSearches.length > 0 && <CardWord word={recentSearches[0]} purchaseWord={purchaseWord} price={price} status={recentSearches[0].status} />}
           </Col>
         </Row>
         
@@ -333,7 +344,7 @@ const Home = () => {
                 <div className="d-flex justify-content-end">
                   <CloseButton className="outline-none" onClick={() => setRecentSearches([...recentSearches.filter(rs => rs.name !== word.name)])} />
                 </div>
-                <CardWord word={word} purchaseWord={purchaseWord} price={price} status={true} />
+                <CardWord word={word} purchaseWord={purchaseWord} price={price} status={word.status} />
               </Col>
             ))}
           </Row>
