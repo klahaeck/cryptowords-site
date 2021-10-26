@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import CryptoWords from '../contracts/CryptoWords.json';
+import CryptoWordsV1 from '../contracts/CryptoWordsV1.json';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Navbar,
   Nav,
+  Offcanvas,
   Container,
   Row,
   Col,
@@ -36,8 +37,8 @@ const Home = () => {
   const [ searching, setSearching ] = useState(false);
   const [ totalWords, setTotalWords ] = useState(0);
   const [ paused, setPaused ] = useState(false);
-  // const [ currentWord, setCurrentWord ] = useState();
-  const [ price, setPrice ] = useState();
+  const [ defaultPrice, setDefaultPrice ] = useState();
+  const [ discountPercentage, setDiscountPercentage ] = useState();
   const [ balance, setBalance ] = useState(0);
   const [ toasts, setToasts ] = useState([]);
   const [ alerts, setAlerts ] = useState([]);
@@ -52,24 +53,12 @@ const Home = () => {
     if (window.ethereum) {
       ethereum.request({ method: 'eth_requestAccounts' }).then(async (accounts) => {
         setAddress(accounts[0])
-        
+
         const w3 = new Web3(ethereum);
         setWeb3(w3);
         
-        const c = new w3.eth.Contract(CryptoWords.abi, process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
+        const c = new w3.eth.Contract(CryptoWordsV1.abi, process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
         setContract(c);
-
-        const thisNetwork = await w3.eth.net.getNetworkType();
-        setNetwork(thisNetwork);
-
-        const thisBalance = w3.utils.fromWei(await w3.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether');
-        setBalance(thisBalance);
-
-        const totalWords = await c.methods.totalSupply().call();
-        setTotalWords(totalWords);
-
-        const thisPaused = await c.methods.paused().call();
-        setPaused(thisPaused);
       }).catch((err) => console.log(err));
 
       ethereum.on('accountsChanged', handleAccountChange);
@@ -87,23 +76,25 @@ const Home = () => {
     // }
   }, []);
 
+  const getPrice = async (word) => {
+    return web3.utils.fromWei(await contract.methods.getPrice(address, word).call(), 'ether');
+  }
+
   useEffect(() => {
-    async function  init() {
+    async function init() {
       const defaultAdminRole = await contract.methods.DEFAULT_ADMIN_ROLE().call();
-      const thisIsAdmin = await contract.methods.hasRole(defaultAdminRole, address).call();
-      setIsAdmin(thisIsAdmin)
-
-      const thisPrice = await contract.methods.getPrice(address).call();
-      const thisPriceEther = web3.utils.fromWei(thisPrice, 'ether');
-      setPrice(thisPriceEther);
+      setIsAdmin(await contract.methods.hasRole(defaultAdminRole, address).call());
+      setNetwork(await web3.eth.net.getNetworkType());
+      setBalance(web3.utils.fromWei(await web3.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether'));
+      setDefaultPrice(web3.utils.fromWei(await contract.methods.defaultPrice().call(), 'ether'));
+      setDiscountPercentage(await contract.methods.discountPercentage().call());
+      setTotalWords(await contract.methods.totalSupply().call());
+      setPaused( await contract.methods.paused().call());
+      const newRecentSearches = recentSearches.map(async search => ({ ...search, price: web3.utils.fromWei(await contract.methods.getPrice(address, search.name).call(), 'ether') }));
+      Promise.all(newRecentSearches).then(completed => setRecentSearches(completed));
     }
-    web3 && contract ? init() : null;
+    web3 && contract && address ? init() : null;
   }, [web3, contract, address]);
-
-  // const getUserTokens = async () => {
-  //   const thisBalance = await contract.methods.balanceOf(address).call();
-  //   // console.log(thisBalance);
-  // }
 
   const correctNetwork = async () => {
     const isCorrect = network === process.env.NEXT_PUBLIC_ETH_NETWORK;
@@ -116,10 +107,7 @@ const Home = () => {
     return isCorrect;
   }
 
-  const getBalance = async () => web3.utils.fromWei(await web3.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether');
-  // const getTotalWords = async () => await web3.contract.methods.totalSupply().call();
-
-  const onSubmit = async data => {
+  const onSubmitSearch = async data => {
     setSearching(true);
 
     const existingRecentSearch = recentSearches.filter(rs => rs.name === data.word.toLowerCase())[0];
@@ -150,10 +138,11 @@ const Home = () => {
       })
       .then(res => res.json())
       .then(async data => {
-        reset({ word:'' });
+        reset({ word: '' });
         data.status = true;
         try {
           data.exists = await contract.methods.wordExists(data.name).call();
+          data.price = web3.utils.fromWei(await contract.methods.getPrice(address, data.name).call(), 'ether');
         } catch(error) {
           console.error(error);
         }
@@ -172,6 +161,7 @@ const Home = () => {
     const isCorrectNetwork = correctNetwork();
     if (isCorrectNetwork) {
       const wordExists = await contract.methods.wordExists(word.slug).call();
+      const price = web3.utils.fromWei(await contract.methods.getPrice(address, word).call(), 'ether');
       if (wordExists) {
         setAlerts([...alerts, {
           color: 'danger',
@@ -202,6 +192,10 @@ const Home = () => {
               header: 'Crypto Words',
               body: PURCHASE_SUCCESS
             }]);
+
+            if (isAdmin) {
+              setTotalWords(await contract.methods.totalSupply().call());
+            }
           })
           .catch(error => {
             console.error(error);
@@ -233,41 +227,88 @@ const Home = () => {
 
   const payoutHandler = () => {
     contract.methods.release(address).send({from:address})
-      .then(async () => setBalance(await getBalance()))
+      .then(async () => setBalance(web3.utils.fromWei(await web3.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether')))
       .catch(error => console.error(error));
   };
 
+  const onSubmitSetPrice = async data => {
+    console.log(data);
+    contract.methods.setDefaultPrice(data.defaultPrice).send({from:address})
+      .then(async () => {
+        const thisPrice = w3.utils.fromWei(await c.methods.defaultPrice().call(), 'ether');
+        setDefaultPrice(thisPrice);
+      })
+      .catch(error => console.error(error));
+  };
+
+  const grantDiscountedRoleHandler = async thisAddress => {
+    const discountedRole = await contract.methods.DISCOUNTED_ROLE().call();
+    // await contract.methods.grantRole(discountedRole, thisAddress).send({ from: address });
+    const count = await contract.methods.getRoleMemberCount(discountedRole).call();
+    // const member = await contract.methods.getRoleMember(discountedRole, 0).call();
+    const members = [...Array(count)].map(async (item, index) => await contract.methods.getRoleMember(discountedRole, index).call());
+
+    Promise.all(members).then(completed => console.log(completed));    
+  }
+
   return (
     <>
-      {isAdmin && <Navbar bg="light" expand="lg">
+      {isAdmin && <Navbar bg="light" expand={false}>
         <Container>
           <Navbar.Brand href="/">Admin</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Item>
-                <Nav.Link onClick={handleTogglePause}>Paused: {`${paused}`}</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link disabled>total Words: {totalWords}</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link disabled>Current Balance: {balance}</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Button onClick={() => payoutHandler()} disabled={balance <= 0}>Payout</Button>
-              </Nav.Item>
-              {/* <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link> */}
-              {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-              </NavDropdown> */}
-            </Nav>
-          </Navbar.Collapse>
+          <Navbar.Text>{`Paused: ${paused}`}</Navbar.Text>
+          <Navbar.Text>Total Words: {totalWords}</Navbar.Text>
+          <Navbar.Text>Default Price: {defaultPrice}</Navbar.Text>
+          <Navbar.Text>Discount: {discountPercentage * .01}%</Navbar.Text>
+          <Navbar.Text>Current Balance: {balance}</Navbar.Text>
+          <Navbar.Toggle aria-controls="offcanvasNavbar" />          
+          <Navbar.Offcanvas
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id="offcanvasNavbarLabel">Config</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="ms-auto">
+                <Nav.Item>
+                  <Button onClick={() => handleTogglePause()}>{`Paused: ${paused}`}</Button>
+                </Nav.Item>
+                <hr className="dropdown-divider" />
+                <Nav.Item>
+                  <Button onClick={() => payoutHandler()} disabled={balance <= 0}>Payout</Button>
+                </Nav.Item>
+                <hr className="dropdown-divider" />
+                <Nav.Item>
+                  <Button onClick={() => grantDiscountedRoleHandler('0x25843c62836730b206c8ff9357655f2B4a3398e1')}>Grant Discount Role</Button>
+                </Nav.Item>
+              </Nav>
+              <Form onSubmit={handleSubmit(onSubmitSetPrice)}>
+                <Form.Group>
+                  <Form.Label htmlFor="word" className="visually-hidden">
+                    <i className="bi bi-arrow-clockwise"></i>
+                    Set Price
+                  </Form.Label>
+                  <InputGroup>
+                    <Controller
+                      name="defaultPrice"
+                      control={control}
+                      defaultValue={defaultPrice}
+                      rules={{
+                        required: true
+                        // pattern: /^[A-Za-z]+$/
+                      }}
+                      render={({ field }) => <Form.Control {...field} />}
+                    />
+                    <Button color="primary" type="submit">Set Default Price</Button>
+                  </InputGroup>
+                  {errors.price?.type === 'required' && <small className="form-text text-danger">A price is required</small>}
+                  {/* {errors.word?.type === 'pattern' && <small className="form-text text-danger">Must be a single word with no special characters or numbers</small>} */}
+                </Form.Group>
+              </Form>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
         </Container>
       </Navbar>}
       <Container className="my-3 my-md-5">
@@ -300,7 +341,7 @@ const Home = () => {
 
         <Row className="justify-content-center mt-3 mb-5">
           <Col md="8" lg="6">
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(onSubmitSearch)}>
               <Form.Group>
                 <Form.Label htmlFor="word" className="visually-hidden">
                   <i className="bi bi-arrow-clockwise"></i>
@@ -328,7 +369,7 @@ const Home = () => {
 
         <Row className="justify-content-center mb-5">
           <Col sm="12" md="8" lg="6">
-            {recentSearches.length > 0 && <CardWord word={recentSearches[0]} purchaseWord={purchaseWord} price={price} status={recentSearches[0].status} />}
+            {recentSearches.length > 0 && <CardWord word={recentSearches[0]} purchaseWord={purchaseWord} status={recentSearches[0].status} />}
           </Col>
         </Row>
         
@@ -344,7 +385,7 @@ const Home = () => {
                 <div className="d-flex justify-content-end">
                   <CloseButton className="outline-none" onClick={() => setRecentSearches([...recentSearches.filter(rs => rs.name !== word.name)])} />
                 </div>
-                <CardWord word={word} purchaseWord={purchaseWord} price={price} status={word.status} />
+                <CardWord word={word} purchaseWord={purchaseWord} status={word.status} />
               </Col>
             ))}
           </Row>
