@@ -14,7 +14,9 @@ export const rootActionTypes = {
   REMOVE_ALERT: 'REMOVE_ALERT',
   REMOVE_RECENT_SEARCH: 'REMOVE_RECENT_SEARCH',
   SET_RECENT_SEARCHES: 'REMOVE_RECENT_SEARCHES',
-  SET_CURRENT_SEARCH: 'SET_CURRENT_SEARCH'
+  SET_CURRENT_SEARCH: 'SET_CURRENT_SEARCH',
+  SET_RECENT_WORDS: 'SET_RECENT_WORDS',
+  SET_OWNED_WORDS: 'SET_OWNED_WORDS'
 };
 
 const rootInitialState = {
@@ -29,7 +31,9 @@ const rootInitialState = {
   toasts: [],
   alerts: [],
   currentSearch: null,
-  recentSearches: []
+  recentSearches: [],
+  recentWords: [],
+  ownedWords: []
 };
 
 // ACTIONS
@@ -80,6 +84,12 @@ export const setRecentSearches = (payload) => (dispatch) => {
 };
 export const setCurrentSearch = (payload) => (dispatch) => {
   return dispatch({ type: rootActionTypes.SET_CURRENT_SEARCH, payload });
+};
+export const setRecentWords = (payload) => (dispatch) => {
+  return dispatch({ type: rootActionTypes.SET_RECENT_WORDS, payload });
+};
+export const setOwnedWords = (payload) => (dispatch) => {
+  return dispatch({ type: rootActionTypes.SET_OWNED_WORDS, payload });
 };
 
 export default function reducer(state = rootInitialState, action) {
@@ -132,6 +142,10 @@ export default function reducer(state = rootInitialState, action) {
       } else {
         return {...state, currentSearch: action.payload};
       }
+    case rootActionTypes.SET_RECENT_WORDS:
+      return {...state, recentWords: action.payload};
+    case rootActionTypes.SET_OWNED_WORDS:
+      return {...state, ownedWords: action.payload};
     default:
       return state
   }

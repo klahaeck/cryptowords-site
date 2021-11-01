@@ -18,6 +18,7 @@ import {
 } from '../data/text';
 
 const CardWord = (props) => {
+  const showTools = props.showTools || false;
   const { word, contract, isAdmin } = props;
   const { setTotalWords, addToast, addAlert } = props;
 
@@ -68,9 +69,9 @@ const CardWord = (props) => {
             body: PURCHASE_SUCCESS
           });
 
-          if (isAdmin) {
-            setTotalWords(await contract.methods.totalSupply().call());
-          }
+          // if (isAdmin) {
+          setTotalWords(await contract.methods.totalSupply().call());
+          // }
         })
         .catch(error => {
           console.error(error);
@@ -85,7 +86,7 @@ const CardWord = (props) => {
       <div className="ratio ratio-1x1">
         <Card.Img variant="top" width="100%" src={word.image} alt={word.name} className="rounded-0" />
       </div>
-      <Card.Body>
+      {showTools && <Card.Body>
         {/* <Card.Title tag="h5">{word.word}</Card.Title> */}
         {/* <Card.Subtitle tag="h6" className="mb-2 text-muted">Card subtitle</Card.Subtitle> */}
         {/* <Card.Text>{word.description}</Card.Text> */}
@@ -95,7 +96,7 @@ const CardWord = (props) => {
           <br />
           {available && <Button className="float-right" size="sm" disabled={!status || word.loading} onClick={() => purchaseWord(word)}>Purchase</Button>}
         </Card.Text>
-      </Card.Body>
+      </Card.Body>}
     </Card>
   );
 };

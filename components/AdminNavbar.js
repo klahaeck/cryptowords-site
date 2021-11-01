@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  setTotalWords,
   setBalance,
   setPaused,
   setDefaultPrice,
@@ -26,7 +25,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 const AdminNavbar = (props) => {
   const { contract, totalWords, paused, defaultPrice, discountPercentage, balance } = props;
-  const { setTotalWords, setPaused, setDefaultPrice, setDiscountPercentage, setBalance, addToast, addAlert } = props;
+  const { setPaused, setDefaultPrice, setDiscountPercentage, setBalance, addToast, addAlert } = props;
 
   const { account, library } = useWeb3React();
 
@@ -37,11 +36,10 @@ const AdminNavbar = (props) => {
       setBalance(library.utils.fromWei(await library.eth.getBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS), 'ether'));
       setDefaultPrice(library.utils.fromWei(await contract.methods.defaultPrice().call(), 'ether'));
       setDiscountPercentage(await contract.methods.discountPercentage().call());
-      setTotalWords(await contract.methods.totalSupply().call());
       setPaused( await contract.methods.paused().call());
     }
     contract && library ? init() : null;
-  }, [contract, library, setBalance, setDefaultPrice, setDiscountPercentage, setPaused, setTotalWords]);
+  }, [contract, library, setBalance, setDefaultPrice, setDiscountPercentage, setPaused]);
 
   const handleTogglePause = () => {
     const thisPausedMethod = paused ? contract.methods.unpause() : contract.methods.pause();
@@ -158,7 +156,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     setBalance: bindActionCreators(setBalance, dispatch),
-    setTotalWords: bindActionCreators(setTotalWords, dispatch),
     setPaused: bindActionCreators(setPaused, dispatch),
     setDefaultPrice: bindActionCreators(setDefaultPrice, dispatch),
     setDiscountPercentage: bindActionCreators(setDiscountPercentage, dispatch),
