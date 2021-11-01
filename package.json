@@ -10,6 +10,8 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
     "aws-sdk": "^2.1008.0",
     "bootstrap": "5.1.1",
     "bootstrap-icons": "^1.6.1",
