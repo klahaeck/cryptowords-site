@@ -2,7 +2,7 @@ import contracts from '../../../data/contracts';
 
 const resContracts = (req, res) => {
   // const { slug } = req.query;
-  const contract = contracts['words'];
+  const contract = contracts['cryptowords'];
   if (contract) {
     res.status(200).json(contract);
   } else {

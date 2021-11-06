@@ -27,10 +27,8 @@ const Toasts = ({ toasts, removeToast }) => {
 const mapStateToProps = (state) => ({
   toasts: state.root.toasts,
 });
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeToast: bindActionCreators(removeToast, dispatch),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  removeToast: bindActionCreators(removeToast, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toasts);

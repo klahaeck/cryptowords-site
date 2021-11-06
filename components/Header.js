@@ -13,7 +13,7 @@ const Header = () => {
       <h2 className="text-center mb-5">Own the english language,<br />one word at a time.</h2>
       
       {active && <Row className="justify-content-center">
-        <Col md="8" lg="6">
+        <Col md="16" lg="12">
           <p className="text-center">There is only one instance of each word.<br />Once a word is purchased, it is no longer available.</p>
         </Col>
       </Row>}

@@ -1,18 +1,21 @@
 import { wrapper } from '../store/store';
-import { Web3ReactProvider } from '@web3-react/core';
-import Web3 from 'web3';
+import { ChainId, DAppProvider } from '@usedapp/core';
 import '../styles/globals.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function getLibrary(provider) {
-  return new Web3(provider);
-}
+const config = {
+  // readOnlyChainId: ChainId.Rinkeby,
+  // readOnlyUrls: {
+  //   [ChainId.Rinkeby]: 'https://rinkeby.infura.io/v3/cefce407f9134e11b96271b86f44e144',
+  //   [ChainId.Mainnet]: 'https://mainnet.infura.io/v3/cefce407f9134e11b96271b86f44e144'
+  // }
+};
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
+    <DAppProvider config={config}>
       <Component {...pageProps} />
-    </Web3ReactProvider>
+    </DAppProvider>
   );
 }
 

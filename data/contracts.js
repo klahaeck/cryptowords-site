@@ -1,7 +1,7 @@
 const data = {
   // ERC-721 test
-  'words': {
-    name: 'Words',
+  'cryptowords': {
+    name: 'CryptoWords',
     description: 'Any word in the dictionary',
     image: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/images/112521815-funny-computer-nerd-with-his-laptop-e-learning-concept.jpg`,
     external_link: 'https://cryptowords.art',
