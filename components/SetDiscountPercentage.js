@@ -18,7 +18,7 @@ const SetDiscountPercentage = ({ className }) => {
   const { state, send } = useContractFunction(contract, 'setDiscountPercentage');
 
   const onSubmit = data => {
-    if (data.discountPercentage === discountPercentage  * .01) {
+    if (data.discountPercentage === discountPercentage * .01) {
       setError('discountPercentage', {
         type: 'manual',
         message: 'This is already the discount percentage',
@@ -43,7 +43,7 @@ const SetDiscountPercentage = ({ className }) => {
               required: true
               // pattern: /^[A-Za-z]+$/
             }}
-            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} />}
+            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Percentage" />}
           />
           <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
         </InputGroup>

@@ -42,7 +42,7 @@ const SetCutomPriceByWord = ({ className }) => {
               required: true
               // pattern: /^[A-Za-z]+$/
             }}
-            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} />}
+            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Word" />}
           />
           <Controller
             name="price"
@@ -52,7 +52,7 @@ const SetCutomPriceByWord = ({ className }) => {
               required: true
               // pattern: /^[A-Za-z]+$/
             }}
-            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} />}
+            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Price in ETH" />}
           />
           <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
         </InputGroup>

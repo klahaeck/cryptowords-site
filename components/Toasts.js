@@ -10,7 +10,7 @@ import {
 
 const Toasts = ({ toasts, removeToast }) => {
   return (
-    <ToastContainer className="p-3" position="top-end">
+    <ToastContainer className="p-3 mt-5" position="top-end">
       {toasts.map((toast, index) => (
         <Toast key={index} bg={toast.bg} onClose={() => removeToast(index)}>
           <Toast.Header>

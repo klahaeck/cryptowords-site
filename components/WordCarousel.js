@@ -1,13 +1,10 @@
 import {
   Row,
   Col,
-  CloseButton
 } from 'react-bootstrap';
-// import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import Slider from 'react-slick';
 import CardWord from './CardWord';
 import CardSearch from './CardSearch';
-// import 'pure-react-carousel/dist/react-carousel.es.css';
 
 const WordCarousel = (props) => {
   const { words, title, onCloseClick, isSearch } = props;
@@ -81,12 +78,8 @@ const WordCarousel = (props) => {
       <div className="mb-3 mb-md-4">
         <Slider {...SLIDER_SETTINGS}> 
           {words.map((word, index) => (
-            // <Col key={index} xs={isSearch ? 24 : 12} sm={isSearch ? 12 : 8} md={isSearch ? 8 : 6} lg={isSearch ? 6 : 5}>
-            <div key={index} className="px-1">
-              {onCloseClick && <div className="d-flex justify-content-end">
-                <CloseButton className="outline-none" onClick={() => onCloseClick(word.name)} />
-              </div>}
-              {isSearch ? <CardSearch search={word} /> : <CardWord word={word} />}
+            <div key={index} className="px-2">
+              {isSearch ? <CardSearch search={word} onCloseClick={onCloseClick} /> : <CardWord word={word} />}
             </div>
           ))}
         </Slider>

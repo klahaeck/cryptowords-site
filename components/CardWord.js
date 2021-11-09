@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { showModal } from '../store/root/reducer';
 import {
   Card,
+  Button
 } from 'react-bootstrap';
 
 const CardWord = (props) => {
@@ -38,13 +39,16 @@ const CardWord = (props) => {
   );
 
   const handleOnClick = () => {
-    // showModal({body:<Card.Img variant="top" width="100%" src={data.image} alt={data.name} />})
+    showModal({body:<Card.Img variant="top" width="100%" src={data.image} alt={data.name} />})
   };
 
   return (
-    <Card role="button" bg="secondary" text="light" className="rounded-0" onClick={() => handleOnClick()}>
+    <Card role="button" bg="light" text="light" className="" onClick={() => handleOnClick()}>
+      <Card.Header className="p-0 text-end border-bottom-0">
+        <Button variant="transparent"  className="outline-0 shadow-none" onClick={() => handleOnClick()}><i className="bi bi-arrows-angle-expand"></i></Button>
+      </Card.Header>
       <div className="ratio ratio-1x1">
-        <Card.Img variant="top" width="100%" src={data.image} alt={data.name} className="rounded-0" />
+        <Card.Img variant="top" width="100%" src={data.image} alt={data.name} />
       </div>
     </Card>
   );

@@ -21,7 +21,7 @@ import {
 import { WORD_NOT_FOUND, WORD_MINTING, PURCHASE_SUCCESS } from '../data/text';
 
 const CardSearch = (props) => {
-  const { search, addToast, addAlert } = props;
+  const { search, onCloseClick, addToast, addAlert } = props;
 
   const { activateBrowserWallet, account } = useEthers();
 
@@ -54,7 +54,7 @@ const CardSearch = (props) => {
     <Card bg="secondary" text="light" className="rounded-0">
       <div className="ratio ratio-1x1">
         <div className="h-100 d-flex justify-content-center align-items-center">
-          <div className="p-2">
+          <div className="p-2 text-center">
             <p className="h3">{search.name}</p>
             <p className="h5">{WORD_NOT_FOUND}</p>
           </div>
@@ -66,7 +66,7 @@ const CardSearch = (props) => {
     <Card bg="light" text="dark" className="rounded-0">
       <div className="ratio ratio-1x1">
         <div className="h-100 d-flex justify-content-center align-items-center">
-          <div className="p-2">
+          <div className="p-2 text-center">
             <p className="h5">Loading</p>
             <p className="h2">{search.name}</p>
           </div>
@@ -78,11 +78,15 @@ const CardSearch = (props) => {
   const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 10000)).toFixed(2)}`);
 
   return (
-    <Card bg="dark" text="light" className="rounded-0">
+    <Card text="light" className="">
+      {onCloseClick && <Card.Header className="p-0 text-end">
+        <Button variant="transparent"  className="outline-0 shadow-none" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
+      </Card.Header>}
+      
       <div className="ratio ratio-1x1">
-        <Card.Img variant="top" width="100%" src={data.image} alt={data.name} className="rounded-0" />
+        <Card.Img variant="top" width="100%" src={data.image} alt={data.name} />
       </div>
-      <Card.Body>
+      <Card.Body className="bg-light border-top">
         {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet to purchase</Button>}
         {account && !wordExists && hasDiscount && price && discountPercentage && <Card.Text className="mb-1"><s>Purchase for {getFullPrice(price, discountPercentage)} ETH</s></Card.Text>}
         {/* {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>} */}

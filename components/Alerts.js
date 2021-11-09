@@ -8,11 +8,11 @@ import {
 } from 'react-bootstrap';
 
 const Alerts = (props) => {
-  const { alerts, removeAlert, position } = props;
+  const { alerts, removeAlert, position, dismissible = true } = props;
 
   return (
     <>
-      {alerts.filter(alert => alert.position === position).map((alert, index) => <Alert key={index} variant={alert.color} onClose={() => removeAlert(index)} dismissible>{alert.msg}</Alert>)}
+      {alerts.filter(alert => alert.position === position).map((alert, index) => <Alert key={index} variant={alert.color} onClose={() => removeAlert(index)} dismissible={dismissible}>{alert.msg}</Alert>)}
     </>
   );
 };

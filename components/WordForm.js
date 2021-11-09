@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -12,37 +13,45 @@ import {
 
 const WordForm = (props) => {
   const { addSearch } = props;
-  const { handleSubmit, control, formState: { errors }, reset } = useForm();
+  const { handleSubmit, control, formState: { isSubmitSuccessful, errors }, reset } = useForm();
 
   const onSubmitSearch = data => {
-    reset({ word: '' });
     addSearch({ name: data.word.trim().toLowerCase() });
   };
 
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({ word: '' });
+    }
+  }, [isSubmitSuccessful, reset]);
+
   return (
-    <Form onSubmit={handleSubmit(onSubmitSearch)}>
-      <Form.Group>
-        <Form.Label htmlFor="word" className="visually-hidden">
-          <i className="bi bi-arrow-clockwise"></i>
-          Find Your Word
-        </Form.Label>
-        <InputGroup>
-          <Controller
-            name="word"
-            control={control}
-            defaultValue={''}
-            rules={{
-              required: true
-              // pattern: /^[A-Za-z]+$/
-            }}
-            render={({ field }) => <Form.Control {...field} />}
-          />
-          <Button color="primary" type="submit" disabled={false}>Find Your Word</Button>
-        </InputGroup>
-        {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
-        {/* {errors.word?.type === 'pattern' && <small className="form-text text-danger">Must be a single word with no special characters or numbers</small>} */}
-      </Form.Group>
-    </Form>
+    <>
+      <p className="text-center">There is only one instance of each word.<br />Once a word is purchased, it is no longer available.</p>
+      <Form onSubmit={handleSubmit(onSubmitSearch)}>
+        <Form.Group>
+          <Form.Label htmlFor="word" className="visually-hidden">
+            <i className="bi bi-arrow-clockwise"></i>
+            Find Your Word
+          </Form.Label>
+          <InputGroup>
+            <Controller
+              name="word"
+              control={control}
+              defaultValue={''}
+              rules={{
+                required: true
+                // pattern: /^[A-Za-z]+$/
+              }}
+              render={({ field }) => <Form.Control {...field} />}
+            />
+            <Button color="primary" type="submit" disabled={false}>Find Your Word</Button>
+          </InputGroup>
+          {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
+          {/* {errors.word?.type === 'pattern' && <small className="form-text text-danger">Must be a single word with no special characters or numbers</small>} */}
+        </Form.Group>
+      </Form>
+    </>
   );
 };
 

@@ -1,11 +1,8 @@
-import { useEthers } from '@usedapp/core';
+import { useEthers, shortenAddress } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  addToast,
   addAlert,
-  removeToast,
-  removeAlert,
   showModal,
 } from '../store/root/reducer';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
@@ -17,16 +14,25 @@ import {
   Button,
   Offcanvas,
 } from 'react-bootstrap';
-import { shortenAddress } from '../lib/utils';
 import useHasRole from '../hooks/useHasRole';
 import useAdminData from '../hooks/useAdminData';
 import AdminTools from './AdminTools';
-import ProfileTools from './ProfileTools';
+import { NO_WEB3 } from '../data/text';
 
 const Menubar = (props) => {
-  const { addToast, addAlert, showModal } = props;
+  const { walletCapable, addAlert, showModal } = props;
 
-  const connectWallet = () => activateBrowserWallet();
+  const connectWallet = () => {
+    if (walletCapable) {
+      activateBrowserWallet();
+    } else {
+      addAlert({
+        position: 'global',
+        color: 'danger',
+        msg: <div className="content" dangerouslySetInnerHTML={{__html: NO_WEB3}}></div>,
+      });
+    }
+  }
   // const disconnectWallet = () => {
   //   // deactivate();
   // };
@@ -84,8 +90,7 @@ const Menubar = (props) => {
               <Offcanvas.Title id="offcanvasNavbarLabel">Admin</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              {isAdmin && <AdminTools />}
-              <ProfileTools />
+              <AdminTools />
             </Offcanvas.Body>
           </Navbar.Offcanvas>}
         </Container>
@@ -94,12 +99,13 @@ const Menubar = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  const { walletCapable } = state.root;
+  return { walletCapable };
+};
 const mapDispatchToProps = (dispatch) => ({
-  addToast: bindActionCreators(addToast, dispatch),
   addAlert: bindActionCreators(addAlert, dispatch),
-  removeToast: bindActionCreators(removeToast, dispatch),
-  removeAlert: bindActionCreators(removeAlert, dispatch),
   showModal: bindActionCreators(showModal, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Menubar);
+export default connect(mapStateToProps, mapDispatchToProps)(Menubar);

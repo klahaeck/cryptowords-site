@@ -1,4 +1,5 @@
 export const rootActionTypes = {
+  SET_WALLET_CAPABLE: 'SET_WALLET_CAPABLE',
   ADD_TOAST: 'ADD_TOAST',
   REMOVE_TOAST: 'REMOVE_TOAST',
   ADD_ALERT: 'ADD_ALERT',
@@ -11,6 +12,7 @@ export const rootActionTypes = {
 };
 
 const rootInitialState = {
+  walletCapable: false,
   toasts: [],
   alerts: [],
   searches: [],
@@ -18,6 +20,9 @@ const rootInitialState = {
 };
 
 // ACTIONS
+export const setWalletCapable = (payload) => (dispatch) => {
+  return dispatch({ type: rootActionTypes.SET_WALLET_CAPABLE, payload });
+};
 export const addToast = (payload) => (dispatch) => {
   return dispatch({ type: rootActionTypes.ADD_TOAST, payload });
 };
@@ -48,6 +53,8 @@ export const hideModal = (payload) => (dispatch) => {
 
 export default function reducer(state = rootInitialState, action) {
   switch (action.type) {
+    case rootActionTypes.SET_WALLET_CAPABLE:
+      return { ...state, walletCapable: action.payload };
     case rootActionTypes.ADD_TOAST:
       return {...state, toasts: [action.payload, ...state.toasts]};
     case rootActionTypes.ADD_ALERT:

@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { ChainId, useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
+  setWalletCapable,
   removeSearch,
 } from '../store/root/reducer';
 
@@ -22,25 +24,35 @@ import Alerts from '../components/Alerts';
 import WordCarousel from '../components/WordCarousel';
 import SiteModal from '../components/SiteModal';
 import {
+  NO_WEB3,
   WRONG_NETWORK,
 } from '../data/text';
 
 const Home = (props) => {
-  const { searches, removeSearch } = props;
+  const { walletCapable, setWalletCapable, searches, removeSearch } = props;
 
   const { account, chainId } = useEthers();
 
   const ownedWords = useOwnedWords(account);
   const recentWords = useRecentWords(10);
-  
+
+  useEffect(() => {
+    if (account || window.ethereum || window.web3) {
+      setWalletCapable(true);
+    }
+  }, []);
+
   return (
     <>
       <Menubar />
 
-      <Container className="pt-5 my-3 my-md-5">
+      <Container className="pt-4 my-3 my-md-5">
+        {!walletCapable && <Alert variant="danger"><div className="content" dangerouslySetInnerHTML={{__html: NO_WEB3}}></div></Alert>}
         {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><div className="content" dangerouslySetInnerHTML={{__html: WRONG_NETWORK}}></div></Alert>}
+        
         <Toasts />
         <Alerts position="global" />
+        
         <Header />
 
         <Row className="justify-content-center mt-3 mb-5">
@@ -50,13 +62,13 @@ const Home = (props) => {
           </Col>
         </Row>
 
-        {searches.length > 0 && <Row className="justify-content-center mb-5">
+        {searches && searches.length > 0 && <Row className="justify-content-center mb-5">
           <Col sm="24" md="16" lg="12">
             <CardSearch search={searches[0]} />
           </Col>
         </Row>}
 
-        {searches.length > 1 && <WordCarousel title="Your recent searches" visibleSlides={2} words={searches.filter((rw, index) => index > 0)} onCloseClick={removeSearch} isSearch={true} />}
+        {searches && searches.length > 1 && <WordCarousel title="Your recent searches" visibleSlides={2} words={searches.filter((rw, index) => index > 0)} onCloseClick={removeSearch} isSearch={true} />}
 
         {account && ownedWords && ownedWords.length > 0 && <WordCarousel title="Your Words" words={ownedWords.map(w => (w))} />}
 
@@ -69,10 +81,11 @@ const Home = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { searches } = state.root;
-  return { searches };
+  const { walletCapable, searches } = state.root;
+  return { walletCapable, searches };
 };
 const mapDispatchToProps = (dispatch) => ({
+  setWalletCapable: bindActionCreators(setWalletCapable, dispatch),
   removeSearch: bindActionCreators(removeSearch, dispatch),
 });
 

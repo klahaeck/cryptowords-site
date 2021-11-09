@@ -1,16 +1,14 @@
 import { useEffect } from 'react';
-import { useContractFunction } from '@usedapp/core';
+import { useContractFunction, shortenAddress } from '@usedapp/core';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Button,
   Form,
   InputGroup,
   ListGroup,
-  CloseButton
 } from 'react-bootstrap';
 import useContract from '../hooks/useContract';
 import useRoleMembers from '../hooks/useRoleMembers';
-import { shortenAddress } from '../lib/utils';
 
 const DiscountedMembers = ({ className }) => {
   const [ discountedRole, discountedMembers ] = useRoleMembers('DISCOUNTED_ROLE');
