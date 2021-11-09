@@ -37,8 +37,12 @@ const CardWord = (props) => {
     </Card>
   );
 
+  const handleOnClick = () => {
+    // showModal({body:<Card.Img variant="top" width="100%" src={data.image} alt={data.name} />})
+  };
+
   return (
-    <Card role="button" bg="secondary" text="light" className="rounded-0" onClick={() => showModal({body:<Card.Img variant="top" width="100%" src={data.image} alt={data.name} />})}>
+    <Card role="button" bg="secondary" text="light" className="rounded-0" onClick={() => handleOnClick()}>
       <div className="ratio ratio-1x1">
         <Card.Img variant="top" width="100%" src={data.image} alt={data.name} className="rounded-0" />
       </div>
