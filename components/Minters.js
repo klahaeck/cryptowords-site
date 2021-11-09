@@ -12,16 +12,16 @@ import useContract from '../hooks/useContract';
 import useRoleMembers from '../hooks/useRoleMembers';
 import { shortenAddress } from '../lib/utils';
 
-const DiscountedMembers = ({ className }) => {
-  const [ discountedRole, discountedMembers ] = useRoleMembers('DISCOUNTED_ROLE');
+const Minters = ({ className }) => {
+  const [ minterRole, minterMembers ] = useRoleMembers('MINTER_ROLE');
   const { handleSubmit, control, formState: { errors }, reset } = useForm();
 
   const contract = useContract();
   const { state: stateGrantRole, send: sendGrantRole } = useContractFunction(contract, 'grantRole');
   const { state: stateRevokeRole, send: sendRevokeRole } = useContractFunction(contract, 'revokeRole');
 
-  const onSubmit = data => sendGrantRole(discountedRole.toString(), data.address.toString());
-  const handleRevokeRole = (member) => sendRevokeRole(discountedRole.toString(), member.toString());
+  const onSubmit = data => sendGrantRole(minterRole.toString(), data.address.toString());
+  const handleRevokeRole = (member) => sendRevokeRole(minterRole.toString(), member.toString());
 
   useEffect(() => {
     if (stateGrantRole.status === 'Success') reset({address: ''});
@@ -29,10 +29,10 @@ const DiscountedMembers = ({ className }) => {
 
   return (
     <div className={className}>
-      <h5>Discounted Members</h5>
-      {discountedMembers && <div className="">
+      <h5>Minters</h5>
+      {minterMembers && <div className="">
         <ListGroup variant="flush" className="mb-1">
-          {discountedMembers.map((member, index) => (
+          {minterMembers.map((member, index) => (
             <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
               <div className="w-75 text-truncate">{shortenAddress(member)}</div>
               <Button variant="danger" size="sm" onClick={() => handleRevokeRole(member)} disabled={stateRevokeRole.status === 'Mining'}>X</Button>
@@ -65,4 +65,4 @@ const DiscountedMembers = ({ className }) => {
   );
 };
 
-export default DiscountedMembers;
+export default Minters;

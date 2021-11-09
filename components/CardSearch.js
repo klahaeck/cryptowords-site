@@ -12,6 +12,8 @@ import {
 import usePrice from '../hooks/usePrice';
 import useWordExists from '../hooks/useWordExists';
 import useContract from '../hooks/useContract';
+import useHasRole from '../hooks/useHasRole';
+import useAdminData from '../hooks/useAdminData';
 import {
   Button,
   Card,
@@ -25,6 +27,8 @@ const CardSearch = (props) => {
 
   const connectWallet = () => activateBrowserWallet();
 
+  const hasDiscount = useHasRole('DISCOUNTED_ROLE', account);
+  const { discountPercentage } = useAdminData();
   const price = usePrice(account, search.name);
   const wordExists = useWordExists(search.name);
   const contract = useContract();
@@ -71,6 +75,8 @@ const CardSearch = (props) => {
     </Card>
   );
 
+  const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 10000)).toFixed(2)}`);
+
   return (
     <Card bg="dark" text="light" className="rounded-0">
       <div className="ratio ratio-1x1">
@@ -78,8 +84,9 @@ const CardSearch = (props) => {
       </div>
       <Card.Body>
         {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet to purchase</Button>}
-        {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>}
-        {account && <Button className="float-right" size="sm" disabled={wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>{wordExists ? 'Not Available' : 'Purchase'}</Button>}
+        {account && !wordExists && hasDiscount && price && discountPercentage && <Card.Text className="mb-1"><s>Purchase for {getFullPrice(price, discountPercentage)} ETH</s></Card.Text>}
+        {/* {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>} */}
+        {account && <Button className="float-right" size="md" disabled={wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>{wordExists ? 'Not Available' : `Purchase${price ? ' for ' + utils.formatEther(price) + ' ETH' : ''}`}</Button>}
       </Card.Body>
     </Card>
   );

@@ -8,8 +8,10 @@ import {
 } from 'react-bootstrap';
 import useContract from '../hooks/useContract';
 import SetDefaultPrice from './SetDefaultPrice';
+import SetDiscountPercentage from './SetDiscountPercentage';
 import SetCutomPriceByWord from './SetCutomPriceByWord';
 import DiscountedMembers from './DiscountedMembers';
+import Minters from './Minters';
 
 const AdminTools = () => {
   const { totalSupply, paused, defaultPrice, discountPercentage, balance } = useAdminData();
@@ -38,8 +40,10 @@ const AdminTools = () => {
       </ButtonToolbar>
       <hr className="dropdown-divider" />
       <SetDefaultPrice className="mb-4" />
+      <SetDiscountPercentage className="mb-4" />
       <SetCutomPriceByWord className="mb-4" />
       <DiscountedMembers className="mb-4" />
+      <Minters className="mb-4" />
     </>
   );
 };

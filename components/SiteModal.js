@@ -8,11 +8,12 @@ import {
 const SiteModal = (props) => {
   const { modal, hideModal } = props;
   return (
-    <Modal show={modal.body} onHide={hideModal} size="lg" centered>
+    <Modal show={modal.body} onHide={hideModal} size={modal.size || 'md'}>
       {modal.header && <Modal.Header closeButton>
         <Modal.Title>{modal.header}</Modal.Title>
       </Modal.Header>}
       <Modal.Body>{modal.body}</Modal.Body>
+      {modal.footer && <Modal.Footer>{modal.footer}</Modal.Footer>}
     </Modal>
   );
 };

@@ -37,7 +37,7 @@ const Home = (props) => {
     <>
       <Menubar />
 
-      <Container className="my-3 my-md-5">
+      <Container className="pt-5 my-3 my-md-5">
         {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><div className="content" dangerouslySetInnerHTML={{__html: WRONG_NETWORK}}></div></Alert>}
         <Toasts />
         <Alerts position="global" />
@@ -58,9 +58,9 @@ const Home = (props) => {
 
         {searches.length > 1 && <WordCarousel title="Your recent searches" visibleSlides={2} words={searches.filter((rw, index) => index > 0)} onCloseClick={removeSearch} isSearch={true} />}
 
-        {account && ownedWords && ownedWords.length > 0 && <WordCarousel title="Your Words" words={ownedWords.map(w => ({name:w}))} />}
+        {account && ownedWords && ownedWords.length > 0 && <WordCarousel title="Your Words" words={ownedWords.map(w => (w))} />}
 
-        {recentWords && recentWords.length > 0 && <WordCarousel title="Recently Minted Words" words={recentWords.map(w => ({name:w}))} />}
+        {recentWords && recentWords.length > 0 && <WordCarousel title="Recently Minted Words" words={recentWords.map(w => (w))} />}
       </Container>
 
       <SiteModal />

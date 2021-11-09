@@ -16,7 +16,7 @@ const WordForm = (props) => {
 
   const onSubmitSearch = data => {
     reset({ word: '' });
-    addSearch({ name: data.word.toLowerCase() });
+    addSearch({ name: data.word.trim().toLowerCase() });
   };
 
   return (
