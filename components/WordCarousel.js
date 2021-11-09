@@ -20,7 +20,7 @@ const WordCarousel = (props) => {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: 4,
           slidesToScroll: 1,
           infinite: false,
           dots: true
@@ -47,14 +47,14 @@ const WordCarousel = (props) => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
         }
       },
       {
         breakpoint: 576,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         }
       },

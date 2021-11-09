@@ -15,6 +15,8 @@ import useContract from '../hooks/useContract';
 import useHasRole from '../hooks/useHasRole';
 import useAdminData from '../hooks/useAdminData';
 import {
+  Row,
+  Col,
   Button,
   Card,
 } from 'react-bootstrap';
@@ -51,34 +53,47 @@ const CardSearch = (props) => {
   }, [state]);
 
   if (error) return (
-    <Card bg="secondary" text="light" className="rounded-0">
-      <div className="ratio ratio-1x1">
-        <div className="h-100 d-flex justify-content-center align-items-center">
-          <div className="p-2 text-center">
-            <p className="h3">{search.name}</p>
-            <p className="h5">{WORD_NOT_FOUND}</p>
+    <Card bg="danger" text="light">
+      {onCloseClick && <Card.Header className="p-0 text-end">
+        <Button variant="transparent"  className="outline-0 shadow-none color-light" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
+      </Card.Header>}
+      <Card.Body>
+        <div className="ratio ratio-1x1">
+          <div className="h-100 d-flex justify-content-center align-items-center">
+            <div className="p-2 text-center">
+              <p className="h3">{search.name}</p>
+              <p className="h5">{WORD_NOT_FOUND}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Card.Body>
+      <Card.Footer className="text-end">
+        <Button variant="outline-light" size="md" disabled={true}>Not Available</Button>
+      </Card.Footer>
     </Card>
   );
   if (!data) return (
-    <Card bg="light" text="dark" className="rounded-0">
-      <div className="ratio ratio-1x1">
-        <div className="h-100 d-flex justify-content-center align-items-center">
-          <div className="p-2 text-center">
-            <p className="h5">Loading</p>
-            <p className="h2">{search.name}</p>
+    <Card bg="light" text="dark">
+      <Card.Body>
+        <div className="ratio ratio-1x1">
+          <div className="h-100 d-flex justify-content-center align-items-center">
+            <div className="p-2 text-center">
+              <p className="h5">Loading</p>
+              <p className="h2">{search.name}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Card.Body>
+      <Card.Footer className="text-end">
+        <Button variant="outline-dark" size="md" disabled={true}>Loading</Button>
+      </Card.Footer>
     </Card>
   );
 
   const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 10000)).toFixed(2)}`);
 
   return (
-    <Card text="light" className="">
+    <Card bg="light" className="">
       {onCloseClick && <Card.Header className="p-0 text-end">
         <Button variant="transparent"  className="outline-0 shadow-none" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
       </Card.Header>}
@@ -86,12 +101,25 @@ const CardSearch = (props) => {
       <div className="ratio ratio-1x1">
         <Card.Img variant="top" width="100%" src={data.image} alt={data.name} />
       </div>
-      <Card.Body className="bg-light border-top">
+
+      <Card.Footer>
         {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet to purchase</Button>}
-        {account && !wordExists && hasDiscount && price && discountPercentage && <Card.Text className="mb-1"><s>Purchase for {getFullPrice(price, discountPercentage)} ETH</s></Card.Text>}
+
+        <Row className="align-items-center">
+          <Col>
+            <Card.Text>
+              {price && discountPercentage && hasDiscount && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
+              {price && wordExists && <b><s>{utils.formatEther(price)} ETH</s></b>}
+              {price && !wordExists && <b>{utils.formatEther(price)} ETH</b>}
+            </Card.Text>
+          </Col>
         {/* {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>} */}
-        {account && <Button className="float-right" size="md" disabled={wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>{wordExists ? 'Not Available' : `Purchase${price ? ' for ' + utils.formatEther(price) + ' ETH' : ''}`}</Button>}
-      </Card.Body>
+          <Col className="text-end">
+            {account && wordExists && <span className="text-muted">Not Available</span>}
+            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="md" disabled={state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>Purchase</Button>}
+          </Col>
+        </Row>
+      </Card.Footer>
     </Card>
   );
 };

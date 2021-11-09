@@ -43,7 +43,7 @@ const CardWord = (props) => {
   };
 
   return (
-    <Card role="button" bg="light" text="light" className="" onClick={() => handleOnClick()}>
+    <Card bg="light" text="dark" onClick={() => handleOnClick()}>
       <Card.Header className="p-0 text-end border-bottom-0">
         <Button variant="transparent"  className="outline-0 shadow-none" onClick={() => handleOnClick()}><i className="bi bi-arrows-angle-expand"></i></Button>
       </Card.Header>
