@@ -6,9 +6,9 @@ import {
 } from 'react-bootstrap';
 
 const SiteModal = (props) => {
-  const { modal, hideModal } = props;
+  const { modal, hideModal, className } = props;
   return (
-    <Modal show={modal.body} onHide={hideModal} size={modal.size || 'md'}>
+    <Modal show={modal.body} onHide={hideModal} size={modal.size || 'md'} className={className}>
       {modal.header && <Modal.Header closeButton>
         <Modal.Title>{modal.header}</Modal.Title>
       </Modal.Header>}

@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@usedapp/core": "^0.5.4",
+    "@web3-react/portis-connector": "^6.1.9",
+    "@web3-react/walletconnect-connector": "^6.2.8",
+    "@web3-react/walletlink-connector": "^6.2.8",
+    "add": "^2.0.6",
     "aws-sdk": "^2.1008.0",
     "bootstrap": "5.1.1",
     "bootstrap-icons": "^1.7.0",
@@ -31,7 +35,8 @@
     "sass": "^1.43.2",
     "slick-carousel": "^1.8.1",
     "slugify": "^1.6.1",
-    "swr": "^1.0.1"
+    "swr": "^1.0.1",
+    "yarn": "^1.22.17"
   },
   "devDependencies": {
     "eslint": "7.32.0",

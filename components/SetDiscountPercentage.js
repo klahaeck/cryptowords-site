@@ -1,5 +1,4 @@
 import { useContractFunction } from '@usedapp/core';
-// import { utils } from 'ethers';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Button,

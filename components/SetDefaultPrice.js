@@ -18,13 +18,13 @@ const SetDefaultPrice = ({ className }) => {
   const { state, send } = useContractFunction(contract, 'setDefaultPrice');
 
   const onSubmit = data => {
-    if (utils.parseUnits(data.defaultPrice).toString() === defaultPrice) {
+    if (utils.formatUnits(utils.parseUnits(data.defaultPrice)) === defaultPrice) {
       setError('defaultPrice', {
         type: 'manual',
         message: 'This is already the default price',
       });
     } else {
-      send(utils.parseUnits(data.defaultPrice).toString());
+      send(utils.formatUnits(utils.parseUnits(data.defaultPrice)));
     }
   }
 

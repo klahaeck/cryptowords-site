@@ -19,8 +19,8 @@ const SetCutomPriceByWord = ({ className }) => {
   const { state, send } = useContractFunction(contract, 'setCustomPriceByWord');
 
   const onSubmit = data => {
-    console.log(data.word.toLowerCase(), utils.parseUnits(data.price).toString());
-    send(data.word.toLowerCase(), utils.parseUnits(data.price));
+    // console.log(data.word.toLowerCase(), utils.formatUnits(utils.parseUnits(data.price), 'wei'));
+    send(data.word.trim().toLowerCase(), utils.formatUnits(utils.parseUnits(data.price), 'wei'));
   };
 
   useEffect(() => {

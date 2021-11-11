@@ -30,7 +30,7 @@ const CardSearch = (props) => {
   const connectWallet = () => activateBrowserWallet();
 
   const hasDiscount = useHasRole('DISCOUNTED_ROLE', account);
-  const { discountPercentage } = useAdminData();
+  const { discountPercentage, paused } = useAdminData();
   const price = usePrice(account, search.name);
   const wordExists = useWordExists(search.name);
   const contract = useContract();
@@ -116,7 +116,7 @@ const CardSearch = (props) => {
         {/* {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>} */}
           <Col className="text-end">
             {account && wordExists && <span className="text-muted">Not Available</span>}
-            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="md" disabled={state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>Purchase</Button>}
+            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="md" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>Purchase</Button>}
           </Col>
         </Row>
       </Card.Footer>

@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { ChainId, useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  setWalletCapable,
   removeSearch,
 } from '../store/root/reducer';
 
@@ -24,30 +22,22 @@ import Alerts from '../components/Alerts';
 import WordCarousel from '../components/WordCarousel';
 import SiteModal from '../components/SiteModal';
 import {
-  NO_WEB3,
   WRONG_NETWORK,
 } from '../data/text';
 
 const Home = (props) => {
-  const { walletCapable, setWalletCapable, searches, removeSearch } = props;
+  const { searches, removeSearch } = props;
 
   const { account, chainId } = useEthers();
 
   const ownedWords = useOwnedWords(account);
   const recentWords = useRecentWords(10);
 
-  useEffect(() => {
-    if (account || window.ethereum || window.web3) {
-      setWalletCapable(true);
-    }
-  }, []);
-
   return (
     <>
       <Menubar />
 
       <Container className="pt-4 my-3 my-md-5">
-        {!walletCapable && <Alert variant="danger"><div className="content" dangerouslySetInnerHTML={{__html: NO_WEB3}}></div></Alert>}
         {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><div className="content" dangerouslySetInnerHTML={{__html: WRONG_NETWORK}}></div></Alert>}
         
         <Toasts />
@@ -81,11 +71,10 @@ const Home = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { walletCapable, searches } = state.root;
-  return { walletCapable, searches };
+  const { searches } = state.root;
+  return { searches };
 };
 const mapDispatchToProps = (dispatch) => ({
-  setWalletCapable: bindActionCreators(setWalletCapable, dispatch),
   removeSearch: bindActionCreators(removeSearch, dispatch),
 });
 

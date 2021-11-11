@@ -20,9 +20,7 @@ const WordForm = (props) => {
   };
 
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({ word: '' });
-    }
+    if (isSubmitSuccessful) reset({ word: '' });
   }, [isSubmitSuccessful, reset]);
 
   return (
