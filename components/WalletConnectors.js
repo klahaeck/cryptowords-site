@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useEthers } from '@usedapp/core';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -14,6 +15,8 @@ import {
 
 const WalletConnectors = ({ hideModal }) => {
   const { account, activateBrowserWallet, activate } = useEthers();
+
+  const hasMetaMask = () => window.web3 || window.ethereum;
 
   useEffect(() => {
     if (account) hideModal();
@@ -40,19 +43,34 @@ const WalletConnectors = ({ hideModal }) => {
     activate(connector);
   };
 
+  const connectWalletLink = () => {
+    const connector = new WalletLinkConnector({
+      appName: 'CryptoWords',
+    });
+
+    activate(connector);
+  };
+
   return (
-    <Row>
-      <Col className="text-center">
+    <Row className="g-1">
+      {hasMetaMask() && <Col xs={24} sm={12}>
         <Card>
           <Card.Body role="button" onClick={connectMetaMask}>
-            <img src="/images/MetaMask.svg" alt="MetaMask" />
+            <div style={{backgroundImage: 'url("/images/MetaMask.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
+          </Card.Body>
+        </Card>
+      </Col>}
+      <Col xs={24} sm={12}>
+        <Card>
+          <Card.Body role="button" onClick={connectWalletConnect}>
+            <div style={{backgroundImage: 'url("/images/WalletConnect.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
           </Card.Body>
         </Card>
       </Col>
-      <Col className="text-center">
+      <Col xs={24} sm={12}>
         <Card>
-          <Card.Body role="button" onClick={connectWalletConnect}>
-            <img src="/images/WalletConnect.svg" alt="WalletConnect" />
+          <Card.Body role="button" onClick={connectWalletLink}>
+            <div style={{backgroundImage: 'url("/images/Coinbase.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
           </Card.Body>
         </Card>
       </Col>
