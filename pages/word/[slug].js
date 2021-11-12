@@ -22,6 +22,7 @@ import Header from '../../components/Header';
 import Toasts from '../../components/Toasts';
 import CardSearch from '../../components/CardSearch';
 import Alerts from '../../components/Alerts';
+import { meta } from '../../data';
 
 const PageWord = (props) => {
   const { word, addSearch } = props;
@@ -34,14 +35,11 @@ const PageWord = (props) => {
   return (
     <Layout>
       <Head>
-        <title>CryptoWords - {startCase(word.slug)}</title>
+        <title>CryptoWords - {startCase(word.name)}</title>
+        <meta property="og:url"             content={`${meta.url}/word/${word.slug}`} key="og:url" />
         <meta property="og:image"           content={word.image} key="og:image" />
         <meta property="og:image:width"     content="1200" key="og:image:width" />
         <meta property="og:image:height"    content="1200" key="og:image:height" />
-
-        <meta name="twitter:card"           content="summary_large_image" key="twitter:card" />
-        <meta name="twitter:site"           content="@RealCryptoWords" key="twitter:site" />
-        <meta name="twitter:creator"        content="@RealCryptoWords" key="twitter:creator" />
         <meta name="twitter:title"          content={`CryptoWords - ${startCase(word.name)}`} key="twitter:title" />
         <meta name="twitter:image"          content={word.image} key="twitter:image" />
       </Head>
@@ -78,7 +76,7 @@ export async function getServerSideProps(context) {
   const { params } = context;
   const word = await getWord(params.slug);
 
-  if (typeof newWord !== 'object') {
+  if (typeof word !== 'object') {
     return {
       redirect: {
         destination: '/',
