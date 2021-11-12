@@ -28,22 +28,22 @@ const PageWord = (props) => {
   const { account, chainId } = useEthers();
 
   useEffect(() => {
-    if (word) addSearch({ name: word.slug.trim().toLowerCase() });
-  }, [word]);
+    addSearch({ name: word.slug.trim().toLowerCase() });
+  }, []);
 
   return (
     <Layout>
       <Head>
         <title>CryptoWords - {startCase(word.slug)}</title>
-        <meta property="og:image"           content={word?.image} key="og:image" />
+        <meta property="og:image"           content={word.image} key="og:image" />
         <meta property="og:image:width"     content="1200" key="og:image:width" />
         <meta property="og:image:height"    content="1200" key="og:image:height" />
 
         <meta name="twitter:card"           content="summary_large_image" key="twitter:card" />
         <meta name="twitter:site"           content="@RealCryptoWords" key="twitter:site" />
         <meta name="twitter:creator"        content="@RealCryptoWords" key="twitter:creator" />
-        <meta name="twitter:title"          content={`CryptoWords - ${startCase(word?.name)}`} key="twitter:title" />
-        <meta name="twitter:image"          content={word?.image} key="twitter:image" />
+        <meta name="twitter:title"          content={`CryptoWords - ${startCase(word.name)}`} key="twitter:title" />
+        <meta name="twitter:image"          content={word.image} key="twitter:image" />
       </Head>
 
       <Menubar />
@@ -77,6 +77,15 @@ const PageWord = (props) => {
 export async function getServerSideProps(context) {
   const { params } = context;
   const word = await getWord(params.slug);
+
+  if (typeof newWord !== 'object') {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
 
   return {
     props: {
