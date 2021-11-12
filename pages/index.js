@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { ChainId, useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { useRouter } from 'next/router';
 import {
+  addSearch,
   removeSearch,
 } from '../store/root/reducer';
 
@@ -23,12 +26,17 @@ import WordCarousel from '../components/WordCarousel';
 import SiteModal from '../components/SiteModal';
 
 const Home = (props) => {
-  const { searches, removeSearch } = props;
+  const { searches, addSearch, removeSearch } = props;
+  const { query } = useRouter();
 
   const { account, chainId } = useEthers();
 
   const ownedWords = useOwnedWords(account);
   const recentWords = useRecentWords(10);
+
+  useEffect(() => {
+    if (query?.word) addSearch({ name: query.word.trim().toLowerCase() });
+  }, [query.word]);
 
   return (
     <>
@@ -72,6 +80,7 @@ const mapStateToProps = (state) => {
   return { searches };
 };
 const mapDispatchToProps = (dispatch) => ({
+  addSearch: bindActionCreators(addSearch, dispatch),
   removeSearch: bindActionCreators(removeSearch, dispatch),
 });
 
