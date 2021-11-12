@@ -14,6 +14,7 @@ import {
   Col,
   Alert,
 } from 'react-bootstrap';
+import Layout from '../layouts/Main';
 import useRecentWords from '../hooks/useRecentWords';
 import useOwnedWords from '../hooks/useOwnedWords';
 import Menubar from '../components/Menubar';
@@ -39,7 +40,7 @@ const Home = (props) => {
   }, [query.word]);
 
   return (
-    <>
+    <Layout>
       <Menubar />
 
       <Container className="pt-4 my-3 my-md-5">
@@ -71,7 +72,7 @@ const Home = (props) => {
       </Container>
 
       <SiteModal />
-    </>
+    </Layout>
   );
 };
 
