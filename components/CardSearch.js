@@ -20,14 +20,11 @@ import {
   Button,
   Card,
 } from 'react-bootstrap';
-import { WORD_NOT_FOUND, WORD_MINTING, PURCHASE_SUCCESS } from '../data/text';
 
 const CardSearch = (props) => {
   const { search, onCloseClick, addToast, addAlert } = props;
 
-  const { activateBrowserWallet, account } = useEthers();
-
-  const connectWallet = () => activateBrowserWallet();
+  const { account } = useEthers();
 
   const hasDiscount = useHasRole('DISCOUNTED_ROLE', account);
   const { discountPercentage, paused } = useAdminData();
@@ -42,12 +39,12 @@ const CardSearch = (props) => {
   const purchaseWord = (searchName) => send(account, searchName, { value: price });
 
   useEffect(() => {
-    switch(state) {
-      case state.status === 'Mining':
-        addToast({bg:'light', header:'CryptoWords', body:WORD_MINTING});
+    switch(state.status) {
+      case 'Mining':
+        addToast({bg:'light', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
         break;
-      case state.status === 'Success':
-        addToast({bg:'light', header:'CryptoWords', body:PURCHASE_SUCCESS});
+      case 'Success':
+        addToast({bg:'light', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
         break;
     }
   }, [state]);
@@ -62,7 +59,7 @@ const CardSearch = (props) => {
           <div className="h-100 d-flex justify-content-center align-items-center">
             <div className="p-2 text-center">
               <p className="h3">{search.name}</p>
-              <p className="h5">{WORD_NOT_FOUND}</p>
+              <p className="h5">Sorry, we cannot find this word.</p>
             </div>
           </div>
         </div>
@@ -103,7 +100,7 @@ const CardSearch = (props) => {
       </div>
 
       <Card.Footer>
-        {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet to purchase</Button>}
+        {!account && <Card.Text className="text-center">Connect your wallet to purchase</Card.Text>}
 
         <Row className="align-items-center">
           <Col>
@@ -116,7 +113,7 @@ const CardSearch = (props) => {
         {/* {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>} */}
           <Col className="text-end">
             {account && wordExists && <span className="text-muted">Not Available</span>}
-            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="md" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>Purchase</Button>}
+            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="md" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>{state.status === 'Mining' ? 'Minting' : 'Purchase'}</Button>}
           </Col>
         </Row>
       </Card.Footer>

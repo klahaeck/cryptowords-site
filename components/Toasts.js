@@ -12,7 +12,7 @@ const Toasts = ({ toasts, removeToast }) => {
   return (
     <ToastContainer className="p-3 mt-5" position="top-end">
       {toasts.map((toast, index) => (
-        <Toast key={index} bg={toast.bg} onClose={() => removeToast(index)}>
+        <Toast key={index} bg={toast.bg} onClose={() => removeToast(index)} delay={5000} autohide>
           <Toast.Header>
             <strong className="me-auto">{toast.header}</strong>
             {/* <small className="text-muted">just now</small> */}
