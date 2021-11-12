@@ -38,8 +38,8 @@ const PageWord = (props) => {
         <title>CryptoWords - {startCase(word.name)}</title>
         <meta property="og:url"             content={`${meta.url}/word/${word.slug}`} key="og:url" />
         <meta property="og:image"           content={word.image} key="og:image" />
-        <meta property="og:image:width"     content="1200" key="og:image:width" />
-        <meta property="og:image:height"    content="1200" key="og:image:height" />
+        <meta property="og:image:width"     content="600" key="og:image:width" />
+        <meta property="og:image:height"    content="600" key="og:image:height" />
         <meta name="twitter:title"          content={`CryptoWords - ${startCase(word.name)}`} key="twitter:title" />
         <meta name="twitter:image"          content={word.image} key="twitter:image" />
       </Head>
