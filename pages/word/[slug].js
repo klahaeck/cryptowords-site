@@ -2,12 +2,10 @@ import { useEffect } from 'react';
 import { ChainId, useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import useSWR from 'swr';
-import fetcher from '../../lib/fetcher';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import startCase from 'lodash/startCase';
+import getWord from '../../lib/get-word';
 import {
   addSearch,
 } from '../../store/root/reducer';
@@ -26,29 +24,26 @@ import CardSearch from '../../components/CardSearch';
 import Alerts from '../../components/Alerts';
 
 const PageWord = (props) => {
-  const { addSearch } = props;
-  const { query } = useRouter();
+  const { word, addSearch } = props;
   const { account, chainId } = useEthers();
 
   useEffect(() => {
-    if (query.slug) addSearch({ name: query.slug.trim().toLowerCase() });
-  }, [query.slug]);
-
-  const { data, error } = useSWR(query.slug ? `/api/token/${query.slug}` : null, fetcher);
+    if (word) addSearch({ name: word.slug.trim().toLowerCase() });
+  }, [word]);
 
   return (
     <Layout>
       <Head>
-        <title>CryptoWords - {startCase(query.slug)}</title>
-        <meta property="og:image"           content={data?.image} key="og:image" />
+        <title>CryptoWords - {startCase(word.slug)}</title>
+        <meta property="og:image"           content={word?.image} key="og:image" />
         <meta property="og:image:width"     content="1200" key="og:image:width" />
         <meta property="og:image:height"    content="1200" key="og:image:height" />
 
         <meta name="twitter:card"           content="summary_large_image" key="twitter:card" />
         <meta name="twitter:site"           content="@RealCryptoWords" key="twitter:site" />
         <meta name="twitter:creator"        content="@RealCryptoWords" key="twitter:creator" />
-        <meta name="twitter:title"          content={`CryptoWords - ${startCase(data?.name)}`} key="twitter:title" />
-        <meta name="twitter:image"          content={data?.image} key="twitter:image" />
+        <meta name="twitter:title"          content={`CryptoWords - ${startCase(word?.name)}`} key="twitter:title" />
+        <meta name="twitter:image"          content={word?.image} key="twitter:image" />
       </Head>
 
       <Menubar />
@@ -63,7 +58,7 @@ const PageWord = (props) => {
 
         <Row className="justify-content-center mb-5">
           <Col sm="24" md="16" lg="12">
-            {data?.name && <CardSearch search={{name: data.name}} />}
+            {word && <CardSearch search={word} />}
           </Col>
         </Row>
 
@@ -79,10 +74,17 @@ const PageWord = (props) => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   const { searches } = state.root;
-//   return { searches };
-// };
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const word = await getWord(params.slug);
+
+  return {
+    props: {
+      word: JSON.parse(JSON.stringify(word))
+    },
+  }
+}
+
 const mapDispatchToProps = (dispatch) => ({
   addSearch: bindActionCreators(addSearch, dispatch),
 });
