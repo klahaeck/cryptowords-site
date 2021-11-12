@@ -35,7 +35,7 @@ const Home = (props) => {
       <Menubar />
 
       <Container className="pt-4 my-3 my-md-5">
-        {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><h1>Stop!</h1><p>This is a test Web3 app that uses the Rinkeby network! Please switch to rinkeby before minting NFTs. Otherwise you will pay real money for nothing.</p></Alert>}
+        {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><h1>Stop!</h1><p>This is a test Web3 app that uses the Rinkeby network! Please switch to rinkeby before minting NFTs.</p></Alert>}
         
         <Toasts />
         <Alerts position="global" />
