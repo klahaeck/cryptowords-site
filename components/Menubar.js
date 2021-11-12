@@ -26,19 +26,13 @@ const Menubar = (props) => {
   const hasDiscount = useHasRole('DISCOUNTED_ROLE', account);
   const isAdmin = useHasRole('DEFAULT_ADMIN_ROLE', account);
 
-  const connectWallet = () => {
-    showModal({
-      body: <WalletConnectors />
-    });
-  };
+  const connectWallet = () => showModal({ body: <WalletConnectors /> });
 
-  const handleWalletInfo = () => {
-    showModal({
-      header: <AccountDisplay avatarSize={24} />,
-      body: <AccountTools />,
-      size:'md'
-    });
-  };
+  const handleWalletInfo = () => showModal({
+    header: <AccountDisplay avatarSize={24} />,
+    body: <AccountTools />,
+    size:'md'
+  });
 
   return (
     <>

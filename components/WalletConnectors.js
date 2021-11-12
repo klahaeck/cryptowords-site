@@ -22,9 +22,7 @@ const WalletConnectors = ({ hideModal }) => {
     if (account) hideModal();
   }, [account]);
 
-  const connectMetaMask = () => {
-    activateBrowserWallet();
-  };
+  const connectMetaMask = () => activateBrowserWallet();
   
   const connectWalletConnect = () => {
     const connector = new WalletConnectConnector({

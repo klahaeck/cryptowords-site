@@ -15,9 +15,7 @@ const WordForm = (props) => {
   const { addSearch } = props;
   const { handleSubmit, control, formState: { isSubmitSuccessful, errors }, reset } = useForm();
 
-  const onSubmitSearch = data => {
-    addSearch({ name: data.word.trim().toLowerCase() });
-  };
+  const onSubmitSearch = data => addSearch({ name: data.word.trim().toLowerCase() });
 
   useEffect(() => {
     if (isSubmitSuccessful) reset({ word: '' });
