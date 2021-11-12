@@ -37,6 +37,7 @@ const PageWord = (props) => {
       <Head>
         <title>CryptoWords - {startCase(word.name)}</title>
         <meta property="og:url"             content={`${meta.url}/word/${word.slug}`} key="og:url" />
+        <meta property="og:title"           content={`CryptoWords - ${startCase(word.name)}`} key="title" />
         <meta property="og:image"           content={word.image} key="og:image" />
         <meta property="og:image:width"     content="600" key="og:image:width" />
         <meta property="og:image:height"    content="600" key="og:image:height" />
