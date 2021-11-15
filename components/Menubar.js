@@ -49,7 +49,7 @@ const Menubar = (props) => {
             <span className="d-none d-md-block">CryptoWords</span>
           </Navbar.Brand>
           {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet</Button>}
-          {account && <Button onClick={handleWalletInfo}><AccountDisplay /></Button>}
+          {account && <Button variant="outline-primary" onClick={handleWalletInfo}><AccountDisplay /></Button>}
           
           {account && isAdmin && <Navbar.Toggle aria-controls="offcanvasNavbar" className="ms-3" />}
           {account && isAdmin && <Navbar.Offcanvas

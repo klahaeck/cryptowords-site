@@ -75,7 +75,7 @@ const WordCarousel = (props) => {
           <p className="h4 text-center">{title}</p>
         </Col>
       </Row>
-      <div className="mb-3 mb-md-4">
+      <div className="px-4 mb-3 mb-md-4">
         <Slider {...SLIDER_SETTINGS}> 
           {words.map((word, index) => (
             <div key={index} className="px-2">

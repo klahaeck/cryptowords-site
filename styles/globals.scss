@@ -67,7 +67,16 @@ a {
   box-sizing: border-box;
 }
 
+.slick-prev {
+  // left: 0 !important;
+  z-index: 500;
+}
+
+.slick-next {
+  // right: 0 !important;
+}
+
 .slick-prev::before,
 .slick-next::before {
-  color: #000000;
+  color: #000000 !important;
 }
