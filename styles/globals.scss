@@ -58,6 +58,10 @@ $primary: rgb(90, 224, 41);
   letter-spacing: .5em;
 }
 
+.bg-particles {
+  z-index: -1;
+}
+
 .slick-prev,
 .slick-next {
   width: auto !important;

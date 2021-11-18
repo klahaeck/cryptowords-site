@@ -19,7 +19,7 @@ const CardWord = (props) => {
         <div className="h-100 d-flex justify-content-center align-items-center">
           <div className="p-2">
             <p className="h3">{word}</p>
-            <p className="h5">{WORD_NOT_FOUND}</p>
+            <p className="h5">Sorry, we cannot find this word.</p>
           </div>
         </div>
       </div>

@@ -51,7 +51,7 @@ const Menubar = (props) => {
           {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet</Button>}
           {account && <Button variant="outline-primary" onClick={handleWalletInfo}><AccountDisplay /></Button>}
           
-          {account && isAdmin && <Navbar.Toggle aria-controls="offcanvasNavbar" className="ms-3" />}
+          {account && isAdmin && <Navbar.Toggle aria-controls="offcanvasNavbar" className="ms-3 border-primary" />}
           {account && isAdmin && <Navbar.Offcanvas
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"

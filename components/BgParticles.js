@@ -3,8 +3,8 @@ import Particles from 'react-tsparticles';
 const BgParticles = () => {
   return (
     <Particles
-      id="tsparticles"
-      className="position-absolute"
+      // id="tsparticles"
+      className="position-absolute bg-particles"
       // init={particlesInit}
       // loaded={particlesLoaded}
       options={{

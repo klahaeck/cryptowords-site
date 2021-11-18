@@ -26,7 +26,7 @@ const RecentMinted = ({ className }) => {
       <Row className="align-items-center">
         <Col md="4">
           <div className="d-flex justify-content-center align-items-center mb-2 mb-md-0">
-            <h6 className="m-0 text-center text-md-end fw-light">Recently<span className="d-none d-md-inline"><br /></span><span className="d-inline d-md-none"> </span>Purchased</h6>
+            <h6 className="m-0 text-md-end fw-light text-uppercase w-100">Recently<span className="d-none d-md-inline"><br /></span><span className="d-inline d-md-none"> </span>Purchased</h6>
             <span className="d-none d-md-block ms-2">:</span>
           </div>
         </Col>

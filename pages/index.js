@@ -60,7 +60,7 @@ const Home = (props) => {
             <Alerts position="word-form" />
             <WordForm />
 
-            {searches && searches.length > 1 && <RecentSearches />}
+            {searches && searches.length > 1 && <div className="d-none d-md-block mt-4"><RecentSearches /></div>}
           </Col>
           {searches && searches.length > 0 && <Col xs="24" md={{ span: 10, order: 'first' }} lg="10">
             <CardSearch search={searches[0]} />
@@ -68,11 +68,19 @@ const Home = (props) => {
           {(!searches || !searches.length) && <Col xs="24" md={{ span: 10, order: 'first' }} lg="10">
             <RandomWord />
           </Col>}
+          {searches && searches.length > 1 && <Col className="d-md-none mt-4"><RecentSearches /></Col>}
         </Row>
-
-        {recentWords && recentWords.length > 0 && <RecentMinted className="mb-5" />}
-        {account && ownedWords && ownedWords.length > 0 && <OwnedWords className="" />}
       </Container>
+
+        <div className="bg-dark">
+          <Container>
+            {recentWords && recentWords.length > 0 && <RecentMinted />}
+          </Container>
+        </div>
+
+        <Container className="mt-5">
+          {account && ownedWords && ownedWords.length > 0 && <OwnedWords />}
+        </Container>
 
       <SiteModal />
     </Layout>
