@@ -6,8 +6,9 @@ import { useEthers, useContractFunction } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
+  showModal,
   addToast,
-  addAlert,
+  // addAlert,
 } from '../store/root/reducer';
 import usePrice from '../hooks/usePrice';
 import useWordExists from '../hooks/useWordExists';
@@ -22,7 +23,7 @@ import {
 } from 'react-bootstrap';
 
 const CardSearch = (props) => {
-  const { search, onCloseClick, addToast, addAlert } = props;
+  const { search, onCloseClick, showModal, addToast } = props;
 
   const { account } = useEthers();
 
@@ -41,18 +42,22 @@ const CardSearch = (props) => {
   useEffect(() => {
     switch(state.status) {
       case 'Mining':
-        addToast({bg:'light', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+        addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
         break;
       case 'Success':
-        addToast({bg:'light', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
+        addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
         break;
     }
   }, [state]);
 
+  const handleClickExpand = () => {
+    showModal({body:<Card.Img variant="top" width="100%" src={data.image} alt={data.name} />})
+  };
+
   if (error) return (
     <Card bg="danger" text="light">
       {onCloseClick && <Card.Header className="p-0 text-end">
-        <Button variant="transparent"  className="outline-0 shadow-none color-light" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
+        <Button variant="link" className="outline-0 shadow-none py-0 px-2 text-light" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
       </Card.Header>}
       <Card.Body>
         <div className="ratio ratio-1x1">
@@ -65,7 +70,7 @@ const CardSearch = (props) => {
         </div>
       </Card.Body>
       <Card.Footer className="text-end">
-        <Button variant="outline-light" size="md" disabled={true}>Not Available</Button>
+        <Button variant="outline-light" size="sm" disabled={true} className="text-uppercase">Not Available</Button>
       </Card.Footer>
     </Card>
   );
@@ -82,7 +87,7 @@ const CardSearch = (props) => {
         </div>
       </Card.Body>
       <Card.Footer className="text-end">
-        <Button variant="outline-dark" size="md" disabled={true}>Loading</Button>
+        <Button variant="outline-dark" size="sm" disabled={true} className="text-uppercase">Loading</Button>
       </Card.Footer>
     </Card>
   );
@@ -90,9 +95,10 @@ const CardSearch = (props) => {
   const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 10000)).toFixed(2)}`);
 
   return (
-    <Card bg="light" className="">
+    <Card bg="dark" text="light">
       {onCloseClick && <Card.Header className="p-0 text-end">
-        <Button variant="transparent"  className="outline-0 shadow-none" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
+        <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleClickExpand()}><i className="bi bi-arrows-angle-expand"></i></Button>
+        <Button variant="link" className="outline-0 shadow-none py-0 px-2" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
       </Card.Header>}
       
       <div className="ratio ratio-1x1">
@@ -103,17 +109,16 @@ const CardSearch = (props) => {
         {!account && <Card.Text className="text-center">Connect your wallet to purchase</Card.Text>}
 
         <Row className="align-items-center">
-          <Col>
+          <Col xs="auto">
             <Card.Text>
               {price && discountPercentage && hasDiscount && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
               {price && wordExists && <b><s>{utils.formatEther(price)} ETH</s></b>}
               {price && !wordExists && <b>{utils.formatEther(price)} ETH</b>}
             </Card.Text>
           </Col>
-        {/* {account && <Card.Text className="mb-1">Price {price && utils.formatEther(price)} ETH</Card.Text>} */}
-          <Col className="text-end">
-            {account && wordExists && <span className="text-muted">Not Available</span>}
-            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="md" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)}>{state.status === 'Mining' ? 'Minting' : 'Purchase'}</Button>}
+          <Col className="text-end pe-1 ">
+            {account && wordExists && <Button variant="outline-primary" size="sm" disabled={true} className="text-uppercase">Not Available</Button>}
+            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? 'Minting' : 'Purchase'}</Button>}
           </Col>
         </Row>
       </Card.Footer>
@@ -122,8 +127,9 @@ const CardSearch = (props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  showModal: bindActionCreators(showModal, dispatch),
   addToast: bindActionCreators(addToast, dispatch),
-  addAlert: bindActionCreators(addAlert, dispatch),
+  // addAlert: bindActionCreators(addAlert, dispatch),
 });
 
 export default connect(null, mapDispatchToProps)(CardSearch);

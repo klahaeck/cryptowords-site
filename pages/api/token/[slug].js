@@ -22,12 +22,16 @@ const serveSlug = async (req, res) => {
     // }
   } else {
     let word = await getWord(slug);
+    
+    if (typeof word !== 'object') {
+      return res.status(404).json();
+    }
 
     if (type === 'full') {
-      res.status(200).json(word);
+      return res.status(200).json(word);
     } else {
       const { slug, name, description, image, external_url } = word;
-      res.status(200).json({ slug, name, description, image, external_url });
+      return res.status(200).json({ slug, name, description, image, external_url });
     }
   }
 };

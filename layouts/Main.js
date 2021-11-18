@@ -1,11 +1,11 @@
 // import Head from 'next/head';
 import MetaTags from '../components/MetaTags';
-import data from '../data';
+import { meta } from '../data';
 
 const Main = ({ children }) => {
   return (
     <>
-      <MetaTags meta={data.meta} />
+      <MetaTags meta={meta} />
       { children }
     </>
   );

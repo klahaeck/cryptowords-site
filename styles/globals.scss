@@ -1,11 +1,13 @@
+$font-family-sans-serif: "InterVariable", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$grid-columns: 24;
+$enable-negative-margins: true;
+$enable-rounded: false;
+$primary: rgb(90, 224, 41);
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/utilities";
-
-$grid-columns: 24;
-$enable-negative-margins: true;
-$enable-rounded: true;
 
 // Layout & components
 @import "~bootstrap/scss/root";
@@ -50,33 +52,28 @@ $enable-rounded: true;
 @import 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css';
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@import './fonts';
+
+.letter-spaced {
+  letter-spacing: .5em;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+.slick-prev,
+.slick-next {
+  width: auto !important;
+  height: auto !important;
 }
 
 .slick-prev {
   // left: 0 !important;
   z-index: 500;
 }
-
-.slick-next {
-  // right: 0 !important;
-}
+// .slick-next {
+//   // right: 0 !important;
+// }
 
 .slick-prev::before,
 .slick-next::before {
+  content: none !important;
   color: #000000 !important;
 }
