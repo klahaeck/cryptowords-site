@@ -81,3 +81,19 @@ $primary: rgb(90, 224, 41);
   content: none !important;
   color: #000000 !important;
 }
+
+.bordered {
+  // background-image: url('/images/border.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: fill;
+}
+
+@include media-breakpoint-up(lg) {
+  .card-primary {
+    border: 0;
+  }
+  .bordered {
+    background-image: url('/images/border.svg');
+  }
+}

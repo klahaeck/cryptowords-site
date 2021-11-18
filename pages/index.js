@@ -62,23 +62,22 @@ const Home = (props) => {
 
             {searches && searches.length > 1 && <div className="d-none d-md-block mt-4"><RecentSearches /></div>}
           </Col>
-          {searches && searches.length > 0 && <Col xs="24" md={{ span: 10, order: 'first' }} lg="10">
-            <CardSearch search={searches[0]} />
-          </Col>}
-          {(!searches || !searches.length) && <Col xs="24" md={{ span: 10, order: 'first' }} lg="10">
-            <RandomWord />
-          </Col>}
+          <Col xs="24" md={{ span: 10, order: 'first' }} lg="9" className="mb-lg-5">
+            <div className="bordered p-5 m-n5 overflow-visible">
+              {searches && searches.length > 0 ? <CardSearch search={searches[0]} className="card-primary" /> : <RandomWord className="card-primary" />}
+            </div>
+          </Col>
           {searches && searches.length > 1 && <Col className="d-md-none mt-4"><RecentSearches /></Col>}
         </Row>
       </Container>
 
-        <div className="bg-dark">
+        <div className="bg-dark mt-5">
           <Container>
             {recentWords && recentWords.length > 0 && <RecentMinted />}
           </Container>
         </div>
 
-        <Container className="mt-5">
+        <Container className="mt-5 mb-5">
           {account && ownedWords && ownedWords.length > 0 && <OwnedWords />}
         </Container>
 

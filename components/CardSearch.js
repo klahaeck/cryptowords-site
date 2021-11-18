@@ -23,7 +23,7 @@ import {
 } from 'react-bootstrap';
 
 const CardSearch = (props) => {
-  const { search, onCloseClick, showModal, addToast } = props;
+  const { search, onCloseClick, showModal, addToast, className } = props;
 
   const { account } = useEthers();
 
@@ -55,7 +55,7 @@ const CardSearch = (props) => {
   };
 
   if (error) return (
-    <Card bg="danger" text="light">
+    <Card bg="danger" text="light" className={className}>
       {onCloseClick && <Card.Header className="p-0 text-end">
         <Button variant="link" className="outline-0 shadow-none py-0 px-2 text-light" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
       </Card.Header>}
@@ -75,7 +75,7 @@ const CardSearch = (props) => {
     </Card>
   );
   if (!data) return (
-    <Card bg="light" text="dark">
+    <Card bg="light" text="dark" className={className}>
       <Card.Body>
         <div className="ratio ratio-1x1">
           <div className="h-100 d-flex justify-content-center align-items-center">
@@ -95,7 +95,7 @@ const CardSearch = (props) => {
   const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 10000)).toFixed(2)}`);
 
   return (
-    <Card bg="dark" text="light">
+    <Card bg="dark" text="light" className={className}>
       {onCloseClick && <Card.Header className="p-0 text-end">
         <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleClickExpand()}><i className="bi bi-arrows-angle-expand"></i></Button>
         <Button variant="link" className="outline-0 shadow-none py-0 px-2" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>

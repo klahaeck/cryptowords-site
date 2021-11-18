@@ -42,7 +42,7 @@ const WordForm = (props) => {
               }}
               render={({ field }) => <Form.Control {...field} size="lg" className="border-dark" />}
             />
-            <Button size="lg" variant="outline-dark" type="submit" disabled={false}><span className="d-lg-none">Find</span><span className="d-none d-lg-block">Find Your Word</span></Button>
+            <Button size="lg" variant="outline-dark" type="submit" disabled={false}><span className="d-lg-none text-uppercase">Find</span><span className="d-none d-lg-block text-uppercase">Find Your Word</span></Button>
           </InputGroup>
           {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
           {/* {errors.word?.type === 'pattern' && <small className="form-text text-danger">Must be a single word with no special characters or numbers</small>} */}

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import startCase from 'lodash/startCase';
 import useRecentWords from '../hooks/useRecentWords';
 import {
   Row,
@@ -34,7 +35,7 @@ const RecentMinted = ({ className }) => {
           <div ref={tickerWrapper} className="ticker-wrapper overflow-hidden d-flex">
             {Array(3).fill().map((item, index) => (
               <div key={index} ref={tickerList} className="ticker-list">
-                {recentWords.map((word, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(word);}}>{word}</a></span>)}
+                {recentWords.map((word, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(word);}}>{startCase(word)}</a></span>)}
               </div>
             ))}
           </div>

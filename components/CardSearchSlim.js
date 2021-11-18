@@ -73,7 +73,7 @@ const CardSearchSlim = (props) => {
         {/* {price && discountPercentage && hasDiscount && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
         {price && wordExists && <b><s>{utils.formatEther(price)} ETH</s></b>}
         {price && !wordExists && <b>{utils.formatEther(price)} ETH</b>} */}
-        <p className="h6 m-0 me-auto text-truncate">{search.name}</p>
+        <p className="h6 m-0 me-auto text-truncate">{wordExists ? <s>{search.name}</s> : search.name}</p>
 
         {account && <Button variant="link" size="sm" disabled={paused || wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>}
         <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleClickExpand()}><i className="bi bi-arrows-angle-expand"></i></Button>
