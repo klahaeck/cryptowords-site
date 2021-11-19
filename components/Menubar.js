@@ -32,7 +32,7 @@ const Menubar = (props) => {
 
   return (
     <>
-      <Navbar bg="dark" expand={false} variant="dark" fixed="top">
+      <Navbar bg="dark" expand={false} variant="dark">
         <Container>
           <Navbar.Brand href="/" className="me-auto">
             <span className="d-md-none text-primary">CW</span>
