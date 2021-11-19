@@ -27,7 +27,7 @@ const RecentMinted = ({ showModal, className }) => {
   const handleWordClick = (word) => showModal({body:<CardWord word={word} />})
 
   return (
-    <div className={`bg-dark text-primary p-3 ${className}`}>
+    <div className={`bg-dark text-primary py-3 ${className || ''}`}>
       <Row className="align-items-center">
         <Col md="4">
           <div className="d-flex justify-content-center align-items-center mb-2 mb-md-0">
