@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import {
   showModal,
   addToast,
+  addAlert,
 } from '../store/root/reducer';
 import startCase from 'lodash/startCase';
 import usePrice from '../hooks/usePrice';
@@ -21,7 +22,7 @@ import {
 import CardSearch from './CardSearch';
 
 const CardSearchSlim = (props) => {
-  const { search, onCloseClick, showModal, addToast } = props;
+  const { search, onCloseClick, showModal, addAlert, addToast } = props;
 
   const { account } = useEthers();
 
@@ -34,7 +35,13 @@ const CardSearchSlim = (props) => {
   
   const { data, error } = useSWR(search.name ? `/api/token/${search.name}` : null, fetcher);
   
-  const purchaseWord = (searchName) => send(account, searchName, { value: price });
+  const purchaseWord = (searchName) => {
+    if (account) {
+      send(account, searchName, { value: price });
+    } else {
+      addAlert({position: 'global', color: 'primary', msg:'You must connect your wallet to purchase a word'});
+    }
+  };
 
   useEffect(() => {
     switch(state.status) {
@@ -76,7 +83,7 @@ const CardSearchSlim = (props) => {
         {price && !wordExists && <b>{utils.formatEther(price)} ETH</b>} */}
         <p className="h6 m-0 me-auto text-truncate">{wordExists ? <s>{startCase(search.name)}</s> : startCase(search.name)}</p>
 
-        <Button variant="link" size="sm" disabled={!account || paused || wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>
+        <Button variant="link" size="sm" disabled={paused || wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>
         <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleClickExpand()}><i className="bi bi-arrows-angle-expand"></i></Button>
         <Button variant="link" className="outline-0 shadow-none py-0 px-2" onClick={() => onCloseClick(search.name)}><i className="fs-5 bi bi-x-lg"></i></Button>
       </Card.Body>
@@ -87,6 +94,7 @@ const CardSearchSlim = (props) => {
 const mapDispatchToProps = (dispatch) => ({
   showModal: bindActionCreators(showModal, dispatch),
   addToast: bindActionCreators(addToast, dispatch),
+  addAlert: bindActionCreators(addAlert, dispatch)
 });
 
 export default connect(null, mapDispatchToProps)(CardSearchSlim);

@@ -9,7 +9,7 @@ import startCase from 'lodash/startCase';
 import {
   showModal,
   addToast,
-  // addAlert,
+  addAlert,
 } from '../store/root/reducer';
 import usePrice from '../hooks/usePrice';
 import useWordExists from '../hooks/useWordExists';
@@ -25,7 +25,7 @@ import {
 } from 'react-bootstrap';
 
 const CardSearch = (props) => {
-  const { search, onCloseClick, showModal, addToast, className } = props;
+  const { search, onCloseClick, showModal, addAlert, addToast, className } = props;
 
   const { account } = useEthers();
 
@@ -39,7 +39,13 @@ const CardSearch = (props) => {
   
   const { data, error } = useSWR(search.name ? `/api/token/${search.name}` : null, fetcher);
   
-  const purchaseWord = (searchName) => send(account, searchName, { value: price });
+  const purchaseWord = (searchName) => {
+    if (account) {
+      send(account, searchName, { value: price });
+    } else {
+      addAlert({position: 'global', color: 'primary', msg:'You must connect your wallet to purchase a word'});
+    }
+  };
 
   useEffect(() => {
     switch(state.status) {
@@ -134,7 +140,7 @@ const CardSearch = (props) => {
 const mapDispatchToProps = (dispatch) => ({
   showModal: bindActionCreators(showModal, dispatch),
   addToast: bindActionCreators(addToast, dispatch),
-  // addAlert: bindActionCreators(addAlert, dispatch),
+  addAlert: bindActionCreators(addAlert, dispatch),
 });
 
 export default connect(null, mapDispatchToProps)(CardSearch);
