@@ -2,7 +2,6 @@ import getWord from '../../../lib/get-word';
 
 const serveSlug = async (req, res) => {
   const { slug, type } = req.query;
-  console.log(slug);
 
   if (req.method === 'PUT') {
     // const updateDoc = {
