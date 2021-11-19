@@ -23,7 +23,7 @@ const WordForm = (props) => {
 
   return (
     <>
-      <h3 className="text-uppercase fw-light">Choose a word to create an <span className="fw-bold">NFT</span></h3>
+      <h3 className="text-uppercase fw-light form-header">Choose a word to create an <span className="fw-bold">NFT</span></h3>
       <p className="">There is only one instance of each word.<br />Once a word is purchased, it is no longer available.</p>
       <Form onSubmit={handleSubmit(onSubmitSearch)}>
         <Form.Group>
@@ -42,7 +42,7 @@ const WordForm = (props) => {
               }}
               render={({ field }) => <Form.Control {...field} size="lg" className="border-dark" />}
             />
-            <Button size="lg" variant="outline-dark" type="submit" disabled={false}><span className="d-lg-none text-uppercase">Find</span><span className="d-none d-lg-block text-uppercase">Find Your Word</span></Button>
+            <Button size="lg" variant="outline-dark" type="submit" disabled={false} className="text-uppercase">Find</Button>
           </InputGroup>
           {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
           {/* {errors.word?.type === 'pattern' && <small className="form-text text-danger">Must be a single word with no special characters or numbers</small>} */}

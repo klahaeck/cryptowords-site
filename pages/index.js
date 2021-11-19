@@ -15,6 +15,7 @@ import {
 import Layout from '../layouts/Main';
 import useRecentWords from '../hooks/useRecentWords';
 import useOwnedWords from '../hooks/useOwnedWords';
+import Notices from '../components/Notices';
 import Menubar from '../components/Menubar';
 import Header from '../components/Header';
 import Toasts from '../components/Toasts';
@@ -45,6 +46,7 @@ const Home = (props) => {
     <Layout>
       <BgParticles />
 
+      <Notices />
       <Menubar />
 
       <Container className="pt-2 my-3 my-md-5">
@@ -55,6 +57,8 @@ const Home = (props) => {
         
         <Header />
 
+        <div className="my-md-1 my-lg-4" style={{height:1}}></div>
+
         <Row className="mt-3 mb-5 justify-content-between">
           <Col xs="24" md={{ span: 14, order: 'last' }} lg={{ span: 13 }} className="mb-4 mb-md-0">
             <Alerts position="word-form" />
@@ -63,9 +67,14 @@ const Home = (props) => {
             {searches && searches.length > 1 && <div className="d-none d-md-block mt-4"><RecentSearches /></div>}
           </Col>
           <Col xs="24" md={{ span: 10, order: 'first' }} lg="9" className="mb-lg-5">
-            <div className="bordered p-5 m-n5 overflow-visible">
-              {searches && searches.length > 0 ? <CardSearch search={searches[0]} className="card-primary" /> : <RandomWord className="card-primary" />}
-            </div>
+            {/* <div className="bordered p-lg-5 m-lg-n5 overflow-visible"> */}
+              <div className="position-relative p-3 m-n3 search-featured">
+                <div className="d-none d-lg-block position-absolute w-100 h-100 border border-dark border-3 search-outline-0"></div>
+                <div className="d-none d-lg-block position-absolute w-100 h-100 border border-dark border-3 search-outline-1"></div>
+                <div className="d-none d-lg-block position-absolute w-100 h-100 border border-dark border-3 search-outline-2"></div>
+                {searches && searches.length > 0 ? <CardSearch search={searches[0]} className="card-primary" /> : <RandomWord className="card-primary" />}
+              </div>
+            {/* </div> */}
           </Col>
           {searches && searches.length > 1 && <Col className="d-md-none mt-4"><RecentSearches /></Col>}
         </Row>

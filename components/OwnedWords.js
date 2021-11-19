@@ -77,7 +77,7 @@ const OwnedWords = ({ className }) => {
       <Row className="g-1">
         {ownedWords.map((word, index) => (
           <Col key={index} xs="12" sm="8" md="6" lg="4" xl="3">
-            <CardWord word={word} />
+            <CardWord word={word} tools={true} />
           </Col>
         ))}
       </Row>

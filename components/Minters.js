@@ -32,7 +32,7 @@ const Minters = ({ className }) => {
         <ListGroup variant="flush" className="mb-1">
           {minterMembers.map((member, index) => (
             <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
-              <div className="w-75 text-truncate">{shortenAddress(member)}</div>
+              <div className="w-75 text-truncate">{member && shortenAddress(member)}</div>
               <Button variant="danger" size="sm" onClick={() => handleRevokeRole(member)} disabled={stateRevokeRole.status === 'Mining'}>X</Button>
             </ListGroup.Item>
           ))}

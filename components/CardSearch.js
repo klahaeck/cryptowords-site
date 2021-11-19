@@ -5,6 +5,7 @@ import { utils } from 'ethers';
 import { useEthers, useContractFunction } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import startCase from 'lodash/startCase';
 import {
   showModal,
   addToast,
@@ -20,6 +21,7 @@ import {
   Col,
   Button,
   Card,
+  Spinner
 } from 'react-bootstrap';
 
 const CardSearch = (props) => {
@@ -63,7 +65,7 @@ const CardSearch = (props) => {
         <div className="ratio ratio-1x1">
           <div className="h-100 d-flex justify-content-center align-items-center">
             <div className="p-2 text-center">
-              <p className="h3">{search.name}</p>
+              <p className="h3">{startCase(search.name)}</p>
               <p className="h5">Sorry, we cannot find this word.</p>
             </div>
           </div>
@@ -80,8 +82,11 @@ const CardSearch = (props) => {
         <div className="ratio ratio-1x1">
           <div className="h-100 d-flex justify-content-center align-items-center">
             <div className="p-2 text-center">
-              <p className="h5">Loading</p>
-              <p className="h2">{search.name}</p>
+              <div className="d-flex align-items-center mb-3">
+                <Spinner animation="border" variant="dark" size="sm" className="me-1" />
+                <p className="h5 p-0 m-0">loading</p>
+              </div>
+              <p className="h2">{startCase(search.name)}</p>
             </div>
           </div>
         </div>
@@ -106,7 +111,7 @@ const CardSearch = (props) => {
       </div>
 
       <Card.Footer>
-        {!account && <Card.Text className="text-center">Connect your wallet to purchase</Card.Text>}
+        {!account && <Card.Text className="text-center m-0 text-primary">Connect your wallet to purchase</Card.Text>}
 
         <Row className="align-items-center">
           <Col xs="auto">
@@ -118,7 +123,7 @@ const CardSearch = (props) => {
           </Col>
           <Col className="text-end pe-1 ">
             {account && wordExists && <Button variant="outline-primary" size="sm" disabled={true} className="text-uppercase">Not Available</Button>}
-            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? 'Minting' : 'Purchase'}</Button>}
+            {account && !wordExists && <Button variant={wordExists ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? <div className="d-flex align-items-center"><Spinner animation="border" variant="dark" size="sm" className="me-1" />Minting</div> : 'Purchase'}</Button>}
           </Col>
         </Row>
       </Card.Footer>

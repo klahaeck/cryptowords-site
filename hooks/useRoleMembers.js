@@ -7,6 +7,7 @@ function useRoleMembers(role) {
   const [ thisCalls, setThisCalls ] = useState([]);
 
   const cryptoWordsInterface = new utils.Interface(CryptoWordsV1.abi);
+  
   const [ thisRole ] = useContractCall({
     abi: cryptoWordsInterface,
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
@@ -21,11 +22,11 @@ function useRoleMembers(role) {
     args: [thisRole]
   }) ?? [];
 
-  const [ members ] = useContractCalls(memberCount > 0 && thisCalls?.length > 0 ? thisCalls : []) ?? [];
+  const members = useContractCalls(thisCalls);
 
   useEffect(() => {
-    if (memberCount > 0) {
-      const newCalls = Array(memberCount).map((number, index) => ({
+    if (Number(memberCount) > 0) {
+      const newCalls = Array(Number(memberCount)).fill().map((number, index) => ({
         abi: cryptoWordsInterface,
         address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
         method: 'getRoleMember',
@@ -35,7 +36,7 @@ function useRoleMembers(role) {
     }
   }, [memberCount]);
 
-  return [thisRole, members];
+  return [thisRole, [].concat(...members)];
 }
 
 export default useRoleMembers;

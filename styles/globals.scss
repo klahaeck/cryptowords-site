@@ -38,7 +38,7 @@ $primary: rgb(90, 224, 41);
 // @import "~bootstrap/scss/tooltip";
 // @import "~bootstrap/scss/popover";
 // @import "~bootstrap/scss/carousel";
-// @import "~bootstrap/scss/spinners";
+@import "~bootstrap/scss/spinners";
 @import "~bootstrap/scss/offcanvas";
 // @import "~bootstrap/scss/placeholders";
 
@@ -53,10 +53,6 @@ $primary: rgb(90, 224, 41);
 @import 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css';
 
 @import './fonts';
-
-.letter-spaced {
-  letter-spacing: .5em;
-}
 
 .bg-particles {
   z-index: -1;
@@ -82,18 +78,50 @@ $primary: rgb(90, 224, 41);
   color: #000000 !important;
 }
 
-.bordered {
-  // background-image: url('/images/border.svg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: fill;
+.search-outline-0 {
+  top: 0;
+  left: 0;
+}
+.search-outline-1 {
+  top: -8px;
+  left: -8px;
+}
+.search-outline-2 {
+  top: 8px;
+  right: -8px;
+}
+
+.tagline-0 {
+  font-size: 0.85em;
+}
+.tagline-1 {
+  letter-spacing: .5em;
+  font-size: 0.65em;
+}
+
+.form-header {
+  font-size: 1.2em;
+}
+
+@include media-breakpoint-up(md) {
+  .tagline-0 {
+    font-size: 1.1em;
+  }
+  .tagline-1 {
+    letter-spacing: .5em;
+    font-size: 0.85em;
+  }
+
+  .form-header {
+    font-size: 1.3em;
+  }
 }
 
 @include media-breakpoint-up(lg) {
   .card-primary {
     border: 0;
   }
-  .bordered {
-    background-image: url('/images/border.svg');
+  .form-header {
+    font-size: 1.5em;
   }
 }

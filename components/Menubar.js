@@ -11,7 +11,6 @@ import {
   Offcanvas,
 } from 'react-bootstrap';
 import useHasRole from '../hooks/useHasRole';
-import useAdminData from '../hooks/useAdminData';
 import AdminTools from './AdminTools';
 import WalletConnectors from './WalletConnectors';
 import AccountDisplay from './AccountDisplay';
@@ -20,10 +19,7 @@ import AccountTools from './AccountTools';
 const Menubar = (props) => {
   const { showModal } = props;
 
-  const { discountPercentage, paused } = useAdminData();
-
   const { account } = useEthers();
-  const hasDiscount = useHasRole('DISCOUNTED_ROLE', account);
   const isAdmin = useHasRole('DEFAULT_ADMIN_ROLE', account);
 
   const connectWallet = () => showModal({ body: <WalletConnectors /> });
@@ -36,22 +32,16 @@ const Menubar = (props) => {
 
   return (
     <>
-      {paused && <div className="p-0 m-0 bg-warning text-dark text-center">
-        <p className="h5 p-2 m-0">All purchases are currently paused.</p>
-      </div>}
-      {account && hasDiscount && <div className="p-0 m-0 bg-success text-light text-center">
-        <p className="h4 p-2 m-0">You have a {discountPercentage * .01}% discount!</p>
-      </div>}
       <Navbar bg="dark" expand={false} variant="dark">
         <Container>
           <Navbar.Brand href="/" className="me-auto">
-            <span className="d-md-none">CW</span>
-            <span className="d-none d-md-block">CryptoWords</span>
+            <span className="d-md-none text-primary">CW</span>
+            <span className="d-none d-md-block text-primary">CryptoWords</span>
           </Navbar.Brand>
           {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet</Button>}
           {account && <Button variant="outline-primary" onClick={handleWalletInfo}><AccountDisplay /></Button>}
           
-          {account && isAdmin && <Navbar.Toggle aria-controls="offcanvasNavbar" className="ms-3 border-primary" />}
+          {account && isAdmin && <Navbar.Toggle aria-controls="offcanvasNavbar" className="ms-3 border-primary outline-0 shadow-none"><i className="bi bi-list fs-3 text-primary"></i></Navbar.Toggle>}
           {account && isAdmin && <Navbar.Offcanvas
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"

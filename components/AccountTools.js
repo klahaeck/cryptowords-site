@@ -30,12 +30,12 @@ const AccountTools = ({ hideModal }) => {
           <a role="button" onClick={() => handleClickToCopy(account)}><i className="bi bi-files"></i> Copy Address</a>
         </Col>
         <Col>
-          <a href={`https://etherscan.io/address/${account}`} target="_blank" rel="noreferrer"><i className="bi bi-box-arrow-up-right"></i> View on Etherscan</a>
+          <a href={`https://etherscan.io/address/${account}`} target="_blank" rel="noreferrer" className="text-dark"><i className="bi bi-box-arrow-up-right"></i> View on Etherscan</a>
         </Col>
       </Row>
       <Row className="mt-4">
         <Col className="text-end">
-          <Button variant="outline-secondary" size="sm" onClick={() => deactivate()}>Disconnect</Button>
+          <Button variant="outline-dark" size="sm" onClick={() => deactivate()}>Disconnect</Button>
         </Col>
       </Row>
     </>

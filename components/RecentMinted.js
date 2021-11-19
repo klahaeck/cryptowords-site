@@ -1,13 +1,19 @@
 import { useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import startCase from 'lodash/startCase';
+import {
+  showModal,
+} from '../store/root/reducer';
 import useRecentWords from '../hooks/useRecentWords';
 import {
   Row,
   Col,
 } from 'react-bootstrap';
 import { gsap } from 'gsap';
+import CardWord from './CardWord';
 
-const RecentMinted = ({ className }) => {
+const RecentMinted = ({ showModal, className }) => {
   const recentWords = useRecentWords(10);
   const tickerWrapper = useRef(null);
   const tickerList = useRef(null);
@@ -18,9 +24,7 @@ const RecentMinted = ({ className }) => {
     tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'}, 'start');
   }, []);
 
-  const handleWordClick = (word) => {
-    console.log(word);
-  };
+  const handleWordClick = (word) => showModal({body:<CardWord word={word} />})
 
   return (
     <div className={`bg-dark text-primary p-3 ${className}`}>
@@ -45,4 +49,8 @@ const RecentMinted = ({ className }) => {
   );
 };
 
-export default RecentMinted;
+const mapDispatchToProps = (dispatch) => ({
+  showModal: bindActionCreators(showModal, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(RecentMinted);
