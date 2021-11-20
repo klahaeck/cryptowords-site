@@ -24,7 +24,7 @@ const WordForm = (props) => {
   return (
     <>
       <h3 className="text-uppercase fw-light form-header">Choose a word to create an <span className="fw-bold">NFT</span></h3>
-      <p className="">There is only one instance of each word.<br />Once a word is purchased, it is no longer available.</p>
+      <p className="explainer">There is only one instance of each word.<br />Once a word is purchased, it is no longer available.</p>
       <Form onSubmit={handleSubmit(onSubmitSearch)}>
         <Form.Group>
           <Form.Label htmlFor="word" className="visually-hidden">
