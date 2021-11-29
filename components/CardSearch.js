@@ -77,7 +77,7 @@ const CardSearch = (props) => {
           </div>
         </div>
       </Card.Body>
-      <Card.Footer className="text-end">
+      <Card.Footer className="text-end px-2">
         <Button variant="outline-light" size="sm" disabled={true} className="text-uppercase">Not Available</Button>
       </Card.Footer>
     </Card>
@@ -97,7 +97,7 @@ const CardSearch = (props) => {
           </div>
         </div>
       </Card.Body>
-      <Card.Footer className="text-end">
+      <Card.Footer className="text-end px-2">
         <Button variant="outline-dark" size="sm" disabled={true} className="text-uppercase">Loading</Button>
       </Card.Footer>
     </Card>

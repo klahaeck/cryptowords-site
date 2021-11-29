@@ -10,24 +10,19 @@ import {
   Container,
   Row,
   Col,
-  Alert,
 } from 'react-bootstrap';
 import Layout from '../layouts/Main';
 import useRecentWords from '../hooks/useRecentWords';
 import useOwnedWords from '../hooks/useOwnedWords';
-import Notices from '../components/Notices';
-import Menubar from '../components/Menubar';
 import Header from '../components/Header';
-import Toasts from '../components/Toasts';
 import WordForm from '../components/WordForm';
 import CardSearch from '../components/CardSearch';
 import Alerts from '../components/Alerts';
 import RandomWord from '../components/RandomWord';
 import RecentSearches from '../components/RecentSearches';
-import SiteModal from '../components/SiteModal';
 import RecentMinted from '../components/RecentMinted';
 import OwnedWords from '../components/OwnedWords';
-import BgParticles from '../components/BgParticles';
+
 
 const Home = (props) => {
   const { searches, addSearch } = props;
@@ -44,17 +39,7 @@ const Home = (props) => {
 
   return (
     <Layout>
-      <BgParticles />
-
-      <Notices />
-      <Menubar />
-
       <Container className="pt-2 my-3 my-md-5">
-        {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><h1>Stop!</h1><p>This is a test Web3 app that uses the Rinkeby network! Please switch to rinkeby before minting NFTs.</p></Alert>}
-        
-        <Toasts />
-        <Alerts position="global" />
-        
         <Header />
 
         <div className="my-md-1 my-lg-4" style={{height:1}}></div>
@@ -78,17 +63,15 @@ const Home = (props) => {
         </Row>
       </Container>
 
-        <div className="bg-dark mt-5">
-          <Container>
-            {recentWords && recentWords.length > 0 && <RecentMinted />}
-          </Container>
-        </div>
-
-        <Container className="mt-5 mb-5">
-          {account && ownedWords && ownedWords.length > 0 && <OwnedWords />}
+      <div className="bg-dark mt-5">
+        <Container>
+          {recentWords && recentWords.length > 0 && <RecentMinted />}
         </Container>
+      </div>
 
-      <SiteModal />
+      <Container className="mt-5 mb-5">
+        {account && ownedWords && ownedWords.length > 0 && <OwnedWords />}
+      </Container>
     </Layout>
   );
 };
