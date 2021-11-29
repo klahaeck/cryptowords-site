@@ -23,7 +23,6 @@ const Main = ({ className, children }) => {
       <Alerts position="global" />
 
       { children }
-
       <Footer />
       <SiteModal />
     </div>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   Container,
   Row,
@@ -9,7 +10,13 @@ const Contact = () => {
   return (
     <Layout>
       <Container className="my-5">
-        <h1>Contact</h1>
+        <h1 className="mb-5">Contact</h1>
+        <Row>
+          <Col md="12">
+            <p>For any questions or support requests, email <a href="mailto:support@cryptowords.art">support@cryptowords.art</a></p>
+            <p>We wil do our best to accomodate whatever requests you may have. In the meantime, check out our <Link href="/faqs">FAQs</Link> page for any info that may be relevant to your concern.</p>
+          </Col>
+        </Row>
       </Container>
     </Layout>
   );

@@ -20,10 +20,10 @@ const Footer = () => {
               <div>
                 <Link href="/faqs"><a className="text-dark text-decoration-none">faqs</a></Link>
               </div>
-              {/* <div>
+              <div>
                 <Link href="/contact"><a className="text-dark text-decoration-none">contact</a></Link>
               </div>
-              <div>
+              {/* <div>
                 <Link href="/terms"><a className="text-dark text-decoration-none">terms of use</a></Link>
               </div>
               <div>
