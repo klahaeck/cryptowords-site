@@ -31,7 +31,7 @@ const SetDefaultPrice = ({ className }) => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
       <Form.Group>
-        <Form.Label htmlFor="word">
+        <Form.Label htmlFor="defaultPrice">
           Set Default Price (ETH)
         </Form.Label>
         <InputGroup>

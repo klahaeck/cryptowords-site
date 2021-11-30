@@ -2,15 +2,15 @@ import { useContractCall } from '@usedapp/core';
 import { utils } from 'ethers';
 import CryptoWordsV1 from '../contracts/CryptoWordsV1.json';
 
-function useWordExists(word) {
+function useWordAvailable(word) {
   const cryptoWordsInterface = new utils.Interface(CryptoWordsV1.abi);
-  const [ wordExists ] = useContractCall(word && {
+  const [ wordAvailable ] = useContractCall(word && {
     abi: cryptoWordsInterface,
     address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    method: 'wordExists',
+    method: 'wordAvailable',
     args: [word],
   }) ?? [];
-  return wordExists;
+  return wordAvailable;
 }
 
-export default useWordExists;
+export default useWordAvailable;

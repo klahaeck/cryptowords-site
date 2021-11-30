@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useContractFunction } from '@usedapp/core';
-import { utils } from 'ethers';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Button,
@@ -10,25 +9,25 @@ import {
 import useContract from '../hooks/useContract';
 import useAdminData from '../hooks/useAdminData';
 
-const SetCutomPriceByWord = ({ className }) => {
+const SetMaxInstancesByWord = ({ className }) => {
   const { handleSubmit, control, formState: { errors }, reset } = useForm();
 
-  const { defaultPrice } = useAdminData();
+  const { maxInstances } = useAdminData();
 
   const contract = useContract();
-  const { state, send } = useContractFunction(contract, 'setCustomPriceByWord');
+  const { state, send } = useContractFunction(contract, 'setMaxInstancesByWord');
 
-  const onSubmit = data => send(data.word.trim().toLowerCase(), utils.formatUnits(utils.parseUnits(data.price), 'wei'));
+  const onSubmit = data => send(data.word.trim().toLowerCase(), data.maxInstances);
 
   useEffect(() => {
-    if (state.status === 'Success') reset({word: '', price: utils.formatEther(defaultPrice)});
+    if (state.status === 'Success') reset({word: '', maxInstances:maxInstances});
   }, [state]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
       <Form.Group>
         <Form.Label htmlFor="word">
-          Set Custom Price by Word (ETH)
+          Set Max Instances by Word
         </Form.Label>
         <InputGroup>
           <Controller
@@ -42,22 +41,22 @@ const SetCutomPriceByWord = ({ className }) => {
             render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Word" />}
           />
           <Controller
-            name="price"
+            name="maxInstances"
             control={control}
-            defaultValue={() => utils.formatEther(defaultPrice)}
+            defaultValue={() => maxInstances}
             rules={{
               required: true
               // pattern: /^[A-Za-z]+$/
             }}
-            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Price in ETH" />}
+            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Max Instances" />}
           />
           <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
         </InputGroup>
         {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
-        {errors.price?.type === 'required' && <small className="form-text text-danger">A price in ETH is required</small>}
+        {errors.maxInstances?.type === 'required' && <small className="form-text text-danger">A number is required</small>}
       </Form.Group>
     </Form>
   );
 };
 
-export default SetCutomPriceByWord;
+export default SetMaxInstancesByWord;

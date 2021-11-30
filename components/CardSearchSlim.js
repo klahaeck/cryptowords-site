@@ -12,7 +12,7 @@ import {
 } from '../store/root/reducer';
 import startCase from 'lodash/startCase';
 import usePrice from '../hooks/usePrice';
-import useWordExists from '../hooks/useWordExists';
+import useWordAvailable from '../hooks/useWordAvailable';
 import useContract from '../hooks/useContract';
 import useAdminData from '../hooks/useAdminData';
 import {
@@ -28,7 +28,7 @@ const CardSearchSlim = (props) => {
 
   const { paused } = useAdminData();
   const price = usePrice(account, search.name);
-  const wordExists = useWordExists(search.name);
+  const wordAvailable = useWordAvailable(search.name);
   const contract = useContract();
 
   const { state, send } = useContractFunction(contract, 'purchaseWord');
@@ -79,11 +79,11 @@ const CardSearchSlim = (props) => {
     <Card bg="dark" text="light">
       <Card.Body className="py-1 ps-2 pe-0 d-flex align-items-center">
         {/* {price && discountPercentage && hasDiscount && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
-        {price && wordExists && <b><s>{utils.formatEther(price)} ETH</s></b>}
-        {price && !wordExists && <b>{utils.formatEther(price)} ETH</b>} */}
-        <p className="h6 m-0 me-auto text-truncate">{wordExists ? <s>{startCase(search.name)}</s> : startCase(search.name)}</p>
+        {price && wordAvailable && <b><s>{utils.formatEther(price)} ETH</s></b>}
+        {price && !wordAvailable && <b>{utils.formatEther(price)} ETH</b>} */}
+        <p className="h6 m-0 me-auto text-truncate">{!wordAvailable ? <s>{startCase(search.name)}</s> : startCase(search.name)}</p>
 
-        <Button variant="link" size="sm" disabled={paused || wordExists || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>
+        <Button variant="link" size="sm" disabled={paused || !wordAvailable || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>
         <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleClickExpand()}><i className="bi bi-arrows-angle-expand"></i></Button>
         <Button variant="link" className="outline-0 shadow-none py-0 px-2" onClick={() => onCloseClick(search.name)}><i className="fs-5 bi bi-x-lg"></i></Button>
       </Card.Body>

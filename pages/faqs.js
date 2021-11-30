@@ -19,7 +19,7 @@ const Faqs = () => {
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">The word I want is not available. What gives?</h3>
-            <p>There is only one NFT instance of each word in the dictionary. Once it is purchased, it is no longer available to anybody else through this site. Though you may make an offer to purchase the word from the owner at any secondary NFT marketplace such as <a href="https://rarible.com/" target="_blank" rel="noreferrer">Rarible</a> or <a href="https://opensea.io/" target="_blank" rel="noreferrer">OpenSea</a>. The price on any other secondary marketplace is entirely up to the owner of the word.</p>
+            <p>There are only five NFT instance of each word in the dictionary. Once the limit has been reached, it is no longer available to anybody else through this site. Though you may make an offer to purchase the word from the owner at any secondary NFT marketplace such as <a href="https://rarible.com/" target="_blank" rel="noreferrer">Rarible</a> or <a href="https://opensea.io/" target="_blank" rel="noreferrer">OpenSea</a>. The price on any other secondary marketplace is entirely up to the owner of the word.</p>
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">The definition of my word doesn't seem correct. Where did you source it?</h3>
