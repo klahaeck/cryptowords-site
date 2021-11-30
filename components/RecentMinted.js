@@ -20,7 +20,7 @@ const RecentMinted = ({ showModal, className }) => {
   const tlCarousel = useRef(gsap.timeline({ repeat: -1 }));
 
   useEffect(() => {
-    const duration = tickerList.current.offsetWidth * .01;
+    const duration = tickerList.current.offsetWidth * .015;
     tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'}, 'start');
   }, []);
 
