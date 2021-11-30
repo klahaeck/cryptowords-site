@@ -15,5 +15,11 @@ export const staticWords = [
     slug: 'cryptowords',
     external_url: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/word/cryptowords`,
     description: 'Own the English language, one word at a time.'
+  },
+  {
+    name: 'CryptoWord',
+    slug: 'cryptoword',
+    external_url: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/word/cryptoword`,
+    description: 'Own the English language, one word at a time.'
   }
 ];
