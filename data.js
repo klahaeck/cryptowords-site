@@ -8,8 +8,6 @@ export const meta = {
   url: 'https://cryptowords.art'
 };
 
-
-
 // DELETING A WORD HERE DOES NOT DELETE IT FROM THE DATABASE!
 export const staticWords = [
   {
