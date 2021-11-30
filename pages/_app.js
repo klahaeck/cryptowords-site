@@ -8,8 +8,8 @@ import 'slick-carousel/slick/slick-theme.css';
 const config = {
   readOnlyChainId: ChainId.Rinkeby,
   readOnlyUrls: {
-    [ChainId.Rinkeby]: 'https://rinkeby.infura.io/v3/cefce407f9134e11b96271b86f44e144',
-    [ChainId.Mainnet]: 'https://mainnet.infura.io/v3/cefce407f9134e11b96271b86f44e144',
+    [ChainId.Rinkeby]: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY,
+    [ChainId.Mainnet]: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
     // 31337: 'http://localhost:8545',
   },
   // multicallAddresses: {

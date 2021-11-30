@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ChainId, useEthers } from '@usedapp/core';
+import { useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useRouter } from 'next/router';
@@ -28,7 +28,7 @@ const Home = (props) => {
   const { searches, addSearch } = props;
   const { query } = useRouter();
 
-  const { account, chainId } = useEthers();
+  const { account } = useEthers();
 
   const ownedWords = useOwnedWords(account);
   const recentWords = useRecentWords(10);
