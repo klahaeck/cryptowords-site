@@ -39,6 +39,9 @@ const Footer = () => {
               <div>
                 <a href="https://twitter.com/RealCryptoWords" target="_blank" rel="noreferrer" className="text-dark text-decoration-none">Twitter</a>
               </div>
+              <div>
+                <a href="https://discord.com/channels/915347191781031957/915347192250785855" target="_blank" rel="noreferrer" className="text-dark text-decoration-none">Discord</a>
+              </div>
             </Stack>
           </Col>
         </Row>
