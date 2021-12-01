@@ -9,7 +9,7 @@ const Notices = () => {
   const isDiscountedUser = useHasRole('DISCOUNTED_ROLE', account);
   const isMinter = useHasRole('MINTER_ROLE', account);
   
-  const hasDiscount = () => !isMinter && (isDiscountedUser || discountPercentageGlobal > 0);
+  const hasDiscount = () => isMinter === false && (isDiscountedUser || discountPercentageGlobal > 0);
   const getDiscount = () => isDiscountedUser ? Math.max(discountPercentage, discountPercentageGlobal) : discountPercentageGlobal;
 
   return (

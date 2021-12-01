@@ -19,7 +19,7 @@ const Faqs = () => {
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">The word I want is not available. What gives?</h3>
-            <p>There are only five NFT instance of each word in the dictionary. Once the limit has been reached, it is no longer available to anybody else through this site. Though you may make an offer to purchase the word from the owner at any secondary NFT marketplace such as <a href="https://rarible.com/" target="_blank" rel="noreferrer">Rarible</a> or <a href="https://opensea.io/" target="_blank" rel="noreferrer">OpenSea</a>. The price on any other secondary marketplace is entirely up to the owner of the word.</p>
+            <p>There are only five NFT instances of each word in the dictionary. Once the limit has been reached, it is no longer available to anybody else through this site. Though you may make an offer to purchase the word from the owner at any secondary NFT marketplace such as <a href="https://rarible.com/" target="_blank" rel="noreferrer">Rarible</a> or <a href="https://opensea.io/" target="_blank" rel="noreferrer">OpenSea</a>. The price on any other secondary marketplace is entirely up to the owner of the word.</p>
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">The definition of my word doesn't seem correct. Where did you source it?</h3>
@@ -31,11 +31,11 @@ const Faqs = () => {
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">Can I add my own word that is not in the dictionary?</h3>
-            <p>Maybe. Send us an email at <a href="mailto:support@cryptowords.art">support@cryptowords.art</a> with the word, definition, and an example usage and we'll see if we can get it added, for funsies.</p>
+            <p>Maybe. Send us an email at <a href="mailto:support@cryptowords.art">support@cryptowords.art</a> or post to our discord channel <a href="https://discord.com/channels/915347191781031957/915347287297896498" target="_blank" rel="noreferrer">here</a> with the word, definition, and an example usage and we'll see if we can get it added, for funsies.</p>
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">I accidentally purchased the wrong word, can I get a refund?</h3>
-            <p>Accidents happen, just email <a href="mailto:support@cryptowords.art">support@cryptowords.art</a> and describe your situation and we will do our best to accomodate.</p>
+            <p>Accidents happen, just email <a href="mailto:support@cryptowords.art">support@cryptowords.art</a> or post to our discord channel <a href="https://discord.com/channels/915347191781031957/915347287297896498" target="_blank" rel="noreferrer">here</a> and describe your situation and we will do our best to accomodate.</p>
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">Will there ever be any foreign language words available?</h3>
