@@ -1,9 +1,15 @@
 import { wrapper } from '../store/store';
 import { ChainId, DAppProvider, MULTICALL_ADDRESSES } from '@usedapp/core';
+import { useEffect } from 'react';
+import TagManager from 'react-gtm-module';
 import '../styles/globals.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+const tagManagerArgs = {
+  gtmId: 'GTM-53GZ6NG',
+}
 
 const config = {
   readOnlyChainId: ChainId.Rinkeby,
@@ -30,6 +36,12 @@ const config = {
 };
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    if (process.browser) {
+      TagManager.initialize(tagManagerArgs);
+    }
+  }, []);
+
   return (
     <DAppProvider config={config}>
       <Component {...pageProps} />
