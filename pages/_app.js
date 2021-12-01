@@ -11,6 +11,7 @@ const tagManagerArgs = {
   gtmId: 'GTM-53GZ6NG',
 }
 
+
 const config = {
   readOnlyChainId: ChainId.Rinkeby,
   readOnlyUrls: {
