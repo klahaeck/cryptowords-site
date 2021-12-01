@@ -29,12 +29,12 @@ const AdminTools = () => {
   return (
     <>
       <ListGroup variant="flush" className="mb-3">
-        <ListGroup.Item>Paused: <b>{paused.toString()}</b></ListGroup.Item>
-        <ListGroup.Item>Total Words: <b>{totalSupply}</b></ListGroup.Item>
-        <ListGroup.Item>Max Instances: <b>{maxInstances}</b></ListGroup.Item>
-        <ListGroup.Item>Default Price: <b>{utils.formatEther(defaultPrice)}</b></ListGroup.Item>
-        <ListGroup.Item>Discount: <b>{discountPercentage * .01}%</b></ListGroup.Item>
-        <ListGroup.Item>Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Paused: <b>{paused.toString()}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Total Words: <b>{totalSupply}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Discount: <b>{discountPercentage * .01}%</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>
       </ListGroup>
       
       <ButtonToolbar className="mb-3" aria-label="Toolbar with Button groups">
