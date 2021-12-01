@@ -13,6 +13,7 @@ import {
 } from '../store/root/reducer';
 import usePrice from '../hooks/usePrice';
 import useWordAvailable from '../hooks/useWordAvailable';
+import useInstancesAvailable from '../hooks/useInstancesAvailable';
 import useContract from '../hooks/useContract';
 import useHasRole from '../hooks/useHasRole';
 import useAdminData from '../hooks/useAdminData';
@@ -33,6 +34,7 @@ const CardSearch = (props) => {
   const { discountPercentage, paused } = useAdminData();
   const price = usePrice(account, search.name);
   const wordAvailable = useWordAvailable(search.name);
+  const instancesAvailable = useInstancesAvailable(search.name);
   const contract = useContract();
 
   const { state, send } = useContractFunction(contract, 'purchaseWord');
@@ -121,13 +123,16 @@ const CardSearch = (props) => {
 
         <Row className="align-items-center">
           <Col xs="auto">
-            <Card.Text>
+            {/* <Card.Text> */}
               {price && discountPercentage && hasDiscount && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
-              {price && !wordAvailable && <b><s>{utils.formatEther(price)} ETH</s></b>}
-              {price && wordAvailable && <b>{utils.formatEther(price)} ETH</b>}
-            </Card.Text>
+              <div className="mb-n1">
+                {price && !wordAvailable && <b><s>{utils.formatEther(price)} ETH</s></b>}
+                {price && wordAvailable && <b>{utils.formatEther(price)} ETH</b>}
+              </div>
+              {wordAvailable && instancesAvailable && <small>{instancesAvailable.toString()} Available</small>}
+            {/* </Card.Text> */}
           </Col>
-          <Col className="text-end pe-1 ">
+          <Col className={`text-end ${!wordAvailable ? 'pe-1' : ''}`}>
             {account && !wordAvailable && <Button variant="outline-primary" size="sm" disabled={true} className="text-uppercase">Not Available</Button>}
             {account && wordAvailable && <Button variant={!wordAvailable ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? <div className="d-flex align-items-center"><Spinner animation="border" variant="dark" size="sm" className="me-1" />Minting</div> : 'Purchase'}</Button>}
           </Col>
