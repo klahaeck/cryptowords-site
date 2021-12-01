@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useEthers } from '@usedapp/core';
+import { useEthers, getExplorerAddressLink } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -30,7 +30,7 @@ const AccountTools = ({ hideModal }) => {
           <a role="button" onClick={() => handleClickToCopy(account)}><i className="bi bi-files"></i> Copy Address</a>
         </Col>
         <Col>
-          <a href={`https://etherscan.io/address/${account}`} target="_blank" rel="noreferrer" className="text-dark"><i className="bi bi-box-arrow-up-right"></i> View on Etherscan</a>
+          <a href={getExplorerAddressLink(account, parseInt(process.env.NEXT_PUBLIC_CHAIN_ID))} target="_blank" rel="noreferrer" className="text-dark"><i className="bi bi-box-arrow-up-right"></i> View on Etherscan</a>
         </Col>
       </Row>
       <Row className="mt-4">

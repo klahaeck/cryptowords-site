@@ -31,8 +31,8 @@ const WalletConnectors = ({ hideModal }) => {
         4: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY
       },
       supportedChainIds: [1, 4],
-      defaultChainId: 4,
-      chainId: 4,
+      defaultChainId: process.env.PUBLIC_NEXT_CHAIN_ID,
+      chainId: process.env.PUBLIC_NEXT_CHAIN_ID,
       // bridge: 'https://bridge.walletconnect.org',
       qrcode: true,
       pollingInterval: 12000

@@ -24,7 +24,7 @@ const SetDefaultPrice = ({ className }) => {
         message: 'This is already the default price',
       });
     } else {
-      send(utils.formatUnits(utils.parseUnits(data.defaultPrice)));
+      send(utils.parseUnits(data.defaultPrice));
     }
   }
 

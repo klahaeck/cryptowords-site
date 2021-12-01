@@ -1,4 +1,4 @@
-import { ChainId, useEthers } from '@usedapp/core';
+import { getChainName, useEthers } from '@usedapp/core';
 import {
   Container,
   Alert,
@@ -9,7 +9,7 @@ const ChainChecker = () => {
 
   return (
     <Container className="mt-3">
-      {account && chainId !== ChainId.Rinkeby && <Alert variant="danger"><h1>Stop!</h1><p>This is a test Web3 app that uses the Rinkeby network! Please switch to rinkeby before minting NFTs.</p></Alert>}
+      {account && chainId !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID) && <Alert variant="danger"><h1>Stop!</h1><p>This app uses the <b>{getChainName(process.env.NEXT_PUBLIC_CHAIN_ID)}</b> network. You are currently using the <b>{getChainName(chainId)}</b> network. Please change accordingly.</p></Alert>}
     </Container>
   );
 };

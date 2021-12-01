@@ -18,7 +18,7 @@ const SetCutomPriceByWord = ({ className }) => {
   const contract = useContract();
   const { state, send } = useContractFunction(contract, 'setCustomPriceByWord');
 
-  const onSubmit = data => send(data.word.trim().toLowerCase(), utils.formatUnits(utils.parseUnits(data.price), 'wei'));
+  const onSubmit = data => send(data.word.trim().toLowerCase(), utils.parseUnits(data.price));
 
   useEffect(() => {
     if (state.status === 'Success') reset({word: '', price: utils.formatEther(defaultPrice)});

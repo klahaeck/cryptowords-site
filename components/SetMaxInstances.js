@@ -18,7 +18,7 @@ const SetMaxInstances = ({ className }) => {
   const { state, send } = useContractFunction(contract, 'setMaxInstances');
 
   const onSubmit = data => {
-    if (utils.formatUnits(utils.parseUnits(data.maxInstances)) === maxInstances) {
+    if (data.maxInstances === maxInstances) {
       setError('maxInstances', {
         type: 'manual',
         message: 'This is already the max instances',
