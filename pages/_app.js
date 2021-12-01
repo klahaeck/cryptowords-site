@@ -2,10 +2,10 @@ import { wrapper } from '../store/store';
 import { ChainId, DAppProvider, MULTICALL_ADDRESSES } from '@usedapp/core';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
-import '../styles/globals.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import '../styles/globals.scss';
 
 const tagManagerArgs = {
   gtmId: 'GTM-53GZ6NG',
