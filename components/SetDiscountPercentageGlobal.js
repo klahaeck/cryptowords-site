@@ -8,36 +8,36 @@ import {
 import useContract from '../hooks/useContract';
 import useAdminData from '../hooks/useAdminData';
 
-const SetDiscountPercentage = ({ className }) => {
+const SetDiscountPercentageGlobal = ({ className }) => {
   const { handleSubmit, setError, control, formState: { errors }, reset } = useForm();
 
-  const { discountPercentage } = useAdminData();
+  const { discountPercentageGlobal } = useAdminData();
 
   const contract = useContract();
-  const { state, send } = useContractFunction(contract, 'setDiscountPercentage');
+  const { state, send } = useContractFunction(contract, 'setDiscountPercentageGlobal');
 
   const onSubmit = data => {
-    if (data.discountPercentage === discountPercentage * .01) {
-      setError('discountPercentage', {
+    if (data.discountPercentageGlobal === discountPercentageGlobal * .01) {
+      setError('discountPercentageGlobal', {
         type: 'manual',
-        message: 'This is already the discount percentage',
+        message: 'This is already the global discount percentage',
       });
     } else {
-      send(data.discountPercentage * 100);
+      send(data.discountPercentageGlobal * 100);
     }
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
       <Form.Group>
-        <Form.Label htmlFor="discountPercentage">
-          Set Discount Percentage
+        <Form.Label htmlFor="discountPercentageGlobal">
+          Set Global Discount Percentage
         </Form.Label>
         <InputGroup>
           <Controller
-            name="discountPercentage"
+            name="discountPercentageGlobal"
             control={control}
-            defaultValue={() => discountPercentage * .01}
+            defaultValue={() => discountPercentageGlobal * .01}
             rules={{
               required: true
               // pattern: /^[A-Za-z]+$/
@@ -46,11 +46,11 @@ const SetDiscountPercentage = ({ className }) => {
           />
           <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
         </InputGroup>
-        {errors.discountPercentage?.type === 'required' && <small className="form-text text-danger">A percentage is required</small>}
-        {errors.discountPercentage?.type === 'manual' && <small className="form-text text-danger">{errors.discountPercentage?.message}</small>}
+        {errors.discountPercentageGlobal?.type === 'required' && <small className="form-text text-danger">A percentage is required</small>}
+        {errors.discountPercentageGlobal?.type === 'manual' && <small className="form-text text-danger">{errors.discountPercentageGlobal?.message}</small>}
       </Form.Group>
     </Form>
   );
 };
 
-export default SetDiscountPercentage;
+export default SetDiscountPercentageGlobal;

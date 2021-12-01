@@ -30,8 +30,9 @@ const CardSearch = (props) => {
 
   const { account } = useEthers();
 
-  const hasDiscount = useHasRole('DISCOUNTED_ROLE', account);
-  const { discountPercentage, paused } = useAdminData();
+  const isDiscountedUser = useHasRole('DISCOUNTED_ROLE', account);
+  const isMinter = useHasRole('MINTER_ROLE', account);
+  const { discountPercentage, discountPercentageGlobal, paused } = useAdminData();
   const price = usePrice(account, search.name);
   const wordAvailable = useWordAvailable(search.name);
   const instancesAvailable = useInstancesAvailable(search.name);
@@ -124,7 +125,8 @@ const CardSearch = (props) => {
         <Row className="align-items-center">
           <Col xs="auto">
             {/* <Card.Text> */}
-              {price && discountPercentage && hasDiscount && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
+              {price && isDiscountedUser && discountPercentage && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
+              {price && !isDiscountedUser && !isMinter && discountPercentageGlobal && <><s>{getFullPrice(price, discountPercentageGlobal)} ETH</s><br /></>}
               <div className="mb-n1">
                 {price && !wordAvailable && <b><s>{utils.formatEther(price)} ETH</s></b>}
                 {price && wordAvailable && <b>{utils.formatEther(price)} ETH</b>}

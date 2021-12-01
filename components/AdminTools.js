@@ -11,12 +11,13 @@ import SetMaxInstances from './SetMaxInstances';
 import SetMaxInstancesByWord from './SetMaxInstancesByWord';
 import SetDefaultPrice from './SetDefaultPrice';
 import SetDiscountPercentage from './SetDiscountPercentage';
+import SetDiscountPercentageGlobal from './SetDiscountPercentageGlobal';
 import SetCutomPriceByWord from './SetCutomPriceByWord';
 import DiscountedMembers from './DiscountedMembers';
 import Minters from './Minters';
 
 const AdminTools = () => {
-  const { totalSupply, paused, maxInstances, defaultPrice, discountPercentage, balance } = useAdminData();
+  const { totalSupply, paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal, balance } = useAdminData();
 
   const contract = useContract();
   const { state: statePause, send: pause } = useContractFunction(contract, 'pause');
@@ -33,6 +34,7 @@ const AdminTools = () => {
         <ListGroup.Item className="ps-0">Total Words: <b>{totalSupply}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal * .01}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Discount: <b>{discountPercentage * .01}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>
       </ListGroup>
@@ -43,10 +45,11 @@ const AdminTools = () => {
       </ButtonToolbar>
       <hr className="dropdown-divider" />
       <SetMaxInstances className="mb-4" />
-      <SetDefaultPrice className="mb-4" />
-      <SetDiscountPercentage className="mb-4" />
       <SetMaxInstancesByWord className="mb-4" />
+      <SetDefaultPrice className="mb-4" />
       <SetCutomPriceByWord className="mb-4" />
+      <SetDiscountPercentageGlobal className="mb-4" />
+      <SetDiscountPercentage className="mb-4" />
       <DiscountedMembers className="mb-4" />
       <Minters className="mb-4" />
     </>
