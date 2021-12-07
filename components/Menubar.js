@@ -35,8 +35,12 @@ const Menubar = (props) => {
       <Navbar bg="dark" expand={false} variant="dark">
         <Container>
           <Navbar.Brand href="/" className="me-auto">
-            <span className="d-md-none text-primary">CW</span>
-            <span className="d-none d-md-block text-primary">CryptoWords</span>
+            <span className="d-md-none text-primary">
+              <img src="https://cryptowords.s3.amazonaws.com/production/header-logo-small.svg" alt="CryptoWords logo small" className="img-fluid" width="90" />
+            </span>
+            <span className="d-none d-md-block mt-n1">
+              <img src="https://cryptowords.s3.amazonaws.com/production/header-logo.svg" class="img-fluid" alt="CryptoWords logo" width="320" />
+            </span>
           </Navbar.Brand>
           {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet</Button>}
           {account && <Button variant="outline-primary" onClick={handleWalletInfo}><AccountDisplay /></Button>}
