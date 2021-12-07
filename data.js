@@ -3,7 +3,7 @@ export const meta = {
   socialTitle: 'CryptoWords',
   keywords: 'crypto words dictionary',
   description: 'Own the English language, one word at a time.',
-  imageUrl: 'https://cryptowords.s3.amazonaws.com/production/social-share.jpg',
+  imageUrl: 'https://cryptowords.s3.amazonaws.com/production/social-share.png',
   path: '/',
   url: 'https://cryptowords.art'
 };
