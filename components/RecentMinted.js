@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useEthers, useTokenBalance, useToken } from '@usedapp/core';
+import { useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import useContract from '../hooks/useContract';
@@ -16,40 +16,36 @@ import { gsap } from 'gsap';
 import CardWord from './CardWord';
 
 const RecentMinted = ({ showModal, className }) => {
-  const { account, library } = useEthers();
-  const CONTRACT_ADDRESS = '0xf01465Ca3e08514163cA66536705E79aFa731C82';
-  const wordBalance = useTokenBalance(CONTRACT_ADDRESS, account);
-  const wordInfo = useToken(CONTRACT_ADDRESS);
-  console.log(wordInfo.toString());
+  // const { library } = useEthers();
   // console.log(library);
   // const recentWords = useRecentWords(10);
-  const contract = useContract();
+  // const contract = useContract();
   
   const recentWords = [];
   const tickerWrapper = useRef(null);
   const tickerList = useRef(null);
   const tlCarousel = useRef(gsap.timeline({ repeat: -1 }));
 
-  useEffect(() => {
-    // async function init() {
-    //   if (contract) {
-    //     // console.log(contract);
-    //     const eventFilter = contract.filters.WordMinted();
-    //     // console.log(eventFilter);
-    //     console.log(library);
-    //     const events = await library.provider.queryFilter(eventFilter);
-    //     console.log(events);
-    //   }
-    // }
-    // init();
-    // console.log(events);
+  // useEffect(() => {
+  //   // async function init() {
+  //   //   if (contract) {
+  //   //     // console.log(contract);
+  //   //     const eventFilter = contract.filters.WordMinted();
+  //   //     // console.log(eventFilter);
+  //   //     console.log(library);
+  //   //     const events = await library.provider.queryFilter(eventFilter);
+  //   //     console.log(events);
+  //   //   }
+  //   // }
+  //   // init();
+  //   // console.log(events);
 
-    if (library) {
-      library.on('WordMinted', (error, event) => {
-        console.log(event);
-      });
-    }
-  }, [library]);
+  //   if (library) {
+  //     library.on('WordMinted', (error, event) => {
+  //       console.log(event);
+  //     });
+  //   }
+  // }, [library]);
 
   // useEffect(() => {
   //   const duration = tickerList.current.offsetWidth * .015;
