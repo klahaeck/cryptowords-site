@@ -28,6 +28,7 @@ const WalletConnectors = ({ hideModal }) => {
     const connector = new WalletConnectConnector({
       rpc: {
         1: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
+        3: process.env.NEXT_PUBLIC_INFURA_URL_ROPSTEN,
         4: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY
       },
       supportedChainIds: [1, 4],

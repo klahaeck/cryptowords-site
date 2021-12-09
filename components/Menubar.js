@@ -39,7 +39,7 @@ const Menubar = (props) => {
               <img src="https://cryptowords.s3.amazonaws.com/production/header-logo-small.svg" alt="CryptoWords logo small" className="img-fluid" width="90" />
             </span>
             <span className="d-none d-md-block mt-n1">
-              <img src="https://cryptowords.s3.amazonaws.com/production/header-logo.svg" class="img-fluid" alt="CryptoWords logo" width="320" />
+              <img src="https://cryptowords.s3.amazonaws.com/production/header-logo.svg" className="img-fluid" alt="CryptoWords logo" width="320" />
             </span>
           </Navbar.Brand>
           {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet</Button>}

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node server.js",
     "lint": "next lint",
     "heroku-postbuild": "npm run build"
   },
@@ -16,9 +16,11 @@
     "@web3-react/walletlink-connector": "^6.2.8",
     "add": "^2.0.6",
     "aws-sdk": "^2.1008.0",
+    "basic-auth": "^2.0.1",
     "bootstrap": "5.1.1",
     "bootstrap-icons": "^1.7.0",
     "canvas": "^2.8.0",
+    "express": "^4.17.1",
     "gsap": "./gsap-bonus.tgz",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.3",

@@ -12,9 +12,9 @@ const tagManagerArgs = {
 }
 
 const config = {
-  readOnlyChainId: ChainId.Rinkeby,
+  readOnlyChainId: ChainId.Ropsten,
   readOnlyUrls: {
-    [ChainId.Rinkeby]: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY,
+    [ChainId.Ropsten]: process.env.NEXT_PUBLIC_INFURA_URL_ROPSTEN,
     [ChainId.Mainnet]: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
     // 31337: 'http://localhost:8545',
   },

@@ -5,13 +5,7 @@ import CryptoWordsV1 from '../contracts/CryptoWordsV1.json';
 function useAdminData() {
   const cryptoWordsInterface = new utils.Interface(CryptoWordsV1.abi);
   const etherBalance = useEtherBalance(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS);
-  const [ totalSupply, paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal ] = useContractCalls([
-    {
-      abi: cryptoWordsInterface,
-      address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-      method: 'totalSupply',
-      args: [],
-    },
+  const [ paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal ] = useContractCalls([
     {
       abi: cryptoWordsInterface,
       address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
@@ -44,7 +38,6 @@ function useAdminData() {
     },
   ]) ?? [];
   return {
-    totalSupply: totalSupply ? Number(totalSupply) : 0,
     paused: paused ? paused[0] : false,
     maxInstances: maxInstances ? Number(maxInstances) : 0,
     defaultPrice: defaultPrice ? defaultPrice.toString() : 0,

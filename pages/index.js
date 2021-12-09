@@ -12,8 +12,8 @@ import {
   Col,
 } from 'react-bootstrap';
 import Layout from '../layouts/Main';
-import useRecentWords from '../hooks/useRecentWords';
-import useOwnedWords from '../hooks/useOwnedWords';
+// import useRecentWords from '../hooks/useRecentWords';
+// import useOwnedWords from '../hooks/useOwnedWords';
 import Header from '../components/Header';
 import WordForm from '../components/WordForm';
 import CardSearch from '../components/CardSearch';
@@ -30,8 +30,11 @@ const Home = (props) => {
 
   const { account } = useEthers();
 
-  const ownedWords = useOwnedWords(account);
-  const recentWords = useRecentWords(10);
+  // const ownedWords = useOwnedWords(account);
+  // const recentWords = useRecentWords(10);
+
+  // const ownedWords = [];
+  // const recentWords = [];
 
   useEffect(() => {
     if (query?.word) addSearch({ name: query.word.trim().toLowerCase() });
@@ -65,12 +68,12 @@ const Home = (props) => {
 
       <div className="bg-dark mt-5">
         <Container>
-          {recentWords && recentWords.length > 0 && <RecentMinted />}
+          <RecentMinted />
         </Container>
       </div>
 
       <Container className="mt-5 mb-5">
-        {account && ownedWords && ownedWords.length > 0 && <OwnedWords />}
+        {/* {account && ownedWords && ownedWords.length > 0 && <OwnedWords />} */}
       </Container>
     </Layout>
   );
