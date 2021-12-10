@@ -23,17 +23,17 @@ app.prepare().then(async () => {
 
   // server.use(sslRedirect.default());
 
-  server.use(function (req, res, next) {
-    const credentials = auth(req);
+  // server.use(function (req, res, next) {
+  //   const credentials = auth(req);
 
-    if ((!credentials || credentials.name !== process.env.BASIC_AUTH_USER || credentials.pass !== process.env.BASIC_AUTH_PASS) && process.env.IS_LIVE !== 'true') {
-      res.status(401);
-      res.header('WWW-Authenticate', 'Basic realm="example"');
-      res.send('Access denied');
-    } else {
-      next();
-    }
-  });
+  //   if ((!credentials || credentials.name !== process.env.BASIC_AUTH_USER || credentials.pass !== process.env.BASIC_AUTH_PASS) && process.env.IS_LIVE !== 'true') {
+  //     res.status(401);
+  //     res.header('WWW-Authenticate', 'Basic realm="example"');
+  //     res.send('Access denied');
+  //   } else {
+  //     next();
+  //   }
+  // });
 
   server.use(express.static(__dirname + '/public', { maxAge: '1h' }));
   server.use(function (req, res, next) {
