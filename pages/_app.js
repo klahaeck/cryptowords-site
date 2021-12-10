@@ -1,5 +1,5 @@
 import { wrapper } from '../store/store';
-import { ChainId, DAppProvider, MULTICALL_ADDRESSES } from '@usedapp/core';
+import { ChainId, DAppProvider } from '@usedapp/core';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -12,10 +12,12 @@ const tagManagerArgs = {
 }
 
 const config = {
-  readOnlyChainId: ChainId.Ropsten,
+  readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
     [ChainId.Ropsten]: process.env.NEXT_PUBLIC_INFURA_URL_ROPSTEN,
     [ChainId.Mainnet]: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
+    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON_MUMBAI,
+    [ChainId.Polygon]: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON_MAINNET
     // 31337: 'http://localhost:8545',
   },
   // multicallAddresses: {

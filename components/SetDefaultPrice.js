@@ -1,4 +1,4 @@
-import { useContractFunction } from '@usedapp/core';
+import { useEthers, useContractFunction, ChainId } from '@usedapp/core';
 import { utils } from 'ethers';
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -10,6 +10,7 @@ import useContract from '../hooks/useContract';
 import useAdminData from '../hooks/useAdminData';
 
 const SetDefaultPrice = ({ className }) => {
+  const { chainId } = useEthers();
   const { handleSubmit, setError, control, formState: { errors }, reset } = useForm();
 
   const { defaultPrice } = useAdminData();
@@ -28,11 +29,15 @@ const SetDefaultPrice = ({ className }) => {
     }
   }
 
+  const getCurrency = () => {
+    return chainId === ChainId.Polygon || chainId === ChainId.Mumbai ? 'MATIC' : 'ETH';
+  };
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
       <Form.Group>
         <Form.Label htmlFor="defaultPrice">
-          Set Default Price (ETH)
+          Set Default Price ({getCurrency()})
         </Form.Label>
         <InputGroup>
           <Controller
@@ -43,11 +48,11 @@ const SetDefaultPrice = ({ className }) => {
               required: true
               // pattern: /^[A-Za-z]+$/
             }}
-            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Price in ETH" />}
+            render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder={`Price in ${getCurrency()}`} />}
           />
           <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
         </InputGroup>
-        {errors.defaultPrice?.type === 'required' && <small className="form-text text-danger">A price in ETH is required</small>}
+        {errors.defaultPrice?.type === 'required' && <small className="form-text text-danger">A price in {getCurrency()} is required</small>}
         {errors.defaultPrice?.type === 'manual' && <small className="form-text text-danger">{errors.defaultPrice?.message}</small>}
       </Form.Group>
     </Form>

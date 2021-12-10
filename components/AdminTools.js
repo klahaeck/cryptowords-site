@@ -1,4 +1,4 @@
-import { useContractFunction } from '@usedapp/core';
+import { useEthers, useContractFunction, ChainId } from '@usedapp/core';
 import { utils } from 'ethers';
 import useAdminData from '../hooks/useAdminData';
 import {
@@ -17,6 +17,7 @@ import DiscountedMembers from './DiscountedMembers';
 import Minters from './Minters';
 
 const AdminTools = () => {
+  const { chainId } = useEthers();
   const { totalSupply, paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal, balance } = useAdminData();
 
   const contract = useContract();
@@ -26,6 +27,8 @@ const AdminTools = () => {
 
   const handleTogglePause = () => paused ? unpause() : pause();
   const handlePayout = () => release();
+
+  const getCurrency = () => chainId === ChainId.Polygon || chainId === ChainId.Mumbai ? 'MATIC' : 'ETH';
   
   return (
     <>
@@ -33,7 +36,7 @@ const AdminTools = () => {
         <ListGroup.Item className="ps-0">Paused: <b>{paused.toString()}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Total Words: <b>{totalSupply}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>
-        <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)} {getCurrency()}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Discount: <b>{discountPercentage}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>

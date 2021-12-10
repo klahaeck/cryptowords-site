@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/fetcher';
 import { utils } from 'ethers';
-import { useEthers, useContractFunction } from '@usedapp/core';
+import { useEthers, useContractFunction, ChainId } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import startCase from 'lodash/startCase';
@@ -28,7 +28,7 @@ import {
 const CardSearch = (props) => {
   const { search, onCloseClick, showModal, addAlert, addToast, className } = props;
 
-  const { account } = useEthers();
+  const { account, chainId } = useEthers();
 
   const isDiscountedUser = useHasRole('DISCOUNTED_ROLE', account);
   const isMinter = useHasRole('MINTER_ROLE', account);
@@ -63,6 +63,10 @@ const CardSearch = (props) => {
 
   const handleClickExpand = () => {
     showModal({body:<Card.Img variant="top" width="100%" src={data.image} alt={data.name} />})
+  };
+
+  const getCurrency = () => {
+    return chainId === ChainId.Polygon || chainId === ChainId.Mumbai ? 'MATIC' : 'ETH';
   };
 
   if (error) return (
@@ -126,10 +130,10 @@ const CardSearch = (props) => {
           <Col xs="auto">
             {/* <Card.Text> */}
               {price && isDiscountedUser && discountPercentage > 0 && <><s>{getFullPrice(price, discountPercentage)} ETH</s><br /></>}
-              {price && !isDiscountedUser && !isMinter && discountPercentageGlobal > 0 && <><s>{getFullPrice(price, discountPercentageGlobal)} ETH</s><br /></>}
+              {price && !isDiscountedUser && !isMinter && discountPercentageGlobal > 0 && <><s>{getFullPrice(price, discountPercentageGlobal)} {getCurrency()}</s><br /></>}
               <div className="mb-n1">
-                {price && !wordAvailable && <b><s>{utils.formatEther(price)} ETH</s></b>}
-                {price && wordAvailable && <b>{utils.formatEther(price)} ETH</b>}
+                {price && !wordAvailable && <b><s>{utils.formatEther(price)} {getCurrency()}</s></b>}
+                {price && wordAvailable && <b>{utils.formatEther(price)} {getCurrency()}</b>}
               </div>
               {wordAvailable && instancesAvailable && <small>{instancesAvailable.toString()} Available</small>}
             {/* </Card.Text> */}
