@@ -67,7 +67,6 @@ const Minters = ({ className }) => {
     }
   }, [stateRevokeRole]);
 
-  
   return (
     <div className={className}>
       <h5>Minters</h5>
