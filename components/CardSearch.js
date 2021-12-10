@@ -110,7 +110,7 @@ const CardSearch = (props) => {
     </Card>
   );
 
-  const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 10000)).toFixed(2)}`);
+  const getFullPrice = (_price, _discountPercentage) => utils.formatEther(`${Number(_price) / (1 - (_discountPercentage / 100)).toFixed(2)}`);
 
   return (
     <Card bg="dark" text="light" className={className}>

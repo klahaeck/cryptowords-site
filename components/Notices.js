@@ -18,7 +18,7 @@ const Notices = () => {
         <p className="h5 p-2 m-0">All purchases are currently paused.</p>
       </div>}
       {account && hasDiscount() && <div className="p-0 m-0 bg-primary text-dark text-center">
-        <p className="h5 p-2 m-0 text-uppercase">You have a {getDiscount() * .01}% discount!</p>
+        <p className="h5 p-2 m-0 text-uppercase">You have a {getDiscount()}% discount!</p>
       </div>}
     </>
   );
