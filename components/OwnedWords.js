@@ -1,5 +1,5 @@
-import { useEthers } from '@usedapp/core';
-// import useOwnedWords from '../hooks/useOwnedWords';
+// import { useEthers } from '@usedapp/core';
+import useOwnedWords from '../hooks/useOwnedWords';
 import {
   Row,
   Col,
@@ -7,9 +7,10 @@ import {
 import CardWord from './CardWord';
 
 const OwnedWords = ({ className }) => {
-  const { account } = useEthers();
+  // const { account } = useEthers();
   // const ownedWords = useOwnedWords(account);
   // const ownedWords = [];
+  const ownedWords = useOwnedWords();
 
   return (
     <div className={className}>
@@ -19,11 +20,11 @@ const OwnedWords = ({ className }) => {
         </Col>
       </Row>
       <Row className="g-1">
-        {/* {ownedWords.map((word, index) => (
+        {ownedWords && ownedWords.length > 0 && ownedWords.map((ownedWord, index) => (
           <Col key={index} xs="12" sm="8" md="6" lg="4" xl="3">
-            <CardWord word={word} tools={true} />
+            <CardWord word={ownedWord.word} tools={true} />
           </Col>
-        ))} */}
+        ))}
       </Row>
     </div>    
   );

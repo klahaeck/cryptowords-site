@@ -12,15 +12,13 @@ function useRecentWords(limit) {
   //   method: 'getRecentWords',
   //   args: [limit]
   // }) ?? [];
-  
-  const [ recentWords, setRecentWords ] = useState(null);
-  const { mintedWords } = useMintedWords();
 
-  useEffect(() => {
-    setRecentWords(mintedWords);
-  }, [mintedWords]);
+  const [ recentWords, setRecentWords ] = useState([]);
+  const mintedWords = useMintedWords();
 
-  return { recentWords };
+  useEffect(() => setRecentWords(mintedWords.slice(-(limit || 15))), [mintedWords]);
+
+  return recentWords;
 }
 
 export default useRecentWords;

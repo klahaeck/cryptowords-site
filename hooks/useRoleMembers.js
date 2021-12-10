@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+import fetcher from '../lib/fetcher';
+// import { useState, useEffect } from 'react';
 import { useContractCall, useContractCalls } from '@usedapp/core';
 import { utils } from 'ethers';
 import CryptoWordsV1 from '../contracts/CryptoWordsV1.json';
 
 function useRoleMembers(role) {
-  const [ thisCalls, setThisCalls ] = useState([]);
+  // const [ thisCalls, setThisCalls ] = useState([]);
 
   const cryptoWordsInterface = new utils.Interface(CryptoWordsV1.abi);
   
@@ -15,28 +17,34 @@ function useRoleMembers(role) {
     args: []
   }) ?? [];
 
-  const [ memberCount ] = useContractCall(thisRole && {
-    abi: cryptoWordsInterface,
-    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    method: 'getRoleMemberCount',
-    args: [thisRole]
-  }) ?? [];
+  // const [ memberCount ] = useContractCall(thisRole && {
+  //   abi: cryptoWordsInterface,
+  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+  //   method: 'getRoleMemberCount',
+  //   args: [thisRole]
+  // }) ?? [];
 
-  const members = useContractCalls(thisCalls);
+  // const members = useContractCalls(thisCalls);
 
-  useEffect(() => {
-    if (Number(memberCount) > 0) {
-      const newCalls = Array(Number(memberCount)).fill().map((number, index) => ({
-        abi: cryptoWordsInterface,
-        address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-        method: 'getRoleMember',
-        args: [thisRole, index]
-      }));
-      setThisCalls(newCalls);
-    }
-  }, [memberCount]);
+  // useEffect(() => {
+  //   if (Number(memberCount) > 0) {
+  //     const newCalls = Array(Number(memberCount)).fill().map((number, index) => ({
+  //       abi: cryptoWordsInterface,
+  //       address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+  //       method: 'getRoleMember',
+  //       args: [thisRole, index]
+  //     }));
+  //     setThisCalls(newCalls);
+  //   }
+  // }, [memberCount]);
 
-  return [thisRole, [].concat(...members)];
+  // return [thisRole, [].concat(...members)];
+
+  const { data, error } = useSWR(role ? `/api/roles/${role.replace('_ROLE', '').toLowerCase()}` : null, fetcher);
+
+  if (error) return [ thisRole, [] ];
+  if (!data) return [ thisRole, [] ];
+  return [ thisRole, data ];
 }
 
 export default useRoleMembers;

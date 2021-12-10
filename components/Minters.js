@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useContractFunction, shortenAddress } from '@usedapp/core';
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -11,19 +11,61 @@ import useContract from '../hooks/useContract';
 import useRoleMembers from '../hooks/useRoleMembers';
 
 const Minters = ({ className }) => {
+  const [ toDelete, setToDelete ] = useState('');
   const [ minterRole, minterMembers ] = useRoleMembers('MINTER_ROLE');
-  const { handleSubmit, control, formState: { errors }, reset } = useForm();
+  const { handleSubmit, control, getValues, formState: { errors }, reset } = useForm();
 
   const contract = useContract();
   const { state: stateGrantRole, send: sendGrantRole } = useContractFunction(contract, 'grantRole');
   const { state: stateRevokeRole, send: sendRevokeRole } = useContractFunction(contract, 'revokeRole');
 
   const onSubmit = data => sendGrantRole(minterRole.toString(), data.address.toString());
-  const handleRevokeRole = (member) => sendRevokeRole(minterRole.toString(), member.toString());
+  const handleRevokeRole = (address) => {
+    setToDelete(address);
+    sendRevokeRole(minterRole.toString(), address.toString());
+  };
 
   useEffect(() => {
-    if (stateGrantRole.status === 'Success') reset({address: ''});
+    if (stateGrantRole.status === 'Success') {
+      fetch('/api/roles/minter', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          address: getValues('address')
+        })
+      })
+        // .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+          reset({address: ''});
+        })
+        .catch(error => console.error(error));
+    }
   }, [stateGrantRole]);
+
+  useEffect(() => {
+    if (stateRevokeRole.status === 'Success') {
+      fetch('/api/roles/minter', {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          address: toDelete
+        })
+      })
+        // .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+          setToDelete('');
+        })
+        .catch(error => console.error(error));
+    }
+  }, [stateRevokeRole]);
 
   return (
     <div className={className}>
@@ -32,8 +74,8 @@ const Minters = ({ className }) => {
         <ListGroup variant="flush" className="mb-1">
           {minterMembers.map((member, index) => (
             <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
-              <div className="w-75 text-truncate">{member && shortenAddress(member)}</div>
-              <Button variant="danger" size="sm" onClick={() => handleRevokeRole(member)} disabled={stateRevokeRole.status === 'Mining'}>X</Button>
+              <div className="w-75 text-truncate">{member?.address && shortenAddress(member.address)}</div>
+              <Button variant="danger" size="sm" onClick={() => handleRevokeRole(member.address)} disabled={stateRevokeRole.status === 'Mining'}>X</Button>
             </ListGroup.Item>
           ))}
         </ListGroup>

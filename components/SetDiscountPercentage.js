@@ -17,13 +17,13 @@ const SetDiscountPercentage = ({ className }) => {
   const { state, send } = useContractFunction(contract, 'setDiscountPercentage');
 
   const onSubmit = data => {
-    if (data.discountPercentage === discountPercentage * .01) {
+    if (data.discountPercentage === discountPercentage) {
       setError('discountPercentage', {
         type: 'manual',
         message: 'This is already the discount percentage',
       });
     } else {
-      send(data.discountPercentage * 100);
+      send(data.discountPercentage);
     }
   }
 
@@ -37,7 +37,7 @@ const SetDiscountPercentage = ({ className }) => {
           <Controller
             name="discountPercentage"
             control={control}
-            defaultValue={() => discountPercentage * .01}
+            defaultValue={discountPercentage}
             rules={{
               required: true
               // pattern: /^[A-Za-z]+$/

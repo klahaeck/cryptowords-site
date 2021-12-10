@@ -5,7 +5,6 @@ import startCase from 'lodash/startCase';
 import {
   showModal,
 } from '../store/root/reducer';
-// import useRecentWords from '../hooks/useRecentWords';
 import useRecentWords from '../hooks/useRecentWords';
 import {
   Row,
@@ -15,24 +14,22 @@ import { gsap } from 'gsap';
 import CardWord from './CardWord';
 
 const RecentMinted = ({ showModal, className }) => {
-  // const gasPrice = useGasPrice();
-  // console.log(utils.formatUnits(gasPrice, 'gwei'));
-
-  // const recentWords = useRecentWords(10);
-  const { recentWords } = useRecentWords() ?? [];
+  const recentWords = useRecentWords(15);
   
   const tickerWrapper = useRef(null);
   const tickerList = useRef(null);
   const tlCarousel = useRef(gsap.timeline({ repeat: -1 }));
 
   useEffect(() => {
-    const duration = tickerList.current.offsetWidth * .015;
-    tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'}, 'start');
-  }, []);
+    if (recentWords.length > 0) {
+      const duration = tickerList.current.offsetWidth * .015;
+      tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'}, 'start');
+    }
+  }, [recentWords]);
 
   const handleWordClick = (word) => showModal({body:<CardWord word={word} />})
 
-  return recentWords && recentWords.length > 0 ? (
+  return (
     <div className={`bg-dark text-primary py-3 ${className || ''}`}>
       <Row className="align-items-center">
         <Col md="4">
@@ -45,14 +42,14 @@ const RecentMinted = ({ showModal, className }) => {
           <div ref={tickerWrapper} className="ticker-wrapper overflow-hidden d-flex">
             {Array(3).fill().map((item, index) => (
               <div key={index} ref={tickerList} className="ticker-list">
-                {recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord.word);}}>{startCase(recentWord.word)}</a></span>)}
+                {recentWords && recentWords.length > 0 && recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord.word);}}>{startCase(recentWord.word)}</a></span>)}
               </div>
             ))}
           </div>
         </Col>
       </Row>
     </div>
-  ) : null;
+  );
 };
 
 const mapDispatchToProps = (dispatch) => ({

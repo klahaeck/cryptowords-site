@@ -17,13 +17,13 @@ const SetDiscountPercentageGlobal = ({ className }) => {
   const { state, send } = useContractFunction(contract, 'setDiscountPercentageGlobal');
 
   const onSubmit = data => {
-    if (data.discountPercentageGlobal === discountPercentageGlobal * .01) {
+    if (data.discountPercentageGlobal === discountPercentageGlobal) {
       setError('discountPercentageGlobal', {
         type: 'manual',
         message: 'This is already the global discount percentage',
       });
     } else {
-      send(data.discountPercentageGlobal * 100);
+      send(data.discountPercentageGlobal);
     }
   }
 
@@ -37,7 +37,7 @@ const SetDiscountPercentageGlobal = ({ className }) => {
           <Controller
             name="discountPercentageGlobal"
             control={control}
-            defaultValue={() => discountPercentageGlobal * .01}
+            defaultValue={discountPercentageGlobal}
             rules={{
               required: true
               // pattern: /^[A-Za-z]+$/

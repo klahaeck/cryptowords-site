@@ -34,8 +34,8 @@ const AdminTools = () => {
         <ListGroup.Item className="ps-0">Total Words: <b>{totalSupply}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)}</b></ListGroup.Item>
-        <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal * .01}%</b></ListGroup.Item>
-        <ListGroup.Item className="ps-0">Discount: <b>{discountPercentage * .01}%</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal}%</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Discount: <b>{discountPercentage}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>
       </ListGroup>
       
