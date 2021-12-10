@@ -1,4 +1,5 @@
 import getWord from '../../../lib/get-word';
+import capitalize from 'lodash/capitalize';
 
 const serveSlug = async (req, res) => {
   const { slug, type } = req.query;
@@ -31,7 +32,7 @@ const serveSlug = async (req, res) => {
       return res.status(200).json(word);
     } else {
       const { slug, name, description, image, external_url } = word;
-      return res.status(200).json({ slug, name, description, image, external_url });
+      return res.status(200).json({ slug, name: capitalize(name), description, image, external_url });
     }
   }
 };
