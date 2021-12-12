@@ -1,13 +1,14 @@
 import useSWR from 'swr';
 import fetcher from '../lib/fetcher';
 // import { useState, useEffect } from 'react';
-import { useContractCall } from '@usedapp/core';
+import { useEthers, useContractCall } from '@usedapp/core';
 import { utils } from 'ethers';
 import CryptoWordsV1 from '../contracts/CryptoWordsV1.json';
 import useContractAddress from './useContractAddress';
 
 function useRoleMembers(role) {
   // const [ thisCalls, setThisCalls ] = useState([]);
+  const { chainId } = useEthers();
   const contractAddress = useContractAddress();
 
   const cryptoWordsInterface = new utils.Interface(CryptoWordsV1.abi);
@@ -42,7 +43,7 @@ function useRoleMembers(role) {
 
   // return [thisRole, [].concat(...members)];
 
-  const { data, error } = useSWR(role ? `/api/roles/${role.replace('_ROLE', '').toLowerCase()}` : null, fetcher);
+  const { data, error } = useSWR(role ? `/api/roles/${role.replace('_ROLE', '').toLowerCase()}?chainId=${chainId}` : null, fetcher);
 
   if (error) return [ thisRole, [] ];
   if (!data) return [ thisRole, [] ];

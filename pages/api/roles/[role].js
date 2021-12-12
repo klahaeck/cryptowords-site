@@ -6,23 +6,24 @@ const discounted = async (req, res) => {
   const collection = db.collection('roles');
 
   if (req.method === 'POST') {
-    const { address } = req.body;
+    const { chainId } = req.body;
     try {
-      await collection.insertOne({ role, address });
-      return res.status(201).json({ role, address });
+      await collection.insertOne({ role, chainId });
+      return res.status(201).json({ role, chainId });
     } catch(error) {
       return res.status(500).send(error);
     }
   } else if (req.method === 'DELETE') {
-    const { address } = req.body;
+    const { chainId } = req.body;
     try {
-      await collection.deleteOne({ role, address });
+      await collection.deleteOne({ role, chainId });
       return res.status(204).send();
     } catch(error) {
       return res.status(500).send(error);
     }
   } else {
-    const users = await collection.find({ role }).toArray();
+    const { chainId } = req.query;
+    const users = await collection.find({ role, chainId }).toArray();
     return res.status(200).json(users);
   }
 };

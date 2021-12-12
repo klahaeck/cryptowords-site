@@ -11,7 +11,7 @@ import useContract from '../hooks/useContract';
 import useRoleMembers from '../hooks/useRoleMembers';
 
 const Minters = ({ className }) => {
-  const { networkId } = useEthers();
+  const { chainId } = useEthers();
   const [ toDelete, setToDelete ] = useState('');
   const [ minterRole, minterMembers ] = useRoleMembers('MINTER_ROLE');
   const { handleSubmit, control, getValues, formState: { errors }, reset } = useForm();
@@ -35,7 +35,7 @@ const Minters = ({ className }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          networkId,
+          chainId,
           address: getValues('address')
         })
       })
@@ -57,7 +57,7 @@ const Minters = ({ className }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          networkId,
+          chainId,
           address: toDelete
         })
       })
