@@ -16,25 +16,27 @@ const config = {
   readOnlyUrls: {
     [ChainId.Ropsten]: process.env.NEXT_PUBLIC_INFURA_URL_ROPSTEN,
     [ChainId.Mainnet]: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
-    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON_MUMBAI,
-    [ChainId.Polygon]: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON_MAINNET
+    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_INFURA_URL_MUMBAI,
+    [ChainId.Polygon]: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON
     // 31337: 'http://localhost:8545',
   },
   // multicallAddresses: {
   //   31337: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266', 
   //   ...MULTICALL_ADDRESSES,
   // },
-  // supportedChains: [
-  //   ChainId.Mainnet,
-  //   ChainId.Goerli,
-  //   ChainId.Kovan,
-  //   ChainId.Rinkeby,
-  //   ChainId.Ropsten,
-  //   ChainId.xDai,
-  //   ChainId.BSC,
-  //   ChainId.Localhost,
-  //   ChainId.Hardhat,
-  // ],
+  supportedChains: [
+    ChainId.Mainnet,
+    // ChainId.Goerli,
+    // ChainId.Kovan,
+    // ChainId.Rinkeby,
+    ChainId.Ropsten,
+    // ChainId.xDai,
+    // ChainId.BSC,
+    // ChainId.Localhost,
+    // ChainId.Hardhat,
+    ChainId.Mumbai,
+    ChainId.Polygon
+  ],
 };
 
 function MyApp({ Component, pageProps }) {

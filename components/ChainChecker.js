@@ -1,4 +1,4 @@
-import { getChainName, useEthers } from '@usedapp/core';
+import { getChainName, isTestChain, useEthers } from '@usedapp/core';
 import {
   Container,
   Alert,
@@ -9,7 +9,7 @@ const ChainChecker = () => {
 
   return (
     <Container className="mt-3">
-      {account && chainId !== parseInt(process.env.NEXT_PUBLIC_CHAIN_ID) && <Alert variant="danger"><h1>Stop!</h1><p>This app uses the <b>{getChainName(process.env.NEXT_PUBLIC_CHAIN_ID)}</b> network. You are currently using the <b>{getChainName(chainId)}</b> network. Please change accordingly.</p></Alert>}
+      {account && isTestChain(chainId) && <Alert variant="info"><p className="m-0 p-0">You are currently on the <b>{getChainName(chainId)}</b> test network. All transactions are for testing purposes only!</p></Alert>}
     </Container>
   );
 };

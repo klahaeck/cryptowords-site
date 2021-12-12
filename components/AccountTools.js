@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useEthers, getExplorerAddressLink } from '@usedapp/core';
+import { useEthers, useEtherBalance, getExplorerAddressLink } from '@usedapp/core';
+import { utils } from 'ethers';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -10,9 +11,12 @@ import {
   Col,
   Button
 } from 'react-bootstrap';
+import useCurrency from '../hooks/useCurrency';
 
 const AccountTools = ({ hideModal }) => {
   const { account, deactivate } = useEthers();
+  const etherBalance = useEtherBalance(account);
+  const currency = useCurrency();
 
   useEffect(() => {
     if (!account) hideModal();
@@ -25,6 +29,12 @@ const AccountTools = ({ hideModal }) => {
 
   return (
     <>
+      {etherBalance && <Row className="mb-3">
+        <Col>
+          <p className="m-0">Your wallet balance:</p>
+          <p className="h3">{Number(utils.formatEther(etherBalance.toString())).toFixed(4)} {currency}</p>
+        </Col>
+      </Row>}
       <Row>
         <Col>
           <a role="button" onClick={() => handleClickToCopy(account)}><i className="bi bi-files"></i> Copy Address</a>

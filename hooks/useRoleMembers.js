@@ -1,25 +1,27 @@
 import useSWR from 'swr';
 import fetcher from '../lib/fetcher';
 // import { useState, useEffect } from 'react';
-import { useContractCall, useContractCalls } from '@usedapp/core';
+import { useContractCall } from '@usedapp/core';
 import { utils } from 'ethers';
 import CryptoWordsV1 from '../contracts/CryptoWordsV1.json';
+import useContractAddress from './useContractAddress';
 
 function useRoleMembers(role) {
   // const [ thisCalls, setThisCalls ] = useState([]);
+  const contractAddress = useContractAddress();
 
   const cryptoWordsInterface = new utils.Interface(CryptoWordsV1.abi);
   
   const [ thisRole ] = useContractCall({
     abi: cryptoWordsInterface,
-    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    address: contractAddress,
     method: role,
     args: []
   }) ?? [];
 
   // const [ memberCount ] = useContractCall(thisRole && {
   //   abi: cryptoWordsInterface,
-  //   address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+  //   address: contractAddress,
   //   method: 'getRoleMemberCount',
   //   args: [thisRole]
   // }) ?? [];
@@ -30,7 +32,7 @@ function useRoleMembers(role) {
   //   if (Number(memberCount) > 0) {
   //     const newCalls = Array(Number(memberCount)).fill().map((number, index) => ({
   //       abi: cryptoWordsInterface,
-  //       address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+  //       address: contractAddress,
   //       method: 'getRoleMember',
   //       args: [thisRole, index]
   //     }));

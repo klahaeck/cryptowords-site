@@ -7,6 +7,7 @@ import {
   ButtonToolbar
 } from 'react-bootstrap';
 import useContract from '../hooks/useContract';
+import useCurrency from '../hooks/useCurrency';
 import SetMaxInstances from './SetMaxInstances';
 import SetMaxInstancesByWord from './SetMaxInstancesByWord';
 import SetDefaultPrice from './SetDefaultPrice';
@@ -18,6 +19,7 @@ import Minters from './Minters';
 
 const AdminTools = () => {
   const { chainId } = useEthers();
+  const currency = useCurrency();
   const { totalSupply, paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal, balance } = useAdminData();
 
   const contract = useContract();
@@ -27,8 +29,6 @@ const AdminTools = () => {
 
   const handleTogglePause = () => paused ? unpause() : pause();
   const handlePayout = () => release();
-
-  const getCurrency = () => chainId === ChainId.Polygon || chainId === ChainId.Mumbai ? 'MATIC' : 'ETH';
   
   return (
     <>
@@ -36,7 +36,7 @@ const AdminTools = () => {
         <ListGroup.Item className="ps-0">Paused: <b>{paused.toString()}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Total Words: <b>{totalSupply}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>
-        <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)} {getCurrency()}</b></ListGroup.Item>
+        <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)} {currency}</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Discount: <b>{discountPercentage}%</b></ListGroup.Item>
         <ListGroup.Item className="ps-0">Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>

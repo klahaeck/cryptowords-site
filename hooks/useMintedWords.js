@@ -4,7 +4,7 @@ import useContract from './useContract';
 function useMintedWords() {
   const [ mintedWords, setMintedWords ] = useState([]);
 
-  const contract = useContract();
+  const { contract } = useContract();
   const eventFilter = contract.filters.WordMinted();
 
   const wordMintedHandler = (tokenId, word, to) => {
