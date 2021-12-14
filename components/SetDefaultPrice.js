@@ -33,7 +33,7 @@ const SetDefaultPrice = ({ className }) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
-      <Form.Group>
+      {defaultPrice && <Form.Group>
         <Form.Label htmlFor="defaultPrice">
           Set Default Price ({currency})
         </Form.Label>
@@ -52,7 +52,7 @@ const SetDefaultPrice = ({ className }) => {
         </InputGroup>
         {errors.defaultPrice?.type === 'required' && <small className="form-text text-danger">A price in {currency} is required</small>}
         {errors.defaultPrice?.type === 'manual' && <small className="form-text text-danger">{errors.defaultPrice?.message}</small>}
-      </Form.Group>
+      </Form.Group>}
     </Form>
   );
 };

@@ -53,12 +53,16 @@ const CardSearch = (props) => {
   };
 
   useEffect(() => {
+    console.log(state);
     switch(state.status) {
       case 'Mining':
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
         break;
       case 'Success':
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+        break;
+      case 'Exception':
+        console.error(state.errorMessage);
         break;
     }
   }, [state]);

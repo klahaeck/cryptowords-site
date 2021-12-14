@@ -3,6 +3,7 @@ $grid-columns: 24;
 $enable-negative-margins: true;
 $enable-rounded: false;
 $primary: rgb(90, 224, 41);
+$polygon: #854ce6;
 
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
@@ -53,6 +54,50 @@ $primary: rgb(90, 224, 41);
 @import 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css';
 
 @import './fonts';
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "color": (
+      property: color,
+      class: text,
+      values: map-merge(
+        $utilities-text-colors,
+        (
+          "polygon": $polygon,
+        )
+      )
+    ),
+    "bg": (
+      property: color,
+      class: text,
+      values: map-merge(
+        $utilities-text-colors,
+        (
+          "polygon": $polygon,
+        )
+      )
+    ),
+    "text": (
+      property: color,
+      class: text,
+      values: map-merge(
+        $utilities-text-colors,
+        (
+          "polygon": $polygon,
+        )
+      )
+    ),
+  )
+);
+
+.color-polygon {
+  color: $polygon;
+}
+
+.bg-polygon {
+  background-color: $polygon;
+}
 
 .bg-particles {
   z-index: -1;

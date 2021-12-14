@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useEthers } from '@usedapp/core';
+import { useEthers, ChainId } from '@usedapp/core';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { connect } from 'react-redux';
@@ -29,12 +29,14 @@ const WalletConnectors = ({ hideModal }) => {
       rpc: {
         1: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
         3: process.env.NEXT_PUBLIC_INFURA_URL_ROPSTEN,
-        4: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY
+        4: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY,
+        137: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON,
+        80001: process.env.NEXT_PUBLIC_INFURA_URL_MUMBAI
       },
-      supportedChainIds: [1, 4],
-      defaultChainId: process.env.PUBLIC_NEXT_CHAIN_ID,
-      chainId: process.env.PUBLIC_NEXT_CHAIN_ID,
-      // bridge: 'https://bridge.walletconnect.org',
+      supportedChainIds: [1, 3, 137, 80001],
+      defaultChainId: ChainId.Polygon,
+      chainId: ChainId.Polygon,
+      bridge: 'https://bridge.walletconnect.org',
       qrcode: true,
       pollingInterval: 12000
     });
@@ -55,24 +57,24 @@ const WalletConnectors = ({ hideModal }) => {
       {hasMetaMask() && <Col xs={24} sm={12}>
         <Card>
           <Card.Body role="button" onClick={connectMetaMask}>
-            <div style={{backgroundImage: 'url("/images/MetaMask.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
+            <div style={{backgroundImage: 'url("https://cryptowords.s3.amazonaws.com/production/MetaMask.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
           </Card.Body>
         </Card>
       </Col>}
-      <Col xs={24} sm={12}>
+      {/* <Col xs={24} sm={12}>
         <Card>
           <Card.Body role="button" onClick={connectWalletConnect}>
-            <div style={{backgroundImage: 'url("/images/WalletConnect.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
+            <div style={{backgroundImage: 'url("https://cryptowords.s3.amazonaws.com/production/WalletConnect.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
           </Card.Body>
         </Card>
       </Col>
       <Col xs={24} sm={12}>
         <Card>
           <Card.Body role="button" onClick={connectWalletLink}>
-            <div style={{backgroundImage: 'url("/images/Coinbase.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
+            <div style={{backgroundImage: 'url("https://cryptowords.s3.amazonaws.com/production/Coinbase.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
           </Card.Body>
         </Card>
-      </Col>
+      </Col> */}
     </Row>
   );
 };

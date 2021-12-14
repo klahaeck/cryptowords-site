@@ -40,7 +40,7 @@ const Minters = ({ className }) => {
         })
       })
         // .then((res) => res.json())
-        .then((data) => {
+        .then(() => {
           // console.log(data);
           reset({address: ''});
         })
@@ -62,7 +62,7 @@ const Minters = ({ className }) => {
         })
       })
         // .then((res) => res.json())
-        .then((data) => {
+        .then(() => {
           // console.log(data);
           setToDelete('');
         })

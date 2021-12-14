@@ -4,8 +4,7 @@ import useContract from './useContract';
 function useMintedWords() {
   const [ mintedWords, setMintedWords ] = useState([]);
 
-  const { contract } = useContract();
-  const eventFilter = contract.filters.WordMinted();
+  const contract = useContract();
 
   const wordMintedHandler = (tokenId, word, to) => {
     setMintedWords([...mintedWords, { tokenId: tokenId.toString(), word, owner: to }]);
@@ -15,6 +14,7 @@ function useMintedWords() {
     async function init() {
       // const localstorageWords = JSON.parse(localStorage.getItem('MintedWords'));
       // if (!localstorageWords) {
+      const eventFilter = contract.filters.WordMinted();
       const events = await contract.queryFilter(eventFilter);
       const eventsMapped = events.map((event) => ({
         tokenId: event.args.tokenId.toString(),
@@ -24,20 +24,19 @@ function useMintedWords() {
       setMintedWords(eventsMapped);
       // } else {
       //   setMintedWords(localstorageWords);
-      // }
-      
+      // }      
       contract.on('WordMinted', wordMintedHandler);
     }
-    if (contract.provider) {
+    if (contract?.provider) {
       init();
     }
 
     return () => {
-      if (contract.provider) {
+      if (contract?.provider) {
         contract.off('WordMinted', wordMintedHandler);
       }
     }
-  }, [contract.provider]);
+  }, [contract]);
 
   // useEffect(() => {
   //   if (mintedWords !== JSON.parse(localStorage.getItem('MintedWords'))) {

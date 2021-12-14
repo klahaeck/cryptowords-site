@@ -1,6 +1,7 @@
-import { useEthers, getChainName } from '@usedapp/core';
+import { useEthers, getChainName, ChainId } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// import dynamic from 'next/dynamic';
 import {
   showModal,
 } from '../store/root/reducer';
@@ -16,6 +17,11 @@ import AdminTools from './AdminTools';
 import WalletConnectors from './WalletConnectors';
 import AccountDisplay from './AccountDisplay';
 import AccountTools from './AccountTools';
+
+// const DynamicPolygonBridge = dynamic(
+//   () => import('./PolygonBridge'),
+//   { ssr: false }
+// )
 
 const Menubar = (props) => {
   const { showModal } = props;
@@ -44,8 +50,9 @@ const Menubar = (props) => {
             </span>
           </Navbar.Brand>
           {!account && <Button variant="primary" onClick={connectWallet}>Connect your wallet</Button>}
-          {account && chainId && <Navbar.Text className="me-2"><Badge pill bg="info" className="text-dark">{getChainName(chainId)}</Badge></Navbar.Text>}
+          {account && chainId && <Navbar.Text className="me-2"><Badge pill bg={`${chainId === ChainId.Polygon ? 'polygon' : 'info'}`} className={`${chainId === ChainId.Polygon ? 'text-light' : 'text-dark'}`}>{getChainName(chainId)}</Badge></Navbar.Text>}
           {account && <Button variant="outline-primary" onClick={handleWalletInfo}><AccountDisplay /></Button>}
+          {/* {account && chainId === ChainId.Polygon && <DynamicPolygonBridge />} */}
           
           {account && isAdmin && <Navbar.Toggle aria-controls="offcanvasNavbar" className="ms-3 border-primary outline-0 shadow-none"><i className="bi bi-list fs-3 text-primary"></i></Navbar.Toggle>}
           {account && isAdmin && <Navbar.Offcanvas

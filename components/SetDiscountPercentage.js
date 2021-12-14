@@ -29,9 +29,9 @@ const SetDiscountPercentage = ({ className }) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
-      <Form.Group>
+      {discountPercentage && <Form.Group>
         <Form.Label htmlFor="discountPercentage">
-          Set Discount Percentage
+          Set Friends Discount Percentage
         </Form.Label>
         <InputGroup>
           <Controller
@@ -48,7 +48,7 @@ const SetDiscountPercentage = ({ className }) => {
         </InputGroup>
         {errors.discountPercentage?.type === 'required' && <small className="form-text text-danger">A percentage is required</small>}
         {errors.discountPercentage?.type === 'manual' && <small className="form-text text-danger">{errors.discountPercentage?.message}</small>}
-      </Form.Group>
+      </Form.Group>}
     </Form>
   );
 };

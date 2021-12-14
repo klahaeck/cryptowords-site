@@ -10,6 +10,7 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "@maticnetwork/wallet-widget": "^1.3.1",
     "@usedapp/core": "^0.5.4",
     "@web3-react/portis-connector": "^6.1.9",
     "@web3-react/walletconnect-connector": "^6.2.8",
