@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/fetcher';
 // import { utils } from 'ethers';
-import { useEthers, useContractFunction } from '@usedapp/core';
+import { useEthers, useContractFunction, useNotifications } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
+  setCardStatus,
   showModal,
   addToast,
   addAlert,
@@ -22,9 +23,11 @@ import {
 import CardSearch from './CardSearch';
 
 const CardSearchSlim = (props) => {
-  const { search, onCloseClick, showModal, addAlert, addToast } = props;
+  const { search, onCloseClick, setCardStatus, showModal, addAlert, addToast } = props;
 
   const { account } = useEthers();
+
+  const { notifications } = useNotifications();
 
   const { paused } = useAdminData();
   const price = usePrice(account, search.name);
@@ -44,12 +47,35 @@ const CardSearchSlim = (props) => {
   };
 
   useEffect(() => {
+    const purchaseSuccess = notifications.filter(n => n.type === 'transactionSucceed' && n.transaction.nonce === search.nonce);
+    if (purchaseSuccess.length > 0) {
+      if (search.status === 'mining') {
+        addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+        setCardStatus({ name: search.name, status: null });
+      }
+    }
+  }, [notifications]);
+
+  useEffect(() => {
     switch(state.status) {
       case 'Mining':
+        setCardStatus({ name: search.name, nonce: state.transaction.nonce, status: 'mining' });
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
         break;
-      case 'Success':
-        addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+      // case 'Success':
+      //   setCardStatus({name: search.name, status: ''});
+      //   addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+      //   break;
+      case 'Exception':
+        setCardStatus({name: search.name, status: ''});
+        // console.error(state.errorMessage);
+        // console.log(state.errorMessage.includes('insufficient funds'));
+        if (state.errorMessage.includes('insufficient funds')) {
+          showModal({size:'lg', header: 'Insufficient funds', body:<>
+            <p>There is not enough {currency} in your wallet to make this purchase including the gas fee.</p>
+            {chainId === ChainId.Polygon && <p>If you need to transfer funds from the Ethereum mainnet to Polygon, you can use the <a href="https://wallet.polygon.technology/bridge" target="_blank" rel="noreferrer" className="color-polygon"><b>Polygon Bridge</b></a></p>}
+          </>});
+        }
         break;
     }
   }, [state]);
@@ -83,7 +109,7 @@ const CardSearchSlim = (props) => {
         {price && !wordAvailable && <b>{utils.formatEther(price)} ETH</b>} */}
         <p className="h6 m-0 me-auto text-truncate">{!wordAvailable ? <s>{startCase(search.name)}</s> : startCase(search.name)}</p>
 
-        <Button variant="link" size="sm" disabled={paused || !wordAvailable || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>
+        <Button variant="link" size="sm" disabled={paused || !wordAvailable || search.status === 'mining'} onClick={() => purchaseWord(search.name)} className="outline-0 shadow-none py-0 px-2"><i className="fs-5 bi bi-coin"></i></Button>
         <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleClickExpand()}><i className="bi bi-arrows-angle-expand"></i></Button>
         <Button variant="link" className="outline-0 shadow-none py-0 px-2" onClick={() => onCloseClick(search.name)}><i className="fs-5 bi bi-x-lg"></i></Button>
       </Card.Body>
@@ -92,6 +118,7 @@ const CardSearchSlim = (props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setCardStatus: bindActionCreators(setCardStatus, dispatch),
   showModal: bindActionCreators(showModal, dispatch),
   addToast: bindActionCreators(addToast, dispatch),
   addAlert: bindActionCreators(addAlert, dispatch)

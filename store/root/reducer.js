@@ -7,7 +7,8 @@ export const rootActionTypes = {
   REMOVE_SEARCH: 'REMOVE_SEARCH',
   SET_SEARCHES: 'SET_SEARCHES',
   SHOW_MODAL: 'SHOW_MODAL',
-  HIDE_MODAL: 'HIDE_MODAL'
+  HIDE_MODAL: 'HIDE_MODAL',
+  SET_CARD_STATUS: 'SET_CARD_STATUS'
 };
 
 const rootInitialState = {
@@ -45,6 +46,9 @@ export const showModal = (payload) => (dispatch) => {
 export const hideModal = (payload) => (dispatch) => {
   return dispatch({ type: rootActionTypes.HIDE_MODAL, payload });
 };
+export const setCardStatus = (payload) => (dispatch) => {
+  return dispatch({ type: rootActionTypes.SET_CARD_STATUS, payload });
+}
 
 export default function reducer(state = rootInitialState, action) {
   switch (action.type) {
@@ -71,6 +75,9 @@ export default function reducer(state = rootInitialState, action) {
       return {...state, modal: action.payload};
     case rootActionTypes.HIDE_MODAL:
       return {...state, modal: {}};
+    case rootActionTypes.SET_CARD_STATUS:
+      const searches = state.searches.map((item) => item.name == action.payload.name ? { ...item, ...action.payload } : item);
+      return {...state, searches };
     default:
       return state;
   }

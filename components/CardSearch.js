@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 import fetcher from '../lib/fetcher';
 import { utils } from 'ethers';
-import { useEthers, useContractFunction, ChainId } from '@usedapp/core';
+import { useEthers, useContractFunction, useNotifications, useTransactions, ChainId } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import startCase from 'lodash/startCase';
 import {
+  setCardStatus,
   showModal,
   addToast,
   addAlert,
@@ -27,9 +28,12 @@ import {
 } from 'react-bootstrap';
 
 const CardSearch = (props) => {
-  const { search, onCloseClick, showModal, addAlert, addToast, className } = props;
+  const { search, onCloseClick, setCardStatus, showModal, addAlert, addToast, className } = props;
 
   const { account, chainId } = useEthers();
+
+  const { notifications } = useNotifications();
+  // const { transactions } = useTransactions();
 
   const isDiscountedUser = useHasRole('DISCOUNTED_ROLE', account);
   const isMinter = useHasRole('MINTER_ROLE', account);
@@ -53,14 +57,27 @@ const CardSearch = (props) => {
   };
 
   useEffect(() => {
+    const purchaseSuccess = notifications.filter(n => n.type === 'transactionSucceed' && n.transaction.nonce === search.nonce);
+    if (purchaseSuccess.length > 0) {
+      if (search.status === 'mining') {
+        addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+        setCardStatus({ name: search.name, status: null });
+      }
+    }
+  }, [notifications]);
+
+  useEffect(() => {
     switch(state.status) {
       case 'Mining':
+        setCardStatus({ name: search.name, nonce: state.transaction.nonce, status: 'mining' });
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
         break;
-      case 'Success':
-        addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
-        break;
+      // case 'Success':
+      //   setCardStatus({name: search.name, status: null});
+      //   addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
+      //   break;
       case 'Exception':
+        setCardStatus({name: search.name, nonce: state.transaction.nonce, status: null});
         // console.error(state.errorMessage);
         // console.log(state.errorMessage.includes('insufficient funds'));
         if (state.errorMessage.includes('insufficient funds')) {
@@ -148,7 +165,7 @@ const CardSearch = (props) => {
           </Col>
           <Col className={`text-end ${!wordAvailable ? 'pe-1' : ''}`}>
             {(account && !wordAvailable && !isMinter) && <Button variant="outline-primary" size="sm" disabled={true} className="text-uppercase">Not Available</Button>}
-            {((account && wordAvailable) || isMinter) && <Button variant={!wordAvailable ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? <div className="d-flex align-items-center"><Spinner animation="border" variant="dark" size="sm" className="me-1" />Minting</div> : 'Purchase'}</Button>}
+            {((account && wordAvailable) || isMinter) && <Button variant={!wordAvailable ? 'outline-primary' : 'primary'} size="sm" disabled={paused || search.status === 'mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{search.status === 'mining' ? <div className="d-flex align-items-center"><Spinner animation="border" variant="dark" size="sm" className="me-1" />Minting</div> : 'Purchase'}</Button>}
           </Col>
         </Row>
       </Card.Footer>
@@ -157,6 +174,7 @@ const CardSearch = (props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setCardStatus: bindActionCreators(setCardStatus, dispatch),
   showModal: bindActionCreators(showModal, dispatch),
   addToast: bindActionCreators(addToast, dispatch),
   addAlert: bindActionCreators(addAlert, dispatch),
