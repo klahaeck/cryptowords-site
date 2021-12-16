@@ -152,6 +152,10 @@ $utilities: map-merge(
   font-size: 1.2em;
 }
 
+.toast-container {
+  z-index: 10;
+}
+
 @include media-breakpoint-up(md) {
   .tagline-0 {
     font-size: 1.1em;

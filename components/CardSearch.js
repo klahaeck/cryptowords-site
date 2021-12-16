@@ -17,6 +17,7 @@ import useInstancesAvailable from '../hooks/useInstancesAvailable';
 import useContract from '../hooks/useContract';
 import useHasRole from '../hooks/useHasRole';
 import useAdminData from '../hooks/useAdminData';
+import useCurrency from '../hooks/useCurrency';
 import {
   Row,
   Col,
@@ -24,12 +25,11 @@ import {
   Card,
   Spinner
 } from 'react-bootstrap';
-import useCurrency from '../hooks/useCurrency';
 
 const CardSearch = (props) => {
   const { search, onCloseClick, showModal, addAlert, addToast, className } = props;
 
-  const { account } = useEthers();
+  const { account, chainId } = useEthers();
 
   const isDiscountedUser = useHasRole('DISCOUNTED_ROLE', account);
   const isMinter = useHasRole('MINTER_ROLE', account);
@@ -53,7 +53,6 @@ const CardSearch = (props) => {
   };
 
   useEffect(() => {
-    console.log(state);
     switch(state.status) {
       case 'Mining':
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
@@ -62,7 +61,14 @@ const CardSearch = (props) => {
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
         break;
       case 'Exception':
-        console.error(state.errorMessage);
+        // console.error(state.errorMessage);
+        // console.log(state.errorMessage.includes('insufficient funds'));
+        if (state.errorMessage.includes('insufficient funds')) {
+          showModal({size:'lg', header: 'Insufficient funds', body:<>
+            <p>There is not enough {currency} in your wallet to make this purchase including the gas fee.</p>
+            {chainId === ChainId.Polygon && <p>If you need to transfer funds from the Ethereum mainnet to Polygon, you can use the <a href="https://wallet.polygon.technology/bridge" target="_blank" rel="noreferrer" className="color-polygon"><b>Polygon Bridge</b></a></p>}
+          </>});
+        }
         break;
     }
   }, [state]);
@@ -141,8 +147,8 @@ const CardSearch = (props) => {
             {/* </Card.Text> */}
           </Col>
           <Col className={`text-end ${!wordAvailable ? 'pe-1' : ''}`}>
-            {account && !wordAvailable && <Button variant="outline-primary" size="sm" disabled={true} className="text-uppercase">Not Available</Button>}
-            {account && wordAvailable && <Button variant={!wordAvailable ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? <div className="d-flex align-items-center"><Spinner animation="border" variant="dark" size="sm" className="me-1" />Minting</div> : 'Purchase'}</Button>}
+            {(account && !wordAvailable && !isMinter) && <Button variant="outline-primary" size="sm" disabled={true} className="text-uppercase">Not Available</Button>}
+            {((account && wordAvailable) || isMinter) && <Button variant={!wordAvailable ? 'outline-primary' : 'primary'} size="sm" disabled={paused || state.status === 'Mining'} onClick={() => purchaseWord(search.name)} className="text-uppercase">{state.status === 'Mining' ? <div className="d-flex align-items-center"><Spinner animation="border" variant="dark" size="sm" className="me-1" />Minting</div> : 'Purchase'}</Button>}
           </Col>
         </Row>
       </Card.Footer>

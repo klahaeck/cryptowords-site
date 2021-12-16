@@ -26,13 +26,12 @@ const config = {
   // },
   supportedChains: [
     ChainId.Mainnet,
-    // ChainId.Goerli,
-    // ChainId.Kovan,
-    ChainId.Rinkeby,
+    ChainId.Goerli,
+    ChainId.Kovan,
     ChainId.Ropsten,
-    // ChainId.xDai,
-    // ChainId.BSC,
-    // ChainId.Localhost,
+    ChainId.xDai,
+    ChainId.BSC,
+    ChainId.Localhost,
     ChainId.Hardhat,
     ChainId.Mumbai,
     ChainId.Polygon

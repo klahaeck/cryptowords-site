@@ -21,8 +21,8 @@ const RecentMinted = ({ showModal, className }) => {
   const tlCarousel = useRef(gsap.timeline({ repeat: -1 }));
 
   useEffect(() => {
-    if (recentWords.length > 0) {
-      const duration = tickerList.current.offsetWidth * .015;
+    if (recentWords && recentWords.length > 0) {
+      const duration = tickerList.current.offsetWidth * .025;
       tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'}, 'start');
     }
   }, [recentWords]);
@@ -42,7 +42,7 @@ const RecentMinted = ({ showModal, className }) => {
           <div ref={tickerWrapper} className="ticker-wrapper overflow-hidden d-flex">
             {Array(3).fill().map((item, index) => (
               <div key={index} ref={tickerList} className="ticker-list">
-                {recentWords && recentWords.length > 0 && recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord.word);}}>{startCase(recentWord.word)}</a></span>)}
+                {recentWords && recentWords.length > 0 && recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord);}}>{startCase(recentWord)}</a></span>)}
               </div>
             ))}
           </div>
