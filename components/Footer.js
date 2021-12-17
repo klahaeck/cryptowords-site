@@ -14,6 +14,7 @@ const Footer = () => {
         <Row>
           <Col>
             <Stack gap={0}>
+              
               <div>
                 <Link href="/"><a className="text-dark text-decoration-none">home</a></Link>
               </div>
