@@ -3,6 +3,7 @@ import { useEthers } from '@usedapp/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useRouter } from 'next/router';
+import slugify from 'slugify';
 import {
   addSearch,
 } from '../store/root/reducer';
@@ -34,7 +35,7 @@ const Home = (props) => {
   const ownedWords = useOwnedWords();
 
   useEffect(() => {
-    if (query?.word) addSearch({ name: query.word.trim().toLowerCase() });
+    if (query?.word) addSearch({ slug: slugify(query.word), name: query.word.trim().toLowerCase() });
   }, [query.word]);
 
   return (

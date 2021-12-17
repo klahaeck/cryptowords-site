@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import slugify from 'slugify';
 import {
   addSearch,
 } from '../store/root/reducer';
@@ -15,7 +16,7 @@ const WordForm = (props) => {
   const { addSearch } = props;
   const { handleSubmit, control, formState: { isSubmitSuccessful, errors }, reset } = useForm();
 
-  const onSubmitSearch = data => addSearch({ name: data.word.trim().toLowerCase(), nonce: null, status: null });
+  const onSubmitSearch = data => addSearch({ name: data.word.trim().toLowerCase(), slug: slugify(data.word), nonce: null, status: null });
 
   useEffect(() => {
     if (isSubmitSuccessful) reset({ word: '' });

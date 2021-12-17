@@ -61,14 +61,14 @@ export default function reducer(state = rootInitialState, action) {
     case rootActionTypes.REMOVE_ALERT:
       return {...state, alerts: state.alerts.filter((item, index) => index !== action.payload)};
     case rootActionTypes.ADD_SEARCH:
-      const existingSearch = state.searches.filter((item) => item.name == action.payload.name);
+      const existingSearch = state.searches.filter((item) => item.slug == action.payload.slug);
       if (existingSearch.length) {
-        return {...state, searches: [existingSearch[0], ...state.searches.filter(item => item.name !== action.payload.name)]};
+        return {...state, searches: [existingSearch[0], ...state.searches.filter(item => item.slug !== action.payload.slug)]};
       } else {
         return {...state, searches: [action.payload, ...state.searches]};
       }
     case rootActionTypes.REMOVE_SEARCH:
-      return {...state, searches: state.searches.filter(item => item.name !== action.payload)};
+      return {...state, searches: state.searches.filter(item => item.slug !== action.payload)};
     case rootActionTypes.SET_SEARCHES:
       return {...state, searches: action.payload};
     case rootActionTypes.SHOW_MODAL:
@@ -76,7 +76,7 @@ export default function reducer(state = rootInitialState, action) {
     case rootActionTypes.HIDE_MODAL:
       return {...state, modal: {}};
     case rootActionTypes.SET_CARD_STATUS:
-      const searches = state.searches.map((item) => item.name == action.payload.name ? { ...item, ...action.payload } : item);
+      const searches = state.searches.map((item) => item.slug == action.payload.slug ? { ...item, ...action.payload } : item);
       return {...state, searches };
     default:
       return state;
