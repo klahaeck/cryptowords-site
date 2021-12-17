@@ -22,8 +22,8 @@ const discounted = async (req, res) => {
       return res.status(500).send(error);
     }
   } else {
-    const { chainId, address } = req.query;
-    const users = await collection.find({ role, chainId, address }).toArray();
+    const { chainId } = req.query;
+    const users = await collection.find({ role, chainId }).toArray();
     return res.status(200).json(users);
   }
 };
