@@ -42,7 +42,7 @@ const RecentMinted = ({ showModal, className }) => {
         </Col>
         <Col md="20" className="fs-4 fw-lighter">
           <div ref={tickerWrapper} className="ticker-wrapper overflow-hidden d-flex">
-            {recentWords && recentWords.length > 0 && Array(2).fill().map((item, index) => (
+            {recentWords && recentWords.length > 0 && Array(3).fill().map((item, index) => (
               <div key={index} ref={tickerList} className="ticker-list">
                 {recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord);}}>{startCase(recentWord)}</a></span>)}
               </div>
