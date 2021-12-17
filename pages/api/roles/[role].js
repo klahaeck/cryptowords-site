@@ -23,7 +23,7 @@ const discounted = async (req, res) => {
     }
   } else {
     const { chainId } = req.query;
-    const users = await collection.find({ role, chainId }).toArray();
+    const users = await collection.find({ role, chainId: parseInt(chainId) }).toArray();
     return res.status(200).json(users);
   }
 };
