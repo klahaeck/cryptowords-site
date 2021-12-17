@@ -4,6 +4,7 @@ import {
   removeAlert,
 } from '../store/root/reducer';
 import {
+  Container,
   Alert,
 } from 'react-bootstrap';
 
@@ -11,9 +12,9 @@ const Alerts = (props) => {
   const { alerts, removeAlert, position, dismissible = true } = props;
 
   return (
-    <>
+    <Container>
       {alerts.filter(alert => alert.position === position).map((alert, index) => <Alert key={index} variant={alert.color} onClose={() => removeAlert(index)} dismissible={dismissible}>{alert.msg}</Alert>)}
-    </>
+    </Container>
   );
 };
 

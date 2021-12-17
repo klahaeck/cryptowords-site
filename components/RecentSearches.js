@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import Slider from 'react-slick';
-import CardSearchSlim from '../components/CardSearchSlim';
+import CardSearch from '../components/CardSearch';
 import {
   removeSearch,
 } from '../store/root/reducer';
@@ -57,7 +57,7 @@ const RecentSearches = (props) => {
       <Row className="g-1">
         {searches.filter((rs, index) => index > 0).map((search, index) => (
           <Col key={index} xs sm="12">
-            <CardSearchSlim search={search} onCloseClick={removeSearch} />
+            <CardSearch slim={true} search={search} onCloseClick={removeSearch} />
           </Col>
         ))}
       </Row>
