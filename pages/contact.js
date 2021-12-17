@@ -14,7 +14,7 @@ const Contact = () => {
         <Row>
           <Col md="13">
             <p>For any questions or support requests, email <a href="mailto:support@cryptowords.art">support@cryptowords.art</a> Or checkout our Discord server <a href="https://discord.com/channels/915347191781031957/915347287297896498" target="_blank" rel="noreferrer">here</a>.</p>
-            <p>We wil do our best to accomodate whatever requests you may have. In the meantime, check out our <Link href="/faqs">FAQs</Link> page for any info that may be relevant to your concern.</p>
+            <p>We wil do our best to accomodate whatever requests you may have. In the meantime, check out our <Link href="/faqs"><a className="">FAQs</a></Link> page for any info that may be relevant to your concern.</p>
           </Col>
         </Row>
       </Container>
