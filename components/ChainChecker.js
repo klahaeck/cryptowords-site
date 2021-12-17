@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 
 const ChainChecker = () => {
-  const { account, chainId } = useEthers();
+  const { account, chainId, library } = useEthers();
   const etherBalance = useEtherBalance(account);
 
   const switchToPolygon = async () => {
@@ -27,10 +27,11 @@ const ChainChecker = () => {
             params: [{ chainId: '0x89', rpcUrl: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON }],
           });
         } catch (addError) {
-          // handle "add" error
+          console.error(addError);
         }
+      } else {
+        console.error(switchError);
       }
-      // handle other "switch" errors
     }    
   }
 
@@ -40,7 +41,8 @@ const ChainChecker = () => {
       
       {account && chainId === ChainId.Mainnet && <Alert variant="primary" className="text-polygon">
         <p>CryptoWords uses the <a href="https://polygon.technology/" target="_blank" rel="noreferrer" className="color-polygon"><b>Polygon</b></a> network but you are currently on the Ethereum {getChainName(chainId)}. We use the Polygon network because gas fees on the Ethereum mainnet are simply too high. If mainnet gas fees trend lower on a long term basis, we may deploy there as well. For now, here we are!</p>
-        <Button className="bg-polygon text-light border-polygon" size="lg" onClick={() => switchToPolygon()}>Switch to Polygon</Button>
+        {library.provider?.isMetaMask && <Button className="bg-polygon text-light border-polygon" size="lg" onClick={() => switchToPolygon()}>Switch to Polygon</Button>}
+        {!library.provider?.isMetaMask && <p className="h5">Please switch your wallet to the Polygon Network.</p>}
       </Alert>}
       
       {account && chainId === ChainId.Polygon && etherBalance && Number(utils.formatEther(etherBalance.toString())).toFixed(4) == 0 && <Alert variant="primary" className="text-polygon">

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useEthers, ChainId } from '@usedapp/core';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-// import { WalletLinkConnector } from '@web3-react/walletlink-connector';
+import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -29,11 +29,10 @@ const WalletConnectors = ({ hideModal }) => {
       rpc: {
         1: process.env.NEXT_PUBLIC_INFURA_URL_MAINNET,
         3: process.env.NEXT_PUBLIC_INFURA_URL_ROPSTEN,
-        4: process.env.NEXT_PUBLIC_INFURA_URL_RINKEBY,
         137: process.env.NEXT_PUBLIC_INFURA_URL_POLYGON,
         80001: process.env.NEXT_PUBLIC_INFURA_URL_MUMBAI
       },
-      supportedChainIds: [3, 137, 80001],
+      supportedChainIds: [1, 3, 137, 80001],
       defaultChainId: ChainId.Polygon,
       chainId: ChainId.Polygon,
       bridge: 'https://bridge.walletconnect.org',
@@ -44,13 +43,13 @@ const WalletConnectors = ({ hideModal }) => {
     activate(connector);
   };
 
-  // const connectWalletLink = () => {
-  //   const connector = new WalletLinkConnector({
-  //     appName: 'CryptoWords',
-  //   });
+  const connectWalletLink = () => {
+    const connector = new WalletLinkConnector({
+      appName: 'CryptoWords',
+    });
 
-  //   activate(connector);
-  // };
+    activate(connector);
+  };
 
   return (
     <Row className="g-1">
@@ -68,13 +67,13 @@ const WalletConnectors = ({ hideModal }) => {
           </Card.Body>
         </Card>
       </Col>
-      {/* <Col xs={24} sm={12}>
+      <Col xs={24} sm={12}>
         <Card>
           <Card.Body role="button" onClick={connectWalletLink}>
             <div style={{backgroundImage: 'url("https://cryptowords.s3.amazonaws.com/production/Coinbase.svg")', backgroundRepeat:'no-repeat', backgroundPosition:'center', backgroundSize: '100%', minHeight:'80px'}} />
           </Card.Body>
         </Card>
-      </Col> */}
+      </Col>
     </Row>
   );
 };
