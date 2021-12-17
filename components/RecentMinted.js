@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import startCase from 'lodash/startCase';
@@ -14,16 +14,18 @@ import { gsap } from 'gsap';
 import CardWord from './CardWord';
 
 const RecentMinted = ({ showModal, className }) => {
-  const recentWords = useRecentWords(15);
+  const [loaded, setLoaded] = useState(false);
+  const recentWords = useRecentWords(10);
   
   const tickerWrapper = useRef(null);
   const tickerList = useRef(null);
   const tlCarousel = useRef(gsap.timeline({ repeat: -1 }));
 
   useEffect(() => {
-    if (recentWords && recentWords.length > 0) {
-      const duration = tickerList.current.offsetWidth * .025;
-      tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'}, 'start');
+    if (recentWords && recentWords.length > 0 && !loaded) {
+      const duration = tickerList.current.offsetWidth * .01;
+      tlCarousel.current.to('.ticker-list', { x: '-100%', duration, ease: 'linear'});
+      setLoaded(true);
     }
   }, [recentWords]);
 
@@ -38,11 +40,11 @@ const RecentMinted = ({ showModal, className }) => {
             <span className="d-none d-md-block ms-2">:</span>
           </div>
         </Col>
-        <Col md="20" className="fs-4 fw-lighter d-flex">
+        <Col md="20" className="fs-4 fw-lighter">
           <div ref={tickerWrapper} className="ticker-wrapper overflow-hidden d-flex">
-            {Array(3).fill().map((item, index) => (
+            {recentWords && recentWords.length > 0 && Array(2).fill().map((item, index) => (
               <div key={index} ref={tickerList} className="ticker-list">
-                {recentWords && recentWords.length > 0 && recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord);}}>{startCase(recentWord)}</a></span>)}
+                {recentWords.map((recentWord, idx) => <span key={idx}>...<a href="#" className="text-decoration-none text-hover-underline" onClick={(event) => { event.preventDefault(); handleWordClick(recentWord);}}>{startCase(recentWord)}</a></span>)}
               </div>
             ))}
           </div>
