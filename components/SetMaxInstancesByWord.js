@@ -19,35 +19,17 @@ const SetMaxInstancesByWord = ({ className }) => {
   const customMaxInstances = useCustomMaxInstances();
 
   const contract = useContract();
-  const { state, send } = useContractFunction(contract, 'setMaxInstancesByWord');
-
-  const onSubmit = data => send(slugify(data.word), data.maxInstances);
+  const { state: stateSet, send: sendSet } = useContractFunction(contract, 'setMaxInstancesByWord');
+  const { state: stateDelete, send: sendDelete } = useContractFunction(contract, 'deleteMaxInstancesByWord');
+  const onSubmit = data => sendSet(slugify(data.word), data.maxInstances);
 
   const handleRemoveCustomMaxInstances = (word) => {
     setToDelete(word);
-    send(word, 0);
+    sendDelete(word);
   }
 
   useEffect(() => {
-    if (state.status === 'Success' && toDelete !== '') {
-      fetch('/api/custom/max-instances', {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          chainId,
-          word: toDelete
-        })
-      })
-        // .then((res) => res.json())
-        .then(() => {
-          // console.log(data);
-          setToDelete('');
-        })
-        .catch(error => console.error(error));
-    } else if (state.status === 'Success') {
+    if (stateSet.state === 'Success') {
       fetch('/api/custom/max-instances', {
         method: 'POST',
         headers: {
@@ -67,7 +49,29 @@ const SetMaxInstancesByWord = ({ className }) => {
         })
         .catch(error => console.error(error));
     }
-  }, [state]);
+  }, [stateSet]);
+  
+  useEffect(() => {
+    if (stateDelete.state === 'Success') {
+      fetch('/api/custom/max-instances', {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chainId,
+          word: toDelete
+        })
+      })
+        // .then((res) => res.json())
+        .then(() => {
+          // console.log(data);
+          setToDelete('');
+        })
+        .catch(error => console.error(error));
+    }
+  }, [stateDelete]);
 
   return (
     <>
@@ -77,7 +81,7 @@ const SetMaxInstancesByWord = ({ className }) => {
           {customPrices.map((cmi, index) => (
             <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
               <div className="w-75 text-truncate">{cmi.word} - {cmi.maxInstances}</div>
-              <Button variant="danger" size="sm" onClick={() => handleRemoveCustomMaxInstances(slugify(cmi.word))} disabled={state.status === 'Mining'}>X</Button>
+              <Button variant="danger" size="sm" onClick={() => handleRemoveCustomMaxInstances(slugify(cmi.word))} disabled={stateDelete.status === 'Mining'}>X</Button>
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -96,7 +100,7 @@ const SetMaxInstancesByWord = ({ className }) => {
                 required: true
                 // pattern: /^[A-Za-z]+$/
               }}
-              render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Word" />}
+              render={({ field }) => <Form.Control {...field} disabled={stateSet.status === 'Mining'} placeholder="Word" />}
             />
             <Controller
               name="maxInstances"
@@ -106,9 +110,9 @@ const SetMaxInstancesByWord = ({ className }) => {
                 required: true
                 // pattern: /^[A-Za-z]+$/
               }}
-              render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Max Instances" />}
+              render={({ field }) => <Form.Control {...field} disabled={stateSet.status === 'Mining'} placeholder="Max Instances" />}
             />
-            <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
+            <Button color="primary" type="submit" disabled={stateSet.status === 'Mining'}>Save</Button>
           </InputGroup>
           {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
           {errors.maxInstances?.type === 'required' && <small className="form-text text-danger">A number is required</small>}

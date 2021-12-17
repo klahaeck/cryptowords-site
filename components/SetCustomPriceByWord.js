@@ -24,35 +24,18 @@ const SetCutomPriceByWord = ({ className }) => {
   const { defaultPrice } = useAdminData();
 
   const contract = useContract();
-  const { state, send } = useContractFunction(contract, 'setCustomPriceByWord');
+  const { state: stateSet, send: sendSet } = useContractFunction(contract, 'setCustomPriceByWord');
+  const { state: stateDelete, send: sendDelete } = useContractFunction(contract, 'deleteCustomPriceByWord');
 
-  const onSubmit = data => send(slugify(data.word), utils.parseUnits(data.price));
+  const onSubmit = data => sendSet(slugify(data.word), utils.parseUnits(data.price));
 
   const handleRemoveCustomPrice = (word) => {
     setToDelete(word);
-    send(word, utils.parseUnits(defaultPrice));
+    sendDelete(word);
   }
 
   useEffect(() => {
-    if (state.status === 'Success' && toDelete !== '') {
-      fetch('/api/custom/price', {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          chainId,
-          word: toDelete
-        })
-      })
-        // .then((res) => res.json())
-        .then(() => {
-          // console.log(data);
-          setToDelete('');
-        })
-        .catch(error => console.error(error));
-    } else if (state.status === 'Success') {
+    if (stateSet.status === 'Success') {
       fetch('/api/custom/price', {
         method: 'POST',
         headers: {
@@ -72,7 +55,29 @@ const SetCutomPriceByWord = ({ className }) => {
         })
         .catch(error => console.error(error));
     }
-  }, [state]);
+  }, [stateSet]);
+
+  useEffect(() => {
+    if (stateDelete.status === 'Success') {
+      fetch('/api/custom/price', {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chainId,
+          word: toDelete
+        })
+      })
+        // .then((res) => res.json())
+        .then(() => {
+          // console.log(data);
+          setToDelete('');
+        })
+        .catch(error => console.error(error));
+    }
+  }, [stateDelete]);
 
   return (
     <>
@@ -82,7 +87,7 @@ const SetCutomPriceByWord = ({ className }) => {
           {customPrices.map((cp, index) => (
             <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
               <div className="w-75 text-truncate">{cp.word} - {cp.price}</div>
-              <Button variant="danger" size="sm" onClick={() => handleRemoveCustomPrice(slugify(cp.word))} disabled={state.status === 'Mining'}>X</Button>
+              <Button variant="danger" size="sm" onClick={() => handleRemoveCustomPrice(slugify(cp.word))} disabled={stateDelete.status === 'Mining'}>X</Button>
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -101,7 +106,7 @@ const SetCutomPriceByWord = ({ className }) => {
                 required: true
                 // pattern: /^[A-Za-z]+$/
               }}
-              render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder="Word" />}
+              render={({ field }) => <Form.Control {...field} disabled={stateSet.status === 'Mining'} placeholder="Word" />}
             />
             <Controller
               name="price"
@@ -111,9 +116,9 @@ const SetCutomPriceByWord = ({ className }) => {
                 required: true
                 // pattern: /^[A-Za-z]+$/
               }}
-              render={({ field }) => <Form.Control {...field} disabled={state.status === 'Mining'} placeholder={`Price in ${currency}`} />}
+              render={({ field }) => <Form.Control {...field} disabled={stateSet.status === 'Mining'} placeholder={`Price in ${currency}`} />}
             />
-            <Button color="primary" type="submit" disabled={state.status === 'Mining'}>Save</Button>
+            <Button color="primary" type="submit" disabled={stateSet.status === 'Mining'}>Save</Button>
           </InputGroup>
           {errors.word?.type === 'required' && <small className="form-text text-danger">A word is required</small>}
           {errors.price?.type === 'required' && <small className="form-text text-danger">A price in {currency} is required</small>}

@@ -13,7 +13,7 @@ import SetMaxInstancesByWord from './SetMaxInstancesByWord';
 import SetDefaultPrice from './SetDefaultPrice';
 import SetDiscountPercentage from './SetDiscountPercentage';
 import SetDiscountPercentageGlobal from './SetDiscountPercentageGlobal';
-import SetCutomPriceByWord from './SetCutomPriceByWord';
+import SetCustomPriceByWord from './SetCustomPriceByWord';
 import DiscountedMembers from './DiscountedMembers';
 import Minters from './Minters';
 
@@ -50,7 +50,7 @@ const AdminTools = () => {
       <SetMaxInstances className="mb-4" />
       <SetMaxInstancesByWord className="mb-4" />
       <SetDefaultPrice className="mb-4" />
-      <SetCutomPriceByWord className="mb-4" />
+      <SetCustomPriceByWord className="mb-4" />
       <SetDiscountPercentageGlobal className="mb-4" />
       <SetDiscountPercentage className="mb-4" />
       <DiscountedMembers className="mb-4" />
