@@ -8,7 +8,7 @@ const FullError = ({ search, className, onCloseClick }) => {
   return (
     <Card bg="danger" text="light" className={className}>
       {onCloseClick && <Card.Header className="p-0 text-end">
-        <Button variant="link" className="outline-0 shadow-none py-0 px-2 text-light" onClick={() => onCloseClick(search.name)}><i className="bi bi-x-lg"></i></Button>
+        <Button variant="link" className="outline-0 shadow-none py-0 px-2 text-light" onClick={() => onCloseClick(search.slug)}><i className="bi bi-x-lg"></i></Button>
       </Card.Header>}
       <Card.Body>
         <div className="ratio ratio-1x1">

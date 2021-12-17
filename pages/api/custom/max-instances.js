@@ -1,15 +1,15 @@
 // import { toInteger } from 'lodash';
 import { connectToDatabase } from '../../../lib/mongodb';
 
-const apiPrice = async (req, res) => {
+const apiMaxInstances = async (req, res) => {
   const { db } = await connectToDatabase();
-  const collection = db.collection('customPrices');
+  const collection = db.collection('customMaxInstances');
 
   if (req.method === 'POST') {
-    const { chainId, word, price } = req.body;
+    const { chainId, word, maxInstaces } = req.body;
     try {
-      await collection.insertOne({ chainId, word, price });
-      return res.status(201).json({ chainId, word, price });
+      await collection.insertOne({ chainId, word, maxInstaces });
+      return res.status(201).json({ chainId, word, maxInstaces });
     } catch(error) {
       return res.status(500).send(error);
     }
@@ -28,4 +28,4 @@ const apiPrice = async (req, res) => {
   }
 };
 
-export default apiPrice;
+export default apiMaxInstances;

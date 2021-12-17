@@ -28,17 +28,17 @@ const CardSearch = (props) => {
 
   const { account, chainId } = useEthers();
   const { notifications } = useNotifications();
-  const price = usePrice(account, search.name);
+  const price = usePrice(account, search.slug);
   const contract = useContract();
   const currency = useCurrency();
 
   const { state, send } = useContractFunction(contract, 'purchaseWord');
   
-  const { data, error } = useSWR(search.name ? `/api/token/${search.name}` : null, fetcher);
+  const { data, error } = useSWR(search.slug ? `/api/token/${search.slug}` : null, fetcher);
   
-  const purchaseWord = (searchName) => {
+  const purchaseWord = (searchSlug) => {
     if (account) {
-      send(account, searchName, { value: price });
+      send(account, searchSlug, { value: price });
     } else {
       addAlert({position: 'global', color: 'primary', msg:'You must connect your wallet to purchase a word'});
     }
@@ -49,7 +49,7 @@ const CardSearch = (props) => {
     if (purchaseSuccess.length > 0) {
       if (search.status === 'mining') {
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
-        setCardStatus({ name: search.name, status: null });
+        setCardStatus({ name: search.slug, status: null });
       }
     }
   }, [notifications]);
@@ -57,15 +57,15 @@ const CardSearch = (props) => {
   useEffect(() => {
     switch(state.status) {
       case 'Mining':
-        setCardStatus({ name: search.name, nonce: state.transaction.nonce, status: 'mining' });
+        setCardStatus({ name: search.slug, nonce: state.transaction.nonce, status: 'mining' });
         addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> is minting.</p>});
         break;
       // case 'Success':
-      //   setCardStatus({name: search.name, status: null});
+      //   setCardStatus({name: search.slug, status: null});
       //   addToast({bg:'primary', header:'CryptoWords', body:<p>The word <b>{search.name}</b> has been minted to your wallet.</p>});
       //   break;
       case 'Exception':
-        setCardStatus({name: search.name, status: null});
+        setCardStatus({name: search.slug, status: null});
         if (state.errorMessage?.includes('insufficient funds')) {
           showModal({size:'lg', header: 'Insufficient funds', body:<>
             <p>There is not enough {currency} in your wallet to make this purchase including the gas fee.</p>

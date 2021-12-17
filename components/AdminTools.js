@@ -22,6 +22,8 @@ const AdminTools = () => {
   const currency = useCurrency();
   const { totalSupply, paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal, balance } = useAdminData();
 
+  console.log(discountPercentageGlobal);
+
   const contract = useContract();
   const { state: statePause, send: pause } = useContractFunction(contract, 'pause');
   const { state: stateUnpaused, send: unpause } = useContractFunction(contract, 'unpause');
@@ -35,9 +37,9 @@ const AdminTools = () => {
       <ListGroup variant="flush" className="mb-3">
         {paused && <ListGroup.Item className="ps-0">Paused: <b>{paused.toString()}</b></ListGroup.Item>}
         {totalSupply && <ListGroup.Item className="ps-0">Total Words: <b>{totalSupply}</b></ListGroup.Item>}
-        <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>
+        {maxInstances && <ListGroup.Item className="ps-0">Max Instances: <b>{maxInstances}</b></ListGroup.Item>}
         {defaultPrice && <ListGroup.Item className="ps-0">Default Price: <b>{utils.formatEther(defaultPrice)} {currency}</b></ListGroup.Item>}
-        {discountPercentageGlobal && <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal}%</b></ListGroup.Item>}
+        <ListGroup.Item className="ps-0">Global Discount: <b>{discountPercentageGlobal}%</b></ListGroup.Item>
         {discountPercentage && <ListGroup.Item className="ps-0">Friends Discount: <b>{discountPercentage}%</b></ListGroup.Item>}
         {balance && <ListGroup.Item className="ps-0">Current Balance: <b>{utils.formatEther(balance)}</b></ListGroup.Item>}
       </ListGroup>

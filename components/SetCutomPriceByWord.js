@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useEthers, useContractFunction } from '@usedapp/core';
 import { utils } from 'ethers';
 import { useForm, Controller } from 'react-hook-form';
+import slugify from 'slugify';
 import {
   Button,
   Form,
@@ -25,11 +26,11 @@ const SetCutomPriceByWord = ({ className }) => {
   const contract = useContract();
   const { state, send } = useContractFunction(contract, 'setCustomPriceByWord');
 
-  const onSubmit = data => send(data.word.trim().toLowerCase(), utils.parseUnits(data.price));
+  const onSubmit = data => send(slugify(data.word), utils.parseUnits(data.price));
 
   const handleRemoveCustomPrice = (word) => {
     setToDelete(word);
-    send(word.trim().toLowerCase(), utils.parseUnits(defaultPrice));
+    send(word, utils.parseUnits(defaultPrice));
   }
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const SetCutomPriceByWord = ({ className }) => {
         },
         body: JSON.stringify({
           chainId,
-          word: getValues('word'),
+          word: slugify(getValues('word')),
           price: getValues('price'),
         })
       })
@@ -81,7 +82,7 @@ const SetCutomPriceByWord = ({ className }) => {
           {customPrices.map((cp, index) => (
             <ListGroup.Item key={index} as="li" className="d-flex justify-content-between align-items-start">
               <div className="w-75 text-truncate">{cp.word} - {cp.price}</div>
-              <Button variant="danger" size="sm" onClick={() => handleRemoveCustomPrice(cp.word)} disabled={state.status === 'Mining'}>X</Button>
+              <Button variant="danger" size="sm" onClick={() => handleRemoveCustomPrice(slugify(cp.word))} disabled={state.status === 'Mining'}>X</Button>
             </ListGroup.Item>
           ))}
         </ListGroup>

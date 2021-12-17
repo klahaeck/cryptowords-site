@@ -9,7 +9,7 @@ const RandomWord = ({ className }) => {
   // if (!data) return <CardSearch search="loading" />
 
   // return data ? <CardSearch search={data} /> : <h1>Help</h1>;
-  return <CardSearch search={{ name: 'crypto' }} className={className} />;
+  return <CardSearch search={{ slug: 'crypto', name: 'crypto' }} className={className} />;
 };
 
 export default RandomWord;

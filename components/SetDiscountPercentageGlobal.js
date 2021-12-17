@@ -29,7 +29,7 @@ const SetDiscountPercentageGlobal = ({ className }) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className={className}>
-      {discountPercentageGlobal && <Form.Group>
+      <Form.Group>
         <Form.Label htmlFor="discountPercentageGlobal">
           Set Global Discount Percentage
         </Form.Label>
@@ -48,7 +48,7 @@ const SetDiscountPercentageGlobal = ({ className }) => {
         </InputGroup>
         {errors.discountPercentageGlobal?.type === 'required' && <small className="form-text text-danger">A percentage is required</small>}
         {errors.discountPercentageGlobal?.type === 'manual' && <small className="form-text text-danger">{errors.discountPercentageGlobal?.message}</small>}
-      </Form.Group>}
+      </Form.Group>
     </Form>
   );
 };

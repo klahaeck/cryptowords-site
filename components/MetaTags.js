@@ -23,10 +23,10 @@ const MetaTags = ({ meta }) => (
     <meta name="twitter:description"    content={meta.description} key="twitter:description" />
     <meta name="twitter:image"          content={meta.imageUrl} key="twitter:image" />
 
-    {/* <link rel="icon" type="image/png" href="https://6407c04a3cdfd0d80e9b-562ba8caa57940e1ebc0df098deb9607.ssl.cf1.rackcdn.com/images/favicon-16x16.png" sizes="16x16" />
-    <link rel="icon" type="image/png" href="https://6407c04a3cdfd0d80e9b-562ba8caa57940e1ebc0df098deb9607.ssl.cf1.rackcdn.com/images/favicon-32x32.png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="https://6407c04a3cdfd0d80e9b-562ba8caa57940e1ebc0df098deb9607.ssl.cf1.rackcdn.com/images/apple-touch-icon.png" sizes="180x180" />
-    <link rel="mask-icon" href="https://6407c04a3cdfd0d80e9b-562ba8caa57940e1ebc0df098deb9607.ssl.cf1.rackcdn.com/images/logo-mask.svg" /> */}
+    <link rel="icon" type="image/png" href="https://cryptowords.s3.amazonaws.com/production/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="https://cryptowords.s3.amazonaws.com/production/favicon-32x32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="https://cryptowords.s3.amazonaws.com/production/favicon-180x180.png" sizes="180x180" />
+    {/* <link rel="mask-icon" href="https://6407c04a3cdfd0d80e9b-562ba8caa57940e1ebc0df098deb9607.ssl.cf1.rackcdn.com/images/logo-mask.svg" /> */}
   </Head>
 );
 
