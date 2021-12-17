@@ -1,4 +1,4 @@
-import { useEthers, useContractFunction, ChainId } from '@usedapp/core';
+import { useContractFunction } from '@usedapp/core';
 import { utils } from 'ethers';
 import useAdminData from '../hooks/useAdminData';
 import {
@@ -18,11 +18,9 @@ import DiscountedMembers from './DiscountedMembers';
 import Minters from './Minters';
 
 const AdminTools = () => {
-  const { chainId } = useEthers();
+  // const { chainId } = useEthers();
   const currency = useCurrency();
   const { totalSupply, paused, maxInstances, defaultPrice, discountPercentage, discountPercentageGlobal, balance } = useAdminData();
-
-  console.log(discountPercentageGlobal);
 
   const contract = useContract();
   const { state: statePause, send: pause } = useContractFunction(contract, 'pause');
