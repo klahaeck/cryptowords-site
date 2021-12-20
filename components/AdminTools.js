@@ -16,6 +16,7 @@ import SetDiscountPercentageGlobal from './SetDiscountPercentageGlobal';
 import SetCustomPriceByWord from './SetCustomPriceByWord';
 import DiscountedMembers from './DiscountedMembers';
 import Minters from './Minters';
+import GiftWords from './GiftWords';
 
 const AdminTools = () => {
   // const { chainId } = useEthers();
@@ -55,6 +56,7 @@ const AdminTools = () => {
       <SetDiscountPercentage className="mb-4" />
       <DiscountedMembers className="mb-4" />
       <Minters className="mb-4" />
+      <GiftWords className="mb-4" />
     </>
   );
 };
