@@ -53,7 +53,7 @@ const CardWord = (props) => {
         <Button variant="link"  className="outline-0 shadow-none py-0 px-2" onClick={() => handleOnClick()}><i className="bi bi-arrows-angle-expand"></i></Button>
       </Card.Header>}
       <div className="ratio ratio-1x1">
-        <Card.Img variant="top" width="100%" src={data.image} alt={data.name} />
+        <Card.Img role="button" variant="top" width="100%" src={data.image} alt={data.name} onClick={() => handleOnClick()} />
       </div>
     </Card>
   );
