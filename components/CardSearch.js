@@ -91,7 +91,7 @@ const CardSearch = (props) => {
   }
   if (error) return slim ? <SlimError search={search} className={className} onCloseClick={onCloseClick} /> : <FullError search={search} className={className} onCloseClick={onCloseClick} />;
   if (!data) return slim ? <SlimLoading search={search} className={className} onCloseClick={onCloseClick} /> : <FullLoading search={search} className={className} onCloseClick={onCloseClick} />;
-  return slim ? <Slim search={search} onCloseClick={onCloseClick} handleClickExpand={handleClickExpand} purchaseWord={purchaseWord} /> : <Full search={search} data={data} onCloseClick={onCloseClick} handleClickExpand={handleClickExpand} purchaseWord={purchaseWord} />;
+  return slim ? <Slim search={search} onCloseClick={onCloseClick} handleClickExpand={handleClickExpand} purchaseWord={purchaseWord} /> : <Full search={search} data={data} onCloseClick={onCloseClick} handleClickExpand={handleClickExpand} purchaseWord={purchaseWord} className="border-0" />;
 };
 
 const mapDispatchToProps = (dispatch) => ({
