@@ -27,7 +27,7 @@ const Faqs = () => {
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">The definition of my word doesn't seem correct. Where did you source it?</h3>
-            <p>The definitions for all of words on this site come from the <a href="https://www.merriam-webster.com/" target="_blank" rel="noreferrer">Mirriam-Webster collegiate dictionary</a>. Double-cehck on their site if you think it may be incorrect.</p>
+            <p>The definitions for all of words on this site come from the <a href="https://www.merriam-webster.com/" target="_blank" rel="noreferrer">Mirriam-Webster collegiate dictionary</a>. Double-check on their site if you think it may be incorrect.</p>
           </ListGroup.Item>
           <ListGroup.Item className="ps-0">
             <h3 className="h5">The word I want cannot be found but I know it is in the dictionary.</h3>
