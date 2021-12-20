@@ -22,7 +22,7 @@ const OwnedWords = ({ className }) => {
       <Row className="g-1">
         {ownedWords && ownedWords.length > 0 && ownedWords.map((ownedWord, index) => (
           <Col key={index} xs="12" sm="8" md="6" lg="4" xl="3">
-            <CardWord word={ownedWord} tools={true} />
+            <CardWord word={ownedWord} tools={false} />
           </Col>
         ))}
       </Row>
