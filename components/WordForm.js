@@ -6,6 +6,7 @@ import {
   addSearch,
 } from '../store/root/reducer';
 import { useForm, Controller } from 'react-hook-form';
+// import useAdminData from '../hooks/useAdminData';
 import {
   Form,
   InputGroup,
@@ -16,6 +17,8 @@ const WordForm = (props) => {
   const { addSearch } = props;
   const { handleSubmit, control, formState: { isSubmitSuccessful, errors }, reset } = useForm();
 
+  // const { maxInstances } = useAdminData();
+
   const onSubmitSearch = data => addSearch({ name: data.word.trim().toLowerCase(), slug: slugify(data.word), nonce: null, status: null });
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const WordForm = (props) => {
   return (
     <>
       <h3 className="text-uppercase fw-light form-header">Choose a word to create an <span className="fw-bold">NFT</span></h3>
-      <p className="explainer">There are only five instances of each word.<br />After that, it is no longer available.</p>
+      <p className="explainer">There are only ten instances of each word.<br />After that, it is no longer available.</p>
       <Form onSubmit={handleSubmit(onSubmitSearch)}>
         <Form.Group>
           <Form.Label htmlFor="word" className="visually-hidden">
