@@ -21,5 +21,11 @@ export const staticWords = [
     slug: 'cryptoword',
     external_url: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/word/cryptoword`,
     description: 'Own the English language, one word at a time.'
+  },
+  {
+    name: 'Matic',
+    slug: 'matic',
+    external_url: `http${process.env.NODE_ENV === 'production' ? 's' : ''}://${process.env.DOMAIN}/word/matic`,
+    description: 'MATIC is an ERC-20 token that is used to power Polygon, the gateway to a Multi-Chain Ethereum.'
   }
 ];
