@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Head from 'next/head';
 import Link from 'next/link';
+import slugify from 'slugify';
 import startCase from 'lodash/startCase';
 import getWord from '../../lib/get-word';
 import {
@@ -22,7 +23,7 @@ const PageWord = (props) => {
   const { word, addSearch } = props;
 
   useEffect(() => {
-    addSearch({ name: word.slug.trim().toLowerCase() });
+    addSearch({ slug: word.slug, name: word.name });
   }, []);
 
   return (
@@ -43,7 +44,12 @@ const PageWord = (props) => {
 
         <Row className="justify-content-center mb-5">
           <Col sm="24" md="16" lg="12">
-            {word && <CardSearch search={word} />}
+            <div className="position-relative p-3 m-2 m-md-n1 m-lg-n3 search-featured">
+              <div className="position-absolute w-100 h-100 border border-dark border-3 search-outline-0"></div>
+              <div className="position-absolute w-100 h-100 border border-dark border-3 search-outline-1"></div>
+              <div className="position-absolute w-100 h-100 border border-dark border-3 search-outline-2"></div>
+              {word && <CardSearch search={word} />}
+            </div>
           </Col>
         </Row>
 
